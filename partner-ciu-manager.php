@@ -73,6 +73,11 @@ class Partner_CIU_Manager {
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-email-notifications.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-admin-panel.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-partner-sorting.php';
+
+        // Public dashboard classes
+        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-data-aggregator.php';
+        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-public-dashboard.php';
+        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-chart-generator.php';
     }
 
     /**
@@ -155,6 +160,11 @@ class Partner_CIU_Manager {
 
         // Initialize partner sorting
         Partner_Sorting::instance();
+
+        // Initialize public dashboard
+        Partner_Data_Aggregator::instance();
+        Partner_Public_Dashboard::instance();
+        Partner_Chart_Generator::instance();
     }
 
     /**
