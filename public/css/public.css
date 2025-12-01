@@ -1,0 +1,360 @@
+/**
+ * Partner CIU Manager Public Styles
+ */
+
+/* Partner Dashboard */
+.partner-ciu-dashboard {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.partner-ciu-dashboard h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.partner-ciu-dashboard h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.partner-ciu-notice {
+    padding: 15px 20px;
+    background: #fff9e6;
+    border-left: 4px solid #f0ad4e;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+/* Partner Section */
+.partner-section {
+    background: #fff;
+    padding: 25px;
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Profile Section */
+.partner-profile-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+}
+
+.partner-logo-section {
+    text-align: center;
+}
+
+.partner-logo-section label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.partner-logo-display {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 15px;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9f9f9;
+    overflow: hidden;
+}
+
+.partner-logo-display img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.partner-logo-display .no-logo {
+    color: #999;
+    font-size: 14px;
+}
+
+.partner-profile-form .form-group {
+    margin-bottom: 20px;
+}
+
+.partner-profile-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.partner-profile-form input[type="text"] {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.partner-profile-form input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+}
+
+/* Purchase Section */
+.partner-purchase-form .form-group {
+    margin-bottom: 20px;
+}
+
+.partner-purchase-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.partner-purchase-form input[type="number"] {
+    width: 100%;
+    max-width: 200px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.purchase-cost-display {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 4px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cost-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #555;
+}
+
+.cost-amount {
+    font-size: 24px;
+    font-weight: 700;
+    color: #28a745;
+}
+
+.cost-note {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* CIU Stats */
+.ciu-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.ciu-stat-item {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.ciu-stat-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.ciu-stat-item.pending {
+    border-color: #f0ad4e;
+}
+
+.ciu-stat-item.active {
+    border-color: #5bc0de;
+}
+
+.ciu-stat-item.verified {
+    border-color: #5cb85c;
+}
+
+.stat-label {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 36px;
+    font-weight: 700;
+    color: #333;
+}
+
+.ciu-stat-item.pending .stat-value {
+    color: #f0ad4e;
+}
+
+.ciu-stat-item.active .stat-value {
+    color: #5bc0de;
+}
+
+.ciu-stat-item.verified .stat-value {
+    color: #5cb85c;
+}
+
+/* Collections Table */
+.partner-collections-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.partner-collections-table thead th {
+    background: #f8f9fa;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.partner-collections-table tbody td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.partner-collections-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+/* Funds Section */
+.funds-info {
+    margin-top: 15px;
+}
+
+.funds-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.funds-item:last-child {
+    border-bottom: none;
+}
+
+.funds-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #555;
+}
+
+.funds-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #28a745;
+}
+
+/* Buttons */
+.button,
+.button-primary,
+.button-large {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    background: #f8f9fa;
+    border-color: #adb5bd;
+}
+
+.button-primary {
+    background: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.button-primary:hover {
+    background: #0056b3;
+    border-color: #0056b3;
+    color: #fff;
+}
+
+.button-large {
+    padding: 12px 30px;
+    font-size: 16px;
+}
+
+/* Loading State */
+.partner-ciu-dashboard .loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .partner-profile-content {
+        grid-template-columns: 1fr;
+    }
+
+    .partner-logo-display {
+        width: 150px;
+        height: 150px;
+    }
+
+    .ciu-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .purchase-cost-display {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .funds-item {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .partner-ciu-dashboard {
+        padding: 10px;
+    }
+
+    .partner-section {
+        padding: 15px;
+    }
+
+    .ciu-stats-grid {
+        grid-template-columns: 1fr;
+    }
+}

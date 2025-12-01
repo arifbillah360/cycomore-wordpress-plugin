@@ -1,0 +1,285 @@
+/**
+ * Partner CIU Manager Admin Styles
+ */
+
+/* Partner Logo Upload */
+.partner-logo-upload {
+    margin: 10px 0;
+}
+
+.partner-logo-preview {
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.partner-logo-preview img {
+    max-width: 200px;
+    height: auto;
+    display: block;
+}
+
+.partner-logo-remove-btn {
+    color: #a00;
+    margin-left: 10px;
+}
+
+.partner-logo-remove-btn:hover {
+    color: #dc3232;
+}
+
+/* Collection Repeater */
+#partner-collections-repeater {
+    margin: 15px 0;
+}
+
+#partner-collections-repeater table {
+    margin-top: 10px;
+}
+
+.collection-item input {
+    width: 100%;
+}
+
+.remove-collection-item {
+    color: #a00;
+}
+
+.remove-collection-item:hover {
+    color: #dc3232;
+}
+
+/* CIU Allocation Page */
+.partner-ciu-allocation {
+    max-width: 1200px;
+}
+
+.partner-ciu-allocation-sections {
+    margin-top: 20px;
+}
+
+.allocation-section {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.allocation-section h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.allocation-section table {
+    margin-top: 20px;
+}
+
+.allocation-section table th {
+    font-weight: 600;
+}
+
+.allocation-section .pending-count {
+    color: #f0ad4e;
+}
+
+.allocation-section .active-count {
+    color: #5bc0de;
+}
+
+.allocation-section .verified-count {
+    color: #5cb85c;
+}
+
+.bulk-allocation-form {
+    max-width: 600px;
+}
+
+/* Partner Modal */
+.partner-modal {
+    display: none;
+    position: fixed;
+    z-index: 100000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.partner-modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.partner-modal-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+.partner-modal-close:hover,
+.partner-modal-close:focus {
+    color: #000;
+}
+
+.partner-modal h2 {
+    margin-top: 0;
+}
+
+/* Partner Sorting */
+.partner-sorting-container {
+    max-width: 900px;
+    margin-top: 20px;
+}
+
+.sorting-notice {
+    padding: 10px 15px;
+    margin: 15px 0;
+    border-left: 4px solid #00a0d2;
+    background: #fff;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.sorting-notice.success {
+    border-left-color: #46b450;
+}
+
+.sorting-notice.error {
+    border-left-color: #dc3232;
+}
+
+.partner-sortable-list {
+    list-style: none;
+    margin: 20px 0;
+    padding: 0;
+}
+
+.partner-sortable-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 15px;
+    cursor: move;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.partner-sortable-item:hover {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-color: #999;
+}
+
+.partner-sortable-item.is-hero {
+    background: #fff9e6;
+    border-left: 4px solid #f0ad4e;
+}
+
+.partner-sortable-item.ui-sortable-helper {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transform: rotate(2deg);
+}
+
+.partner-item-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.partner-drag-handle {
+    font-size: 20px;
+    color: #999;
+    cursor: move;
+}
+
+.partner-drag-handle:hover {
+    color: #333;
+}
+
+.partner-logo {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.partner-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.partner-no-logo {
+    font-size: 11px;
+    color: #999;
+    text-align: center;
+}
+
+.partner-info {
+    flex: 1;
+}
+
+.partner-name {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: #f0ad4e;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-left: 8px;
+}
+
+.hero-highlight {
+    font-size: 13px;
+    color: #666;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+.partner-actions {
+    display: flex;
+    gap: 5px;
+}
+
+/* Responsive */
+@media (max-width: 782px) {
+    .partner-item-content {
+        flex-wrap: wrap;
+    }
+
+    .partner-logo {
+        width: 60px;
+        height: 60px;
+    }
+
+    .partner-info {
+        flex: 1 1 100%;
+        order: 3;
+    }
+}
