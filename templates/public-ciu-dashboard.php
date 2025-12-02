@@ -187,7 +187,8 @@ $chart_generator = Partner_Chart_Generator::instance();
                     <label for="sort-by">
                         <i class="fas fa-sort"></i>
                         <select id="sort-by">
-                            <option value="total_cius" selected><?php esc_html_e('Total CIUs', 'partner-ciu-manager'); ?></option>
+                            <option value="menu_order" selected><?php esc_html_e('Manual Order', 'partner-ciu-manager'); ?></option>
+                            <option value="total_cius"><?php esc_html_e('Total CIUs', 'partner-ciu-manager'); ?></option>
                             <option value="total_funds"><?php esc_html_e('Total Funds', 'partner-ciu-manager'); ?></option>
                             <option value="name"><?php esc_html_e('Name (A-Z)', 'partner-ciu-manager'); ?></option>
                         </select>

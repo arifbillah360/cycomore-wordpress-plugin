@@ -63,6 +63,11 @@ class Partner_Sorting {
         // Save order
         update_option('partner_sort_order', $order);
 
+        // Clear data aggregator cache so the new order is reflected immediately
+        if (class_exists('Partner_Data_Aggregator')) {
+            Partner_Data_Aggregator::instance()->clear_cache();
+        }
+
         wp_send_json_success(array('message' => __('Partner order saved successfully.', 'partner-ciu-manager')));
     }
 

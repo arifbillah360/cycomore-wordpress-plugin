@@ -217,7 +217,7 @@ class Partner_Public_Dashboard {
             'show_collections' => 'true',
             'show_timeline' => 'true',
             'partners_per_page' => '12',
-            'default_sort' => 'total_cius',
+            'default_sort' => 'menu_order',  // Use manual sort order by default
         ), $atts);
 
         // Get all data

@@ -151,8 +151,8 @@ class Partner_Data_Aggregator {
      */
     public function get_partners_data($args = array()) {
         $defaults = array(
-            'orderby' => 'total_cius',
-            'order' => 'DESC',
+            'orderby' => 'menu_order',  // Use manual sort order by default
+            'order' => 'ASC',
             'search' => '',
             'status_filter' => '',
             'per_page' => -1,
@@ -185,28 +185,32 @@ class Partner_Data_Aggregator {
             $partners_data[] = $partner_data;
         }
 
-        // Sort partners
-        usort($partners_data, function($a, $b) use ($args) {
-            // Hero partners always first
-            if ($a['is_hero'] && !$b['is_hero']) {
-                return -1;
-            }
-            if (!$a['is_hero'] && $b['is_hero']) {
-                return 1;
-            }
+        // Sort partners (only if a specific sort field is requested)
+        // If orderby is 'menu_order' or not set, preserve the manual sort order from Partner_Sorting
+        if ($args['orderby'] !== 'menu_order' && !empty($args['orderby'])) {
+            usort($partners_data, function($a, $b) use ($args) {
+                // Hero partners always first
+                if ($a['is_hero'] && !$b['is_hero']) {
+                    return -1;
+                }
+                if (!$a['is_hero'] && $b['is_hero']) {
+                    return 1;
+                }
 
-            // Then sort by specified field
-            $field = $args['orderby'];
-            $order = strtoupper($args['order']);
+                // Then sort by specified field
+                $field = $args['orderby'];
+                $order = strtoupper($args['order']);
 
-            if ($field === 'name') {
-                $result = strcmp($a['name'], $b['name']);
-            } else {
-                $result = $a[$field] <=> $b[$field];
-            }
+                if ($field === 'name') {
+                    $result = strcmp($a['name'], $b['name']);
+                } else {
+                    $result = $a[$field] <=> $b[$field];
+                }
 
-            return $order === 'ASC' ? $result : -$result;
-        });
+                return $order === 'ASC' ? $result : -$result;
+            });
+        }
+        // If no specific orderby, partners are already in manual sort order from get_all_partners()
 
         // Pagination
         if ($args['per_page'] > 0) {
@@ -438,6 +442,12 @@ class Partner_Data_Aggregator {
      * @return array
      */
     private function get_all_partners() {
+        // Use Partner_Sorting to get partners in the correct order
+        if (class_exists('Partner_Sorting')) {
+            return Partner_Sorting::get_sorted_partners();
+        }
+
+        // Fallback to default query if Partner_Sorting is not available
         return get_posts(array(
             'post_type' => 'partner_profile',
             'posts_per_page' => -1,
