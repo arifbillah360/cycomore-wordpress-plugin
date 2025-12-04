@@ -1,0 +1,474 @@
+/**
+ * CIU Allocation Admin Styles
+ *
+ * @package Partner_CIU_Manager
+ */
+
+/* === Summary Section === */
+.ciu-allocation-metabox {
+    margin: 0;
+    padding: 0;
+}
+
+.ciu-summary-section {
+    background: #f8f9fa;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.ciu-summary-section h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.ciu-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.summary-item {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 15px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.summary-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.summary-item.total {
+    border-left: 4px solid #2271b1;
+}
+
+.summary-item.pending {
+    border-left: 4px solid #dba617;
+}
+
+.summary-item.active {
+    border-left: 4px solid #00a32a;
+}
+
+.summary-item.verified {
+    border-left: 4px solid #8c8f94;
+}
+
+.summary-item.funds {
+    border-left: 4px solid #8c6ab5;
+}
+
+.summary-label {
+    display: block;
+    font-size: 12px;
+    color: #646970;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.summary-value {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1d2327;
+}
+
+/* === Categories Accordion === */
+.ciu-categories-accordion {
+    margin-bottom: 20px;
+}
+
+.category-section {
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #f6f7f7;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s ease;
+}
+
+.category-header:hover {
+    background: #f0f0f1;
+}
+
+.category-section.active .category-header {
+    background: #f0f0f1;
+    border-bottom: 1px solid #dcdcde;
+}
+
+.category-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.category-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.category-title h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.category-total {
+    background: #2271b1;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.category-toggle {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    color: #646970;
+    transition: transform 0.3s ease, color 0.2s ease;
+}
+
+.category-toggle:hover {
+    color: #2271b1;
+}
+
+.category-section.active .category-toggle {
+    transform: rotate(180deg);
+}
+
+.category-toggle .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.category-content {
+    padding: 20px;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === Collections === */
+.collections-container {
+    margin-bottom: 15px;
+}
+
+.collection-item {
+    background: #f8f9fa;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 15px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.collection-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-color: #8c8f94;
+}
+
+.collection-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dcdcde;
+}
+
+.collection-number {
+    background: #2271b1;
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.collection-title-display {
+    font-weight: 600;
+    color: #1d2327;
+    flex: 1;
+    font-size: 14px;
+}
+
+.remove-collection {
+    color: #b32d2e;
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    font-size: 13px;
+}
+
+.remove-collection:hover {
+    background: #b32d2e;
+    color: #fff;
+}
+
+.collection-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.field-row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.field-group {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.field-group label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #1d2327;
+    font-size: 13px;
+}
+
+.field-group input[type="text"],
+.field-group input[type="number"],
+.field-group input[type="url"],
+.field-group select,
+.field-group textarea {
+    width: 100%;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-size: 14px;
+}
+
+.field-group input[type="text"]:focus,
+.field-group input[type="number"]:focus,
+.field-group input[type="url"]:focus,
+.field-group select:focus,
+.field-group textarea:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: none;
+}
+
+.field-group input.small-text {
+    width: 100px;
+}
+
+.collection-status-select {
+    max-width: 200px;
+}
+
+/* === Add Collection Button === */
+.add-collection {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.add-collection .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+/* === Help Section === */
+.ciu-allocation-help {
+    background: #fff9e5;
+    border: 1px solid #dcdcde;
+    border-left: 4px solid #dba617;
+    padding: 12px 15px;
+    border-radius: 4px;
+}
+
+.ciu-allocation-help .description {
+    margin: 0;
+    color: #646970;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.ciu-allocation-help strong {
+    color: #1d2327;
+}
+
+/* === Responsive Design === */
+@media screen and (max-width: 782px) {
+    .ciu-summary-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .summary-value {
+        font-size: 20px;
+    }
+
+    .field-row {
+        flex-direction: column;
+    }
+
+    .field-group {
+        min-width: 100%;
+    }
+
+    .category-header {
+        padding: 12px 15px;
+    }
+
+    .category-content {
+        padding: 15px;
+    }
+
+    .collection-item {
+        padding: 12px;
+    }
+
+    .category-icon {
+        font-size: 20px;
+    }
+
+    .category-title h4 {
+        font-size: 14px;
+    }
+
+    .collection-header {
+        flex-wrap: wrap;
+    }
+
+    .collection-number {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .ciu-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .category-total {
+        font-size: 11px;
+        padding: 3px 8px;
+    }
+
+    .field-group input.small-text {
+        width: 80px;
+    }
+}
+
+/* === Empty State === */
+.collections-container:empty + .add-collection::before {
+    content: "No collections added yet. Click below to add your first collection.";
+    display: block;
+    padding: 20px;
+    text-align: center;
+    color: #646970;
+    font-style: italic;
+    background: #f6f7f7;
+    border: 1px dashed #dcdcde;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+/* === Loading State === */
+.ciu-allocation-metabox.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* === Animation for New Collections === */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.collection-item.new-item {
+    animation: fadeInUp 0.3s ease;
+}
+
+/* === Status Badges in Select === */
+.collection-status-select option[value="pending"] {
+    color: #dba617;
+}
+
+.collection-status-select option[value="active"] {
+    color: #00a32a;
+}
+
+.collection-status-select option[value="verified"] {
+    color: #8c8f94;
+}
+
+/* === Accessibility === */
+.category-toggle:focus,
+.add-collection:focus,
+.remove-collection:focus {
+    outline: 2px solid #2271b1;
+    outline-offset: 2px;
+}
+
+/* === Print Styles === */
+@media print {
+    .category-toggle,
+    .add-collection,
+    .remove-collection {
+        display: none;
+    }
+
+    .category-content {
+        display: block !important;
+    }
+
+    .collection-item {
+        page-break-inside: avoid;
+    }
+}
