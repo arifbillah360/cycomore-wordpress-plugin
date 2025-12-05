@@ -149,12 +149,12 @@
 
                     '<div class="field-row">' +
                         '<div class="field-group">' +
-                            '<label>' + ciuAllocationData.strings.externalLink + '</label>' +
-                            '<input type="url" ' +
-                                   'name="ciu_allocations[' + category + '][collections][' + collectionId + '][external_link]" ' +
+                            '<label>' + (ciuAllocationData.strings.date || 'Date') + '</label>' +
+                            '<input type="date" ' +
+                                   'name="ciu_allocations[' + category + '][collections][' + collectionId + '][collection_date]" ' +
                                    'value="" ' +
-                                   'class="widefat" ' +
-                                   'placeholder="https://">' +
+                                   'class="widefat collection-date-input">' +
+                            '<small class="field-hint">' + (ciuAllocationData.strings.dateHint || 'Project start date or milestone date') + '</small>' +
                         '</div>' +
                     '</div>' +
                 '</div>' +

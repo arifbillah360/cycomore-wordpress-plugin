@@ -242,7 +242,7 @@ class CIU_Allocation_Metabox {
                                     ? $collection['status']
                                     : 'pending',
                         'description' => sanitize_textarea_field($collection['description'] ?? ''),
-                        'external_link' => esc_url_raw($collection['external_link'] ?? ''),
+                        'collection_date' => sanitize_text_field($collection['collection_date'] ?? ''),
                         'date_added' => sanitize_text_field($collection['date_added'] ?? date('Y-m-d')),
                         'last_modified' => current_time('mysql')
                     );
@@ -362,7 +362,7 @@ class CIU_Allocation_Metabox {
         // Localize script
         wp_localize_script('ciu-allocation-admin', 'ciuAllocationData', array(
             'ciuPrice' => Partner_CIU_Settings::get_ciu_price(),
-            'currencySymbol' => get_woocommerce_currency_symbol(),
+            'currencySymbol' => '£', // GBP symbol (default currency)
             'strings' => array(
                 'confirmRemove' => __('Are you sure you want to remove this collection?', 'partner-ciu-manager'),
                 'collectionTitle' => __('Collection Title', 'partner-ciu-manager'),
