@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Partner CIU Manager
  * Plugin URI: https://github.com/arifbillah360/cycomore-wordpress-plugin
- * Description: Complete WordPress + WooCommerce system for partner management and CIU (Cumulative Impact Unit) purchasing with partner dashboards, admin tools, and specialized purchasing workflow.
- * Version: 1.0.0
+ * Description: WordPress system for partner management and CIU (Cumulative Impact Unit) allocation with partner dashboards, admin tools, and comprehensive reporting.
+ * Version: 1.0.1
  * Author: Cycomore
  * Author URI: https://cycomore.com
  * License: GPL v2 or later
@@ -12,8 +12,6 @@
  * Domain Path: /languages
  * Requires at least: 6.0
  * Requires PHP: 7.4
- * WC requires at least: 8.0
- * WC tested up to: 9.0
  */
 
 // Exit if accessed directly
@@ -22,7 +20,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('PARTNER_CIU_VERSION', '1.0.0');
+define('PARTNER_CIU_VERSION', '1.0.1');
 define('PARTNER_CIU_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('PARTNER_CIU_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('PARTNER_CIU_PLUGIN_BASENAME', plugin_basename(__FILE__));
@@ -65,17 +63,18 @@ class Partner_CIU_Manager {
     private function includes() {
         // Core classes
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-partner-post-type.php';
-        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-ciu-transaction-post-type.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-partner-role.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-settings.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-partner-dashboard.php';
-        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-woocommerce-integration.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-email-notifications.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-admin-panel.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-partner-sorting.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-ciu-allocation-metabox.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-admin-notes-metabox.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-partner-onboarding.php';
+
+        // Migration script (only loads if migration not done)
+        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-migration-remove-transactions.php';
 
         // Public dashboard classes
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-data-aggregator.php';
@@ -94,9 +93,6 @@ class Partner_CIU_Manager {
         // Initialize plugin
         add_action('plugins_loaded', array($this, 'init'));
 
-        // Check for WooCommerce dependency
-        add_action('admin_notices', array($this, 'check_woocommerce_dependency'));
-
         // Load text domain
         add_action('init', array($this, 'load_textdomain'));
 
@@ -111,7 +107,6 @@ class Partner_CIU_Manager {
     public function activate() {
         // Create custom post types
         Partner_Post_Type::register();
-        CIU_Transaction_Post_Type::register();
 
         // Flush rewrite rules
         flush_rewrite_rules();
@@ -175,22 +170,14 @@ class Partner_CIU_Manager {
      * Initialize plugin
      */
     public function init() {
-        if (!$this->is_woocommerce_active()) {
-            return;
-        }
-
         // Initialize post types
         Partner_Post_Type::instance();
-        CIU_Transaction_Post_Type::instance();
 
         // Initialize settings
         Partner_CIU_Settings::instance();
 
         // Initialize dashboard
         Partner_Dashboard::instance();
-
-        // Initialize WooCommerce integration
-        Partner_WooCommerce_Integration::instance();
 
         // Initialize email notifications
         Partner_Email_Notifications::instance();
@@ -214,28 +201,6 @@ class Partner_CIU_Manager {
         Partner_Data_Aggregator::instance();
         Partner_Public_Dashboard::instance();
         Partner_Chart_Generator::instance();
-    }
-
-    /**
-     * Check if WooCommerce is active
-     *
-     * @return bool
-     */
-    private function is_woocommerce_active() {
-        return class_exists('WooCommerce');
-    }
-
-    /**
-     * Display admin notice if WooCommerce is not active
-     */
-    public function check_woocommerce_dependency() {
-        if (!$this->is_woocommerce_active()) {
-            ?>
-            <div class="error">
-                <p><?php esc_html_e('Partner CIU Manager requires WooCommerce to be installed and active.', 'partner-ciu-manager'); ?></p>
-            </div>
-            <?php
-        }
     }
 
     /**

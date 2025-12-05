@@ -121,7 +121,6 @@ class Partner_Dashboard {
             'active_cius' => get_post_meta($partner_profile->ID, '_active_cius', true) ?: 0,
             'verified_cius' => get_post_meta($partner_profile->ID, '_verified_cius', true) ?: 0,
             'total_funds' => get_post_meta($partner_profile->ID, '_total_funds', true) ?: 0,
-            'last_purchase_date' => get_post_meta($partner_profile->ID, '_last_purchase_date', true),
             'collections' => get_post_meta($partner_profile->ID, '_collection_breakdown', true),
         );
 
