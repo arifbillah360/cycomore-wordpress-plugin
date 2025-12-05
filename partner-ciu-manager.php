@@ -65,6 +65,7 @@ class Partner_CIU_Manager {
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-partner-post-type.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-partner-role.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-settings.php';
+        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-ciu-allocation-metabox.php';
     }
 
     /**
@@ -122,6 +123,9 @@ class Partner_CIU_Manager {
 
         // Initialize settings
         Partner_CIU_Settings::instance();
+
+        // Initialize CIU allocation metabox
+        CIU_Allocation_Metabox::instance();
     }
 
     /**
@@ -141,6 +145,17 @@ class Partner_CIU_Manager {
         }
 
         wp_enqueue_style('partner-ciu-admin', PARTNER_CIU_PLUGIN_URL . 'admin/css/admin.css', array(), PARTNER_CIU_VERSION);
+        wp_enqueue_script('partner-ciu-admin', PARTNER_CIU_PLUGIN_URL . 'admin/js/admin.js', array('jquery', 'jquery-ui-sortable'), PARTNER_CIU_VERSION, true);
+
+        wp_localize_script('partner-ciu-admin', 'partnerCiuAdmin', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('partner-ciu-admin-nonce'),
+            'strings' => array(
+                'confirmDelete' => __('Are you sure you want to delete this?', 'partner-ciu-manager'),
+                'savingOrder' => __('Saving order...', 'partner-ciu-manager'),
+                'orderSaved' => __('Order saved successfully!', 'partner-ciu-manager'),
+            )
+        ));
     }
 
     /**
