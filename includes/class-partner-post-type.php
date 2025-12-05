@@ -126,15 +126,6 @@ class Partner_Post_Type {
             'normal',
             'high'
         );
-
-        add_meta_box(
-            'partner_collections',
-            __('Collection Breakdown', 'partner-ciu-manager'),
-            array($this, 'render_collections_meta_box'),
-            'partner_profile',
-            'normal',
-            'default'
-        );
     }
 
     /**
@@ -274,43 +265,6 @@ class Partner_Post_Type {
     }
 
     /**
-     * Render collections meta box
-     */
-    public function render_collections_meta_box($post) {
-        $collections = get_post_meta($post->ID, '_collection_breakdown', true);
-        if (!is_array($collections)) {
-            $collections = array();
-        }
-        ?>
-        <div id="partner-collections-repeater">
-            <table class="widefat">
-                <thead>
-                    <tr>
-                        <th><?php esc_html_e('Collection Name', 'partner-ciu-manager'); ?></th>
-                        <th><?php esc_html_e('CIU Count', 'partner-ciu-manager'); ?></th>
-                        <th><?php esc_html_e('Actions', 'partner-ciu-manager'); ?></th>
-                    </tr>
-                </thead>
-                <tbody class="collection-items">
-                    <?php if (!empty($collections)): ?>
-                        <?php foreach ($collections as $index => $collection): ?>
-                            <tr class="collection-item">
-                                <td><input type="text" name="collections[<?php echo esc_attr($index); ?>][name]" value="<?php echo esc_attr($collection['name']); ?>" class="regular-text"></td>
-                                <td><input type="number" name="collections[<?php echo esc_attr($index); ?>][count]" value="<?php echo esc_attr($collection['count']); ?>" class="small-text" min="0"></td>
-                                <td><button type="button" class="button remove-collection-item"><?php esc_html_e('Remove', 'partner-ciu-manager'); ?></button></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-            <p>
-                <button type="button" class="button add-collection-item"><?php esc_html_e('Add Collection', 'partner-ciu-manager'); ?></button>
-            </p>
-        </div>
-        <?php
-    }
-
-    /**
      * Save meta boxes
      */
     public function save_meta_boxes($post_id, $post) {
@@ -367,20 +321,6 @@ class Partner_Post_Type {
         }
         if (isset($_POST['verified_cius'])) {
             update_post_meta($post_id, '_verified_cius', absint($_POST['verified_cius']));
-        }
-
-        // Save collections
-        if (isset($_POST['collections']) && is_array($_POST['collections'])) {
-            $collections = array();
-            foreach ($_POST['collections'] as $collection) {
-                if (!empty($collection['name'])) {
-                    $collections[] = array(
-                        'name' => sanitize_text_field($collection['name']),
-                        'count' => absint($collection['count']),
-                    );
-                }
-            }
-            update_post_meta($post_id, '_collection_breakdown', $collections);
         }
     }
 

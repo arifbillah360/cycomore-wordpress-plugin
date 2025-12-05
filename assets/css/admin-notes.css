@@ -1,0 +1,216 @@
+/**
+ * Admin Notes CSS
+ *
+ * @package Partner_CIU_Manager
+ */
+
+.admin-notes-metabox {
+    padding: 15px;
+}
+
+.admin-notes-metabox .description {
+    color: #666;
+    font-style: italic;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #fff9e5;
+    border-left: 4px solid #dba617;
+    border-radius: 3px;
+}
+
+/* Notes List */
+.notes-list {
+    margin-bottom: 30px;
+}
+
+.no-notes-message {
+    color: #666;
+    font-style: italic;
+    text-align: center;
+    padding: 30px;
+    background: #f6f7f7;
+    border: 1px dashed #dcdcde;
+    border-radius: 4px;
+}
+
+.note-item {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: all 0.2s ease;
+}
+
+.note-item:hover {
+    border-color: #2271b1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.note-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    flex-wrap: wrap;
+}
+
+.note-name {
+    flex: 1;
+    font-size: 15px;
+    color: #2271b1;
+}
+
+.note-meta {
+    font-size: 12px;
+    color: #666;
+}
+
+.edit-note-btn,
+.delete-note-btn {
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.edit-note-btn {
+    background: #2271b1;
+    color: #fff;
+    border-color: #2271b1;
+}
+
+.edit-note-btn:hover {
+    background: #135e96;
+    border-color: #135e96;
+    color: #fff;
+}
+
+.delete-note-btn {
+    color: #b32d2e;
+}
+
+.delete-note-btn:hover {
+    background: #b32d2e;
+    color: #fff;
+    border-color: #b32d2e;
+}
+
+.note-content {
+    color: #333;
+    line-height: 1.6;
+}
+
+.note-content p {
+    margin: 0;
+}
+
+.note-modified {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.note-modified small {
+    color: #666;
+    font-style: italic;
+}
+
+/* Add Note Section */
+.add-note-section {
+    background: #f0f6fc;
+    padding: 20px;
+    border: 1px solid #2271b1;
+    border-radius: 4px;
+}
+
+.add-note-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #2271b1;
+    font-size: 16px;
+}
+
+.note-form .form-group {
+    margin-bottom: 15px;
+}
+
+.note-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #1d2327;
+}
+
+.note-form label .required {
+    color: #dc3232;
+}
+
+.note-form input[type="text"],
+.note-form textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #8c8f94;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.note-form input[type="text"]:focus,
+.note-form textarea:focus {
+    border-color: #2271b1;
+    outline: none;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+#save-note-btn {
+    margin-top: 10px;
+}
+
+#save-note-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Animation for new notes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.note-item.new-note {
+    animation: fadeIn 0.3s ease;
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+    .note-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .note-name {
+        flex: none;
+        width: 100%;
+    }
+
+    .note-meta {
+        width: 100%;
+    }
+
+    .edit-note-btn,
+    .delete-note-btn {
+        width: auto;
+    }
+
+    .add-note-section {
+        padding: 15px;
+    }
+}

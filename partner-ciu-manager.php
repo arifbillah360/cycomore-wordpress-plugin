@@ -74,6 +74,7 @@ class Partner_CIU_Manager {
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-admin-panel.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-partner-sorting.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-ciu-allocation-metabox.php';
+        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-admin-notes-metabox.php';
 
         // Public dashboard classes
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-data-aggregator.php';
@@ -201,6 +202,9 @@ class Partner_CIU_Manager {
 
         // Initialize CIU allocation metabox
         CIU_Allocation_Metabox::instance();
+
+        // Initialize admin notes metabox
+        Partner_Admin_Notes_Metabox::instance();
 
         // Initialize public dashboard
         Partner_Data_Aggregator::instance();
