@@ -50,7 +50,7 @@ class Partner_CIU_Settings {
             'edit.php?post_type=partner_profile',
             __('Settings', 'partner-ciu-manager'),
             __('Settings', 'partner-ciu-manager'),
-            'manage_options',
+            'manage_partner_settings',
             'partner-ciu-settings',
             array($this, 'render_settings_page')
         );
@@ -209,7 +209,7 @@ class Partner_CIU_Settings {
      * Render settings page
      */
     public function render_settings_page() {
-        if (!current_user_can('manage_options')) {
+        if (!current_user_can('manage_partner_settings')) {
             return;
         }
 

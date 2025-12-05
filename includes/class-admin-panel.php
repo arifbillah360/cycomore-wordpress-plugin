@@ -52,7 +52,7 @@ class Partner_Admin_Panel {
             'edit.php?post_type=partner_profile',
             __('CIU Allocation', 'partner-ciu-manager'),
             __('CIU Allocation', 'partner-ciu-manager'),
-            'manage_options',
+            'manage_partners',
             'partner-ciu-allocation',
             array($this, 'render_ciu_allocation_page')
         );
@@ -62,7 +62,7 @@ class Partner_Admin_Panel {
             'edit.php?post_type=partner_profile',
             __('Partner Sorting', 'partner-ciu-manager'),
             __('Partner Sorting', 'partner-ciu-manager'),
-            'manage_options',
+            'manage_partners',
             'partner-sorting',
             array($this, 'render_partner_sorting_page')
         );
@@ -72,7 +72,7 @@ class Partner_Admin_Panel {
      * Render CIU allocation page
      */
     public function render_ciu_allocation_page() {
-        if (!current_user_can('manage_options')) {
+        if (!current_user_can('manage_partners')) {
             return;
         }
 
@@ -83,7 +83,7 @@ class Partner_Admin_Panel {
      * Render partner sorting page
      */
     public function render_partner_sorting_page() {
-        if (!current_user_can('manage_options')) {
+        if (!current_user_can('manage_partners')) {
             return;
         }
 
@@ -98,7 +98,7 @@ class Partner_Admin_Panel {
         check_ajax_referer('partner-ciu-admin-nonce', 'nonce');
 
         // Check permissions
-        if (!current_user_can('manage_options')) {
+        if (!current_user_can('manage_partners')) {
             wp_send_json_error(array('message' => __('Insufficient permissions.', 'partner-ciu-manager')));
         }
 
@@ -140,7 +140,7 @@ class Partner_Admin_Panel {
         check_ajax_referer('partner-ciu-admin-nonce', 'nonce');
 
         // Check permissions
-        if (!current_user_can('manage_options')) {
+        if (!current_user_can('manage_partners')) {
             wp_send_json_error(array('message' => __('Insufficient permissions.', 'partner-ciu-manager')));
         }
 

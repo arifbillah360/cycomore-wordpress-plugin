@@ -49,7 +49,7 @@ class Partner_Sorting {
         check_ajax_referer('partner-ciu-admin-nonce', 'nonce');
 
         // Check permissions
-        if (!current_user_can('manage_options')) {
+        if (!current_user_can('manage_partners')) {
             wp_send_json_error(array('message' => __('Insufficient permissions.', 'partner-ciu-manager')));
         }
 

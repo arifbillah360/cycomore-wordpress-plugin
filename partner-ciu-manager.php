@@ -117,11 +117,48 @@ class Partner_CIU_Manager {
         // Create partner role
         Partner_Role::create_role();
 
+        // Add custom capabilities for admin and editor roles
+        $this->add_partner_capabilities();
+
         // Create default settings
         $this->create_default_settings();
 
         // Set activation flag
         set_transient('partner_ciu_manager_activated', true, 30);
+    }
+
+    /**
+     * Add custom capabilities to admin and editor roles
+     */
+    private function add_partner_capabilities() {
+        // Get the editor and admin roles
+        $editor = get_role('editor');
+        $admin = get_role('administrator');
+
+        // Define custom capabilities
+        $caps = array(
+            'manage_partners',
+            'edit_partners',
+            'edit_published_partners',
+            'publish_partners',
+            'delete_partners',
+            'edit_partner',
+            'delete_partner',
+            'read_partner',
+            'manage_ciu_allocations',
+            'view_partner_dashboard',
+            'manage_partner_settings'
+        );
+
+        // Add capabilities to both roles
+        foreach ($caps as $cap) {
+            if ($editor) {
+                $editor->add_cap($cap);
+            }
+            if ($admin) {
+                $admin->add_cap($cap);
+            }
+        }
     }
 
     /**
