@@ -137,12 +137,12 @@ if (!defined('ABSPATH')) {
 
                                     <div class="field-row">
                                         <div class="field-group">
-                                            <label><?php esc_html_e('Date', 'partner-ciu-manager'); ?></label>
-                                            <input type="date"
-                                                   name="ciu_allocations[<?php echo esc_attr($category_slug); ?>][collections][<?php echo esc_attr($coll_id); ?>][collection_date]"
-                                                   value="<?php echo esc_attr($collection['collection_date'] ?? ''); ?>"
-                                                   class="widefat collection-date-input">
-                                            <small class="field-hint"><?php esc_html_e('Project start date or milestone date', 'partner-ciu-manager'); ?></small>
+                                            <label><?php esc_html_e('External Link (Optional)', 'partner-ciu-manager'); ?></label>
+                                            <input type="url"
+                                                   name="ciu_allocations[<?php echo esc_attr($category_slug); ?>][collections][<?php echo esc_attr($coll_id); ?>][external_link]"
+                                                   value="<?php echo esc_url($collection['external_link'] ?? ''); ?>"
+                                                   class="widefat"
+                                                   placeholder="https://">
                                         </div>
                                     </div>
                                 </div>
