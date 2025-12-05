@@ -117,24 +117,6 @@ class Partner_Post_Type {
             'side',
             'default'
         );
-
-        add_meta_box(
-            'partner_ciu_stats',
-            __('CIU Statistics', 'partner-ciu-manager'),
-            array($this, 'render_ciu_stats_meta_box'),
-            'partner_profile',
-            'normal',
-            'high'
-        );
-
-        add_meta_box(
-            'partner_collections',
-            __('Collection Breakdown', 'partner-ciu-manager'),
-            array($this, 'render_collections_meta_box'),
-            'partner_profile',
-            'normal',
-            'default'
-        );
     }
 
     /**
@@ -233,84 +215,6 @@ class Partner_Post_Type {
     }
 
     /**
-     * Render CIU stats meta box
-     */
-    public function render_ciu_stats_meta_box($post) {
-        $pending_cius = get_post_meta($post->ID, '_pending_cius', true) ?: 0;
-        $active_cius = get_post_meta($post->ID, '_active_cius', true) ?: 0;
-        $verified_cius = get_post_meta($post->ID, '_verified_cius', true) ?: 0;
-        $total_cius = $pending_cius + $active_cius + $verified_cius;
-        $total_funds = get_post_meta($post->ID, '_total_funds', true) ?: 0;
-        $last_purchase_date = get_post_meta($post->ID, '_last_purchase_date', true);
-        ?>
-        <table class="form-table">
-            <tr>
-                <th><?php esc_html_e('Total CIUs', 'partner-ciu-manager'); ?></th>
-                <td><strong><?php echo esc_html($total_cius); ?></strong></td>
-            </tr>
-            <tr>
-                <th><label for="pending_cius"><?php esc_html_e('Pending CIUs', 'partner-ciu-manager'); ?></label></th>
-                <td><input type="number" id="pending_cius" name="pending_cius" value="<?php echo esc_attr($pending_cius); ?>" class="small-text" min="0"></td>
-            </tr>
-            <tr>
-                <th><label for="active_cius"><?php esc_html_e('Active CIUs', 'partner-ciu-manager'); ?></label></th>
-                <td><input type="number" id="active_cius" name="active_cius" value="<?php echo esc_attr($active_cius); ?>" class="small-text" min="0"></td>
-            </tr>
-            <tr>
-                <th><label for="verified_cius"><?php esc_html_e('Verified/Retired CIUs', 'partner-ciu-manager'); ?></label></th>
-                <td><input type="number" id="verified_cius" name="verified_cius" value="<?php echo esc_attr($verified_cius); ?>" class="small-text" min="0"></td>
-            </tr>
-            <tr>
-                <th><?php esc_html_e('Total Funds Contributed', 'partner-ciu-manager'); ?></th>
-                <td><strong><?php echo esc_html(get_woocommerce_currency_symbol() . number_format($total_funds, 2)); ?></strong></td>
-            </tr>
-            <tr>
-                <th><?php esc_html_e('Last Purchase Date', 'partner-ciu-manager'); ?></th>
-                <td><?php echo $last_purchase_date ? esc_html(date_i18n(get_option('date_format'), strtotime($last_purchase_date))) : esc_html__('No purchases yet', 'partner-ciu-manager'); ?></td>
-            </tr>
-        </table>
-        <p class="description"><?php esc_html_e('CIU counts are automatically updated when transactions are created. You can also manually adjust them here.', 'partner-ciu-manager'); ?></p>
-        <?php
-    }
-
-    /**
-     * Render collections meta box
-     */
-    public function render_collections_meta_box($post) {
-        $collections = get_post_meta($post->ID, '_collection_breakdown', true);
-        if (!is_array($collections)) {
-            $collections = array();
-        }
-        ?>
-        <div id="partner-collections-repeater">
-            <table class="widefat">
-                <thead>
-                    <tr>
-                        <th><?php esc_html_e('Collection Name', 'partner-ciu-manager'); ?></th>
-                        <th><?php esc_html_e('CIU Count', 'partner-ciu-manager'); ?></th>
-                        <th><?php esc_html_e('Actions', 'partner-ciu-manager'); ?></th>
-                    </tr>
-                </thead>
-                <tbody class="collection-items">
-                    <?php if (!empty($collections)): ?>
-                        <?php foreach ($collections as $index => $collection): ?>
-                            <tr class="collection-item">
-                                <td><input type="text" name="collections[<?php echo esc_attr($index); ?>][name]" value="<?php echo esc_attr($collection['name']); ?>" class="regular-text"></td>
-                                <td><input type="number" name="collections[<?php echo esc_attr($index); ?>][count]" value="<?php echo esc_attr($collection['count']); ?>" class="small-text" min="0"></td>
-                                <td><button type="button" class="button remove-collection-item"><?php esc_html_e('Remove', 'partner-ciu-manager'); ?></button></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-            <p>
-                <button type="button" class="button add-collection-item"><?php esc_html_e('Add Collection', 'partner-ciu-manager'); ?></button>
-            </p>
-        </div>
-        <?php
-    }
-
-    /**
      * Save meta boxes
      */
     public function save_meta_boxes($post_id, $post) {
@@ -357,31 +261,6 @@ class Partner_Post_Type {
         if (isset($_POST['hero_highlight_text'])) {
             update_post_meta($post_id, '_hero_highlight_text', sanitize_text_field($_POST['hero_highlight_text']));
         }
-
-        // Save CIU stats
-        if (isset($_POST['pending_cius'])) {
-            update_post_meta($post_id, '_pending_cius', absint($_POST['pending_cius']));
-        }
-        if (isset($_POST['active_cius'])) {
-            update_post_meta($post_id, '_active_cius', absint($_POST['active_cius']));
-        }
-        if (isset($_POST['verified_cius'])) {
-            update_post_meta($post_id, '_verified_cius', absint($_POST['verified_cius']));
-        }
-
-        // Save collections
-        if (isset($_POST['collections']) && is_array($_POST['collections'])) {
-            $collections = array();
-            foreach ($_POST['collections'] as $collection) {
-                if (!empty($collection['name'])) {
-                    $collections[] = array(
-                        'name' => sanitize_text_field($collection['name']),
-                        'count' => absint($collection['count']),
-                    );
-                }
-            }
-            update_post_meta($post_id, '_collection_breakdown', $collections);
-        }
     }
 
     /**
@@ -406,23 +285,4 @@ class Partner_Post_Type {
         return !empty($partners) ? $partners[0] : null;
     }
 
-    /**
-     * Update partner CIU stats
-     *
-     * @param int $partner_id
-     * @param int $ciu_count
-     * @param float $amount
-     */
-    public static function update_partner_stats($partner_id, $ciu_count, $amount) {
-        // Update pending CIUs
-        $pending_cius = get_post_meta($partner_id, '_pending_cius', true) ?: 0;
-        update_post_meta($partner_id, '_pending_cius', $pending_cius + $ciu_count);
-
-        // Update total funds
-        $total_funds = get_post_meta($partner_id, '_total_funds', true) ?: 0;
-        update_post_meta($partner_id, '_total_funds', $total_funds + $amount);
-
-        // Update last purchase date
-        update_post_meta($partner_id, '_last_purchase_date', current_time('mysql'));
-    }
 }
