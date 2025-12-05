@@ -134,6 +134,7 @@ class Partner_CIU_Manager {
 
         // Define custom capabilities
         $caps = array(
+            'manage_partner_ciu',
             'manage_partners',
             'edit_partners',
             'edit_published_partners',
@@ -144,7 +145,18 @@ class Partner_CIU_Manager {
             'read_partner',
             'manage_ciu_allocations',
             'view_partner_dashboard',
-            'manage_partner_settings'
+            'manage_partner_settings',
+            // Post type specific capabilities
+            'edit_partner_profiles',
+            'edit_others_partner_profiles',
+            'publish_partner_profiles',
+            'read_private_partner_profiles',
+            'delete_partner_profiles',
+            'delete_private_partner_profiles',
+            'delete_published_partner_profiles',
+            'delete_others_partner_profiles',
+            'edit_private_partner_profiles',
+            'edit_published_partner_profiles'
         );
 
         // Add capabilities to both roles
@@ -162,8 +174,50 @@ class Partner_CIU_Manager {
      * Plugin deactivation
      */
     public function deactivate() {
+        // Remove custom capabilities from editor role (keep for admin)
+        $this->remove_partner_capabilities();
+
         // Flush rewrite rules
         flush_rewrite_rules();
+    }
+
+    /**
+     * Remove custom capabilities from editor role
+     */
+    private function remove_partner_capabilities() {
+        $editor = get_role('editor');
+
+        $caps = array(
+            'manage_partner_ciu',
+            'manage_partners',
+            'edit_partners',
+            'edit_published_partners',
+            'publish_partners',
+            'delete_partners',
+            'edit_partner',
+            'delete_partner',
+            'read_partner',
+            'manage_ciu_allocations',
+            'view_partner_dashboard',
+            'manage_partner_settings',
+            'edit_partner_profiles',
+            'edit_others_partner_profiles',
+            'publish_partner_profiles',
+            'read_private_partner_profiles',
+            'delete_partner_profiles',
+            'delete_private_partner_profiles',
+            'delete_published_partner_profiles',
+            'delete_others_partner_profiles',
+            'edit_private_partner_profiles',
+            'edit_published_partner_profiles'
+        );
+
+        // Remove capabilities from editor role only
+        foreach ($caps as $cap) {
+            if ($editor) {
+                $editor->remove_cap($cap);
+            }
+        }
     }
 
     /**

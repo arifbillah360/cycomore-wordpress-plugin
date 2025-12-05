@@ -36,7 +36,7 @@ class Partner_CIU_Migration_Remove_Transactions {
             null, // Hidden from menu
             'CIU Migration',
             'CIU Migration',
-            'manage_options',
+            'manage_partner_ciu',
             'ciu-migration',
             array($this, 'render_migration_page')
         );
@@ -49,7 +49,7 @@ class Partner_CIU_Migration_Remove_Transactions {
         $migration_done = get_option('ciu_transactions_removed', false);
         $screen = get_current_screen();
 
-        if (!$migration_done && current_user_can('manage_options') && $screen && $screen->post_type === 'partner_profile') {
+        if (!$migration_done && current_user_can('manage_partner_ciu') && $screen && $screen->post_type === 'partner_profile') {
             ?>
             <div class="notice notice-warning is-dismissible">
                 <p>
@@ -173,7 +173,7 @@ class Partner_CIU_Migration_Remove_Transactions {
             wp_die('Security check failed');
         }
 
-        if (!current_user_can('manage_options')) {
+        if (!current_user_can('manage_partner_ciu')) {
             wp_die('Insufficient permissions');
         }
 

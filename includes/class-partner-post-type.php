@@ -71,7 +71,7 @@ class Partner_Post_Type {
             'supports' => array('title'),
             'has_archive' => false,
             'rewrite' => false,
-            'capability_type' => 'post',
+            'capability_type' => 'partner_profile',
             'capabilities' => array(
                 'edit_post' => 'edit_partner_profile',
                 'read_post' => 'read_partner_profile',
@@ -80,6 +80,12 @@ class Partner_Post_Type {
                 'edit_others_posts' => 'edit_others_partner_profiles',
                 'publish_posts' => 'publish_partner_profiles',
                 'read_private_posts' => 'read_private_partner_profiles',
+                'delete_posts' => 'delete_partner_profiles',
+                'delete_private_posts' => 'delete_private_partner_profiles',
+                'delete_published_posts' => 'delete_published_partner_profiles',
+                'delete_others_posts' => 'delete_others_partner_profiles',
+                'edit_private_posts' => 'edit_private_partner_profiles',
+                'edit_published_posts' => 'edit_published_partner_profiles',
             ),
             'map_meta_cap' => true,
         );
