@@ -36,7 +36,7 @@ if (!defined('ABSPATH')) {
         <?php foreach ($partners as $partner): ?>
             <?php
             $partner_id = $partner->ID;
-            $partner_logo = get_post_meta($partner_id, '_partner_logo', true);
+            $thumbnail_id = get_post_thumbnail_id($partner_id);
             $is_hero = get_post_meta($partner_id, '_is_hero_partner', true);
             $summary = get_post_meta($partner_id, 'ciu_summary', true);
             $allocations = get_post_meta($partner_id, 'ciu_allocations', true);
@@ -69,9 +69,9 @@ if (!defined('ABSPATH')) {
 
                 <a href="<?php echo esc_url($partner_link); ?>" class="partner-card-link">
                     <div class="partner-card-header">
-                        <?php if ($partner_logo): ?>
+                        <?php if ($thumbnail_id): ?>
                             <div class="partner-logo">
-                                <?php echo wp_get_attachment_image($partner_logo, 'medium', false, array('alt' => esc_attr($partner->post_title))); ?>
+                                <?php echo get_the_post_thumbnail($partner_id, 'medium', array('alt' => esc_attr($partner->post_title))); ?>
                             </div>
                         <?php else: ?>
                             <div class="partner-logo-placeholder">
