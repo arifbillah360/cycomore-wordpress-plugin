@@ -42,6 +42,11 @@
                 });
             });
 
+            // Partner search functionality
+            $(document).on('input', '#partner-search', function() {
+                ciuFrontend.filterPartners($(this).val());
+            });
+
             // Expand all button (if added in future)
             $(document).on('click', '.expand-all-categories', function(e) {
                 e.preventDefault();
@@ -112,6 +117,43 @@
                 if (!$category.find('.ciu-category-content').is(':visible')) {
                     $category.find('.ciu-category-header').click();
                 }
+            }
+        },
+
+        /**
+         * Filter partners based on search query
+         */
+        filterPartners: function(searchQuery) {
+            var query = searchQuery.toLowerCase().trim();
+            var $partnerCards = $('.partner-card');
+            var $noResults = $('.no-partners-found');
+            var visibleCount = 0;
+
+            if (query === '') {
+                // Show all partners if search is empty
+                $partnerCards.fadeIn(200);
+                $noResults.hide();
+                return;
+            }
+
+            // Filter partners
+            $partnerCards.each(function() {
+                var $card = $(this);
+                var partnerName = $card.find('.partner-card-title').text().toLowerCase();
+
+                if (partnerName.indexOf(query) !== -1) {
+                    $card.fadeIn(200);
+                    visibleCount++;
+                } else {
+                    $card.fadeOut(200);
+                }
+            });
+
+            // Show/hide no results message
+            if (visibleCount === 0) {
+                $noResults.fadeIn(200);
+            } else {
+                $noResults.fadeOut(200);
             }
         }
     };

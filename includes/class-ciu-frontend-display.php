@@ -38,8 +38,9 @@ class CIU_Frontend_Display {
      * Constructor
      */
     private function __construct() {
-        // Register shortcode
+        // Register shortcodes
         add_shortcode('ciu_allocation_display', array($this, 'render_shortcode'));
+        add_shortcode('ciu_partners', array($this, 'render_partners_shortcode'));
 
         // Enqueue frontend scripts
         add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
@@ -51,7 +52,7 @@ class CIU_Frontend_Display {
     public function enqueue_scripts() {
         // Only enqueue if shortcode is present
         global $post;
-        if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'ciu_allocation_display')) {
+        if (is_a($post, 'WP_Post') && (has_shortcode($post->post_content, 'ciu_allocation_display') || has_shortcode($post->post_content, 'ciu_partners'))) {
             wp_enqueue_style(
                 'ciu-allocation-frontend',
                 PARTNER_CIU_PLUGIN_URL . 'public/css/ciu-allocation-frontend.css',
@@ -66,6 +67,12 @@ class CIU_Frontend_Display {
                 PARTNER_CIU_VERSION,
                 true
             );
+
+            // Localize script with AJAX URL
+            wp_localize_script('ciu-allocation-frontend', 'ciuFrontendData', array(
+                'ajaxUrl' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('ciu-frontend-nonce'),
+            ));
         }
     }
 
@@ -194,6 +201,109 @@ class CIU_Frontend_Display {
         $partners = get_posts($args);
 
         return !empty($partners) ? $partners[0]->ID : 0;
+    }
+
+    /**
+     * Render partners shortcode (list or detail view)
+     *
+     * @param array $atts Shortcode attributes
+     * @return string
+     */
+    public function render_partners_shortcode($atts) {
+        // Parse attributes
+        $atts = shortcode_atts(array(
+            'view' => 'auto', // auto, list, detail
+            'columns' => '3', // For grid view: 2, 3, or 4
+            'show_search' => 'yes',
+            'show_filter' => 'no',
+        ), $atts, 'ciu_partners');
+
+        // Check if viewing specific partner via URL parameter
+        $partner_id = isset($_GET['partner']) ? absint($_GET['partner']) : 0;
+
+        // Determine view
+        if ($atts['view'] === 'auto') {
+            $view = ($partner_id > 0) ? 'detail' : 'list';
+        } else {
+            $view = $atts['view'];
+        }
+
+        // Render appropriate view
+        if ($view === 'detail' && $partner_id > 0) {
+            return $this->render_partner_detail($partner_id, $atts);
+        } else {
+            return $this->render_partner_list($atts);
+        }
+    }
+
+    /**
+     * Render partner list (grid/cards view)
+     *
+     * @param array $atts Shortcode attributes
+     * @return string
+     */
+    private function render_partner_list($atts) {
+        // Get all partners
+        $args = array(
+            'post_type' => 'partner_profile',
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+            'orderby' => 'title',
+            'order' => 'ASC'
+        );
+
+        $partners = get_posts($args);
+
+        if (empty($partners)) {
+            return '<p class="ciu-notice">' . esc_html__('No partners found.', 'partner-ciu-manager') . '</p>';
+        }
+
+        ob_start();
+        include PARTNER_CIU_PLUGIN_DIR . 'templates/frontend-partner-list.php';
+        return ob_get_clean();
+    }
+
+    /**
+     * Render single partner detail view
+     *
+     * @param int $partner_id Partner ID
+     * @param array $atts Shortcode attributes
+     * @return string
+     */
+    private function render_partner_detail($partner_id, $atts) {
+        $partner = get_post($partner_id);
+
+        if (!$partner || $partner->post_type !== 'partner_profile') {
+            return '<p class="ciu-error">' . esc_html__('Partner not found.', 'partner-ciu-manager') . '</p>';
+        }
+
+        // Get CIU allocation data
+        $allocations = get_post_meta($partner_id, 'ciu_allocations', true);
+        $summary = get_post_meta($partner_id, 'ciu_summary', true);
+
+        // Force show both summary and categories for detail view
+        $atts['show_summary'] = 'yes';
+        $atts['show_categories'] = 'yes';
+
+        ob_start();
+        ?>
+        <div class="ciu-partner-detail-wrapper">
+            <div class="ciu-partner-detail-header">
+                <a href="<?php echo esc_url(remove_query_arg('partner')); ?>" class="ciu-back-button">
+                    <span class="back-arrow">←</span>
+                    <?php esc_html_e('Back to Partners', 'partner-ciu-manager'); ?>
+                </a>
+                <h2 class="partner-detail-title"><?php echo esc_html($partner->post_title); ?></h2>
+            </div>
+
+            <?php if (empty($allocations)): ?>
+                <p class="ciu-notice"><?php esc_html_e('No CIU allocation data available for this partner.', 'partner-ciu-manager'); ?></p>
+            <?php else: ?>
+                <?php include PARTNER_CIU_PLUGIN_DIR . 'templates/frontend-ciu-allocation.php'; ?>
+            <?php endif; ?>
+        </div>
+        <?php
+        return ob_get_clean();
     }
 
     /**
