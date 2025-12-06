@@ -41,6 +41,7 @@ class Partner_Post_Type {
         add_action('init', array($this, 'register'));
         add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
         add_action('save_post_partner_profile', array($this, 'save_meta_boxes'), 10, 2);
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
     }
 
     /**
@@ -68,7 +69,7 @@ class Partner_Post_Type {
             'show_in_menu' => true,
             'menu_icon' => 'dashicons-groups',
             'menu_position' => 25,
-            'supports' => array('title'),
+            'supports' => array('title', 'thumbnail'),
             'has_archive' => false,
             'rewrite' => false,
             'capability_type' => 'post',
@@ -85,6 +86,34 @@ class Partner_Post_Type {
         );
 
         register_post_type('partner_profile', $args);
+    }
+
+    /**
+     * Enqueue admin scripts and styles
+     */
+    public function enqueue_admin_scripts($hook) {
+        // Only load on partner profile edit screens
+        global $post_type;
+        if ('partner_profile' !== $post_type) {
+            return;
+        }
+
+        // Enqueue partner admin JavaScript
+        wp_enqueue_script(
+            'partner-admin-js',
+            PARTNER_CIU_PLUGIN_URL . 'assets/js/partner-admin.js',
+            array('jquery', 'wp-util'),
+            PARTNER_CIU_VERSION,
+            true
+        );
+
+        // Enqueue partner admin CSS
+        wp_enqueue_style(
+            'partner-admin-css',
+            PARTNER_CIU_PLUGIN_URL . 'assets/css/partner-admin.css',
+            array(),
+            PARTNER_CIU_VERSION
+        );
     }
 
     /**
@@ -116,19 +145,55 @@ class Partner_Post_Type {
     public function render_hero_status_meta_box($post) {
         wp_nonce_field('partner_profile_meta_box', 'partner_profile_meta_box_nonce');
 
+        // Enqueue media uploader
+        wp_enqueue_media();
+
         $is_hero = get_post_meta($post->ID, '_is_hero_partner', true);
         $hero_highlight = get_post_meta($post->ID, '_hero_highlight_text', true);
+        $thumbnail_id = get_post_thumbnail_id($post->ID);
+        $thumbnail_url = $thumbnail_id ? wp_get_attachment_image_src($thumbnail_id, 'medium')[0] : '';
         ?>
-        <p>
-            <label>
-                <input type="checkbox" name="is_hero_partner" value="1" <?php checked($is_hero, '1'); ?>>
-                <?php esc_html_e('Hero Partner', 'partner-ciu-manager'); ?>
-            </label>
-        </p>
-        <p>
-            <label for="hero_highlight_text"><?php esc_html_e('Hero Highlight Text', 'partner-ciu-manager'); ?></label>
-            <input type="text" id="hero_highlight_text" name="hero_highlight_text" value="<?php echo esc_attr($hero_highlight); ?>" class="widefat" placeholder="<?php esc_attr_e('e.g., Founding Partner', 'partner-ciu-manager'); ?>">
-        </p>
+        <div class="partner-hero-metabox-wrapper">
+            <div class="partner-hero-left">
+                <p>
+                    <label>
+                        <input type="checkbox" name="is_hero_partner" value="1" <?php checked($is_hero, '1'); ?>>
+                        <?php esc_html_e('Hero Partner', 'partner-ciu-manager'); ?>
+                    </label>
+                </p>
+                <p>
+                    <label for="hero_highlight_text"><?php esc_html_e('Hero Highlight Text', 'partner-ciu-manager'); ?></label>
+                    <input type="text" id="hero_highlight_text" name="hero_highlight_text" value="<?php echo esc_attr($hero_highlight); ?>" class="widefat" placeholder="<?php esc_attr_e('e.g., Founding Partner', 'partner-ciu-manager'); ?>">
+                </p>
+            </div>
+
+            <div class="partner-hero-right">
+                <div class="partner-logo-upload">
+                    <p><strong><?php esc_html_e('Partner Logo', 'partner-ciu-manager'); ?></strong></p>
+                    <div class="partner-logo-preview">
+                        <?php if ($thumbnail_url): ?>
+                            <img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php esc_attr_e('Partner Logo', 'partner-ciu-manager'); ?>" style="max-width: 100%; height: auto; display: block;">
+                        <?php else: ?>
+                            <div class="partner-logo-placeholder">
+                                <span class="dashicons dashicons-format-image"></span>
+                                <p><?php esc_html_e('No logo uploaded', 'partner-ciu-manager'); ?></p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <p class="partner-logo-buttons">
+                        <button type="button" class="button button-secondary partner-logo-upload-btn">
+                            <?php echo $thumbnail_url ? esc_html__('Change Logo', 'partner-ciu-manager') : esc_html__('Upload Logo', 'partner-ciu-manager'); ?>
+                        </button>
+                        <?php if ($thumbnail_url): ?>
+                            <button type="button" class="button button-link-delete partner-logo-remove-btn">
+                                <?php esc_html_e('Remove', 'partner-ciu-manager'); ?>
+                            </button>
+                        <?php endif; ?>
+                    </p>
+                    <input type="hidden" id="partner_logo_id" name="partner_logo_id" value="<?php echo esc_attr($thumbnail_id); ?>">
+                </div>
+            </div>
+        </div>
         <?php
     }
 
@@ -203,6 +268,18 @@ class Partner_Post_Type {
 
         if (isset($_POST['hero_highlight_text'])) {
             update_post_meta($post_id, '_hero_highlight_text', sanitize_text_field($_POST['hero_highlight_text']));
+        }
+
+        // Save partner logo (featured image)
+        if (isset($_POST['partner_logo_id'])) {
+            $logo_id = absint($_POST['partner_logo_id']);
+            if ($logo_id > 0) {
+                // Set the featured image
+                set_post_thumbnail($post_id, $logo_id);
+            } else {
+                // Remove the featured image
+                delete_post_thumbnail($post_id);
+            }
         }
 
         // Save CIU stats
