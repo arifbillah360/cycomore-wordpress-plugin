@@ -66,6 +66,7 @@ class Partner_CIU_Manager {
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-partner-role.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-settings.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-ciu-allocation-metabox.php';
+        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-ciu-frontend-display.php';
     }
 
     /**
@@ -126,6 +127,9 @@ class Partner_CIU_Manager {
 
         // Initialize CIU allocation metabox
         CIU_Allocation_Metabox::instance();
+
+        // Initialize frontend display
+        CIU_Frontend_Display::instance();
     }
 
     /**
