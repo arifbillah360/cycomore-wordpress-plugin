@@ -11,6 +11,8 @@ if (!defined('ABSPATH')) {
 }
 
 $partner_data = Partner_Dashboard::get_partner_data($partner_profile);
+$ciu_price = Partner_CIU_Settings::get_ciu_price();
+$currency_symbol = get_woocommerce_currency_symbol();
 ?>
 
 <div class="partner-ciu-dashboard">
@@ -52,6 +54,27 @@ $partner_data = Partner_Dashboard::get_partner_data($partner_profile);
                 <button type="submit" class="button button-primary"><?php esc_html_e('Update Profile', 'partner-ciu-manager'); ?></button>
             </form>
         </div>
+    </div>
+
+    <!-- CIU Purchase Section -->
+    <div class="partner-section partner-purchase-section">
+        <h3><?php esc_html_e('Purchase CIUs', 'partner-ciu-manager'); ?></h3>
+
+        <form id="partner-purchase-form" class="partner-purchase-form">
+            <div class="form-group">
+                <label for="ciu_quantity"><?php esc_html_e('CIU Quantity', 'partner-ciu-manager'); ?></label>
+                <input type="number" id="ciu_quantity" name="ciu_quantity" min="1" value="1" class="regular-text">
+            </div>
+
+            <div class="purchase-cost-display">
+                <span class="cost-label"><?php esc_html_e('Total Cost:', 'partner-ciu-manager'); ?></span>
+                <span class="cost-amount"><?php echo esc_html($currency_symbol); ?><span id="total-cost"><?php echo esc_html(number_format($ciu_price, 2)); ?></span></span>
+            </div>
+
+            <p class="cost-note"><?php printf(esc_html__('Price per CIU: %s%s', 'partner-ciu-manager'), esc_html($currency_symbol), esc_html(number_format($ciu_price, 2))); ?></p>
+
+            <button type="submit" class="button button-primary button-large"><?php esc_html_e('Purchase CIUs', 'partner-ciu-manager'); ?></button>
+        </form>
     </div>
 
     <!-- CIU Status Overview -->
@@ -104,4 +127,23 @@ $partner_data = Partner_Dashboard::get_partner_data($partner_profile);
         </table>
     </div>
     <?php endif; ?>
+
+    <!-- Funds Contributed -->
+    <div class="partner-section partner-funds-section">
+        <h3><?php esc_html_e('Financial Summary', 'partner-ciu-manager'); ?></h3>
+
+        <div class="funds-info">
+            <div class="funds-item">
+                <span class="funds-label"><?php esc_html_e('Total Funds Contributed:', 'partner-ciu-manager'); ?></span>
+                <span class="funds-value"><?php echo esc_html($currency_symbol . number_format($partner_data['total_funds'], 2)); ?></span>
+            </div>
+
+            <?php if ($partner_data['last_purchase_date']): ?>
+            <div class="funds-item">
+                <span class="funds-label"><?php esc_html_e('Last Purchase Date:', 'partner-ciu-manager'); ?></span>
+                <span class="funds-value"><?php echo esc_html(date_i18n(get_option('date_format'), strtotime($partner_data['last_purchase_date']))); ?></span>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
 </div>

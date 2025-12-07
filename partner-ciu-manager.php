@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Partner CIU Manager
  * Plugin URI: https://github.com/arifbillah360/cycomore-wordpress-plugin
- * Description: WordPress system for partner management and CIU (Cumulative Impact Unit) allocation with partner dashboards, admin tools, and comprehensive reporting.
- * Version: 1.0.1
+ * Description: Simple WordPress system for partner profile management with basic partner information and settings.
+ * Version: 2.0.0
  * Author: Cycomore
  * Author URI: https://cycomore.com
  * License: GPL v2 or later
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('PARTNER_CIU_VERSION', '1.0.1');
+define('PARTNER_CIU_VERSION', '2.0.0');
 define('PARTNER_CIU_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('PARTNER_CIU_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('PARTNER_CIU_PLUGIN_BASENAME', plugin_basename(__FILE__));
@@ -65,21 +65,8 @@ class Partner_CIU_Manager {
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-partner-post-type.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-partner-role.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-settings.php';
-        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-partner-dashboard.php';
-        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-email-notifications.php';
-        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-admin-panel.php';
-        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-partner-sorting.php';
         require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-ciu-allocation-metabox.php';
-        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-admin-notes-metabox.php';
-        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-partner-onboarding.php';
-
-        // Migration script (only loads if migration not done)
-        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-migration-remove-transactions.php';
-
-        // Public dashboard classes
-        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-data-aggregator.php';
-        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-public-dashboard.php';
-        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-chart-generator.php';
+        require_once PARTNER_CIU_PLUGIN_DIR . 'includes/class-ciu-frontend-display.php';
     }
 
     /**
@@ -98,7 +85,6 @@ class Partner_CIU_Manager {
 
         // Enqueue scripts and styles
         add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts'));
-        add_action('wp_enqueue_scripts', array($this, 'public_enqueue_scripts'));
     }
 
     /**
@@ -114,9 +100,6 @@ class Partner_CIU_Manager {
         // Create partner role
         Partner_Role::create_role();
 
-        // Add custom capabilities for admin and editor roles
-        $this->add_partner_capabilities();
-
         // Create default settings
         $this->create_default_settings();
 
@@ -125,99 +108,11 @@ class Partner_CIU_Manager {
     }
 
     /**
-     * Add custom capabilities to admin and editor roles
-     */
-    private function add_partner_capabilities() {
-        // Get the editor and admin roles
-        $editor = get_role('editor');
-        $admin = get_role('administrator');
-
-        // Define custom capabilities
-        $caps = array(
-            'manage_partner_ciu',
-            'manage_partners',
-            'edit_partners',
-            'edit_published_partners',
-            'publish_partners',
-            'delete_partners',
-            'edit_partner',
-            'delete_partner',
-            'read_partner',
-            'manage_ciu_allocations',
-            'view_partner_dashboard',
-            'manage_partner_settings',
-            // Post type specific capabilities
-            'edit_partner_profiles',
-            'edit_others_partner_profiles',
-            'publish_partner_profiles',
-            'read_private_partner_profiles',
-            'delete_partner_profiles',
-            'delete_private_partner_profiles',
-            'delete_published_partner_profiles',
-            'delete_others_partner_profiles',
-            'edit_private_partner_profiles',
-            'edit_published_partner_profiles'
-        );
-
-        // Add capabilities to both roles
-        foreach ($caps as $cap) {
-            if ($editor) {
-                $editor->add_cap($cap);
-            }
-            if ($admin) {
-                $admin->add_cap($cap);
-            }
-        }
-    }
-
-    /**
      * Plugin deactivation
      */
     public function deactivate() {
-        // Remove custom capabilities from editor role (keep for admin)
-        $this->remove_partner_capabilities();
-
         // Flush rewrite rules
         flush_rewrite_rules();
-    }
-
-    /**
-     * Remove custom capabilities from editor role
-     */
-    private function remove_partner_capabilities() {
-        $editor = get_role('editor');
-
-        $caps = array(
-            'manage_partner_ciu',
-            'manage_partners',
-            'edit_partners',
-            'edit_published_partners',
-            'publish_partners',
-            'delete_partners',
-            'edit_partner',
-            'delete_partner',
-            'read_partner',
-            'manage_ciu_allocations',
-            'view_partner_dashboard',
-            'manage_partner_settings',
-            'edit_partner_profiles',
-            'edit_others_partner_profiles',
-            'publish_partner_profiles',
-            'read_private_partner_profiles',
-            'delete_partner_profiles',
-            'delete_private_partner_profiles',
-            'delete_published_partner_profiles',
-            'delete_others_partner_profiles',
-            'edit_private_partner_profiles',
-            'edit_published_partner_profiles'
-        );
-
-        // Remove capabilities from editor role only
-        foreach ($caps as $cap) {
-            if ($editor) {
-                $editor->remove_cap($cap);
-            }
-        }
     }
 
     /**
@@ -230,31 +125,11 @@ class Partner_CIU_Manager {
         // Initialize settings
         Partner_CIU_Settings::instance();
 
-        // Initialize dashboard
-        Partner_Dashboard::instance();
-
-        // Initialize email notifications
-        Partner_Email_Notifications::instance();
-
-        // Initialize admin panel
-        Partner_Admin_Panel::instance();
-
-        // Initialize partner sorting
-        Partner_Sorting::instance();
-
         // Initialize CIU allocation metabox
         CIU_Allocation_Metabox::instance();
 
-        // Initialize admin notes metabox
-        Partner_Admin_Notes_Metabox::instance();
-
-        // Initialize partner onboarding
-        Partner_CIU_Onboarding::instance();
-
-        // Initialize public dashboard
-        Partner_Data_Aggregator::instance();
-        Partner_Public_Dashboard::instance();
-        Partner_Chart_Generator::instance();
+        // Initialize frontend display
+        CIU_Frontend_Display::instance();
     }
 
     /**
@@ -268,8 +143,8 @@ class Partner_CIU_Manager {
      * Enqueue admin scripts and styles
      */
     public function admin_enqueue_scripts($hook) {
-        // Only load on plugin pages
-        if (strpos($hook, 'partner-ciu') === false && get_post_type() !== 'partner_profile' && get_post_type() !== 'ciu_transaction') {
+        // Only load on partner profile pages
+        if (get_post_type() !== 'partner_profile') {
             return;
         }
 
@@ -285,27 +160,6 @@ class Partner_CIU_Manager {
                 'orderSaved' => __('Order saved successfully!', 'partner-ciu-manager'),
             )
         ));
-    }
-
-    /**
-     * Enqueue public scripts and styles
-     */
-    public function public_enqueue_scripts() {
-        if (is_user_logged_in() && current_user_can('partner')) {
-            wp_enqueue_style('partner-ciu-public', PARTNER_CIU_PLUGIN_URL . 'public/css/public.css', array(), PARTNER_CIU_VERSION);
-            wp_enqueue_script('partner-ciu-public', PARTNER_CIU_PLUGIN_URL . 'public/js/public.js', array('jquery'), PARTNER_CIU_VERSION, true);
-
-            wp_localize_script('partner-ciu-public', 'partnerCiuPublic', array(
-                'ajaxUrl' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('partner-ciu-public-nonce'),
-                'ciuPrice' => Partner_CIU_Settings::get_ciu_price(),
-                'currencySymbol' => get_woocommerce_currency_symbol(),
-                'strings' => array(
-                    'calculating' => __('Calculating...', 'partner-ciu-manager'),
-                    'total' => __('Total:', 'partner-ciu-manager'),
-                )
-            ));
-        }
     }
 
     /**

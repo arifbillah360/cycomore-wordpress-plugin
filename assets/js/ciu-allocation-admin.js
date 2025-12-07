@@ -22,6 +22,9 @@
         bindEvents: function() {
             var self = this;
 
+            // Initialize datetime pickers
+            this.initDateTimePickers();
+
             // Category accordion toggle
             $(document).on('click', '.category-header', function(e) {
                 e.preventDefault();
@@ -149,12 +152,14 @@
 
                     '<div class="field-row">' +
                         '<div class="field-group">' +
-                            '<label>' + ciuAllocationData.strings.externalLink + '</label>' +
-                            '<input type="url" ' +
-                                   'name="ciu_allocations[' + category + '][collections][' + collectionId + '][external_link]" ' +
+                            '<label>' + (ciuAllocationData.strings.dateTime || 'Date Time (Optional)') + '</label>' +
+                            '<input type="text" ' +
+                                   'name="ciu_allocations[' + category + '][collections][' + collectionId + '][collection_datetime]" ' +
                                    'value="" ' +
-                                   'class="widefat" ' +
-                                   'placeholder="https://">' +
+                                   'class="widefat ciu-datetime-picker" ' +
+                                   'placeholder="' + (ciuAllocationData.strings.selectDateTime || 'Select date and time') + '" ' +
+                                   'autocomplete="off">' +
+                            '<p class="description">' + (ciuAllocationData.strings.dateTimeHint || 'Project start date/time or milestone date/time') + '</p>' +
                         '</div>' +
                     '</div>' +
                 '</div>' +
@@ -162,8 +167,11 @@
 
             $container.append(html);
 
-            // Scroll to new item
+            // Initialize datetime picker for new item
             var $newItem = $container.find('.collection-item').last();
+            this.initDateTimePicker($newItem.find('.ciu-datetime-picker'));
+
+            // Scroll to new item
             $('html, body').animate({
                 scrollTop: $newItem.offset().top - 100
             }, 500);
@@ -275,6 +283,41 @@
             var month = String(date.getMonth() + 1).padStart(2, '0');
             var day = String(date.getDate()).padStart(2, '0');
             return year + '-' + month + '-' + day;
+        },
+
+        /**
+         * Initialize all datetime pickers
+         */
+        initDateTimePickers: function() {
+            var self = this;
+            $('.ciu-datetime-picker').each(function() {
+                self.initDateTimePicker($(this));
+            });
+        },
+
+        /**
+         * Initialize single datetime picker
+         */
+        initDateTimePicker: function($input) {
+            if ($input.length === 0 || $input.hasClass('hasDatepicker')) {
+                return;
+            }
+
+            $input.datetimepicker({
+                dateFormat: 'yy-mm-dd',
+                timeFormat: 'HH:mm:ss',
+                showSecond: true,
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-10:+10',
+                oneLine: true,
+                showTimezone: false,
+                controlType: 'select',
+                onSelect: function(dateText, inst) {
+                    $(this).trigger('change');
+                }
+            });
         }
     };
 

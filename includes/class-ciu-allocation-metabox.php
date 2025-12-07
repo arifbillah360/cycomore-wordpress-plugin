@@ -242,7 +242,7 @@ class CIU_Allocation_Metabox {
                                     ? $collection['status']
                                     : 'pending',
                         'description' => sanitize_textarea_field($collection['description'] ?? ''),
-                        'external_link' => esc_url_raw($collection['external_link'] ?? ''),
+                        'collection_datetime' => sanitize_text_field($collection['collection_datetime'] ?? ''),
                         'date_added' => sanitize_text_field($collection['date_added'] ?? date('Y-m-d')),
                         'last_modified' => current_time('mysql')
                     );
@@ -342,19 +342,48 @@ class CIU_Allocation_Metabox {
             return;
         }
 
+        // Enqueue jQuery UI CSS for datepicker
+        wp_enqueue_style(
+            'jquery-ui-datepicker',
+            '//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css',
+            array(),
+            '1.13.2'
+        );
+
+        // Enqueue jQuery Timepicker addon CSS
+        wp_enqueue_style(
+            'jquery-ui-timepicker',
+            'https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.css',
+            array('jquery-ui-datepicker'),
+            '1.6.3'
+        );
+
         // Enqueue CSS
         wp_enqueue_style(
             'ciu-allocation-admin',
             PARTNER_CIU_PLUGIN_URL . 'assets/css/ciu-allocation-admin.css',
-            array(),
+            array('jquery-ui-timepicker'),
             PARTNER_CIU_VERSION
+        );
+
+        // Enqueue jQuery UI
+        wp_enqueue_script('jquery-ui-core');
+        wp_enqueue_script('jquery-ui-datepicker');
+
+        // Enqueue jQuery Timepicker addon
+        wp_enqueue_script(
+            'jquery-ui-timepicker-addon',
+            'https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.js',
+            array('jquery', 'jquery-ui-datepicker'),
+            '1.6.3',
+            true
         );
 
         // Enqueue JS
         wp_enqueue_script(
             'ciu-allocation-admin',
             PARTNER_CIU_PLUGIN_URL . 'assets/js/ciu-allocation-admin.js',
-            array('jquery'),
+            array('jquery', 'jquery-ui-datepicker', 'jquery-ui-timepicker-addon'),
             PARTNER_CIU_VERSION,
             true
         );
@@ -372,7 +401,9 @@ class CIU_Allocation_Metabox {
                 'active' => __('Active', 'partner-ciu-manager'),
                 'verified' => __('Verified/Retired', 'partner-ciu-manager'),
                 'description' => __('Description (Optional)', 'partner-ciu-manager'),
-                'externalLink' => __('External Link (Optional)', 'partner-ciu-manager'),
+                'dateTime' => __('Date Time (Optional)', 'partner-ciu-manager'),
+                'selectDateTime' => __('Select date and time', 'partner-ciu-manager'),
+                'dateTimeHint' => __('Project start date/time or milestone date/time', 'partner-ciu-manager'),
                 'remove' => __('Remove', 'partner-ciu-manager'),
             )
         ));

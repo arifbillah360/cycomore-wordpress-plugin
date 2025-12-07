@@ -1,42 +1,20 @@
 # Partner CIU Manager
 
-A comprehensive WordPress + WooCommerce plugin for partner management and CIU (Cumulative Impact Unit) purchasing. This plugin provides a complete solution with partner dashboards, admin tools, and a specialized purchasing workflow.
+A simple WordPress plugin for managing partner profiles with basic partner information and settings.
 
 ## Features
 
 ### Partner Management
-- **Custom Post Type** for Partner Profiles with detailed metadata
+- **Custom Post Type** for Partner Profiles
 - **Partner Logo Management** - Upload and display partner logos
 - **Bank Details Storage** - Securely store partner banking information
 - **Hero Partner Status** - Designate and highlight key partners
 - **User Account Association** - Link partner profiles to WordPress user accounts
 
-### CIU Purchasing System
-- **WooCommerce Integration** - Seamless CIU purchasing through WooCommerce checkout
-- **Flexible Pricing** - Configurable CIU price (default: £250)
-- **Automatic Transaction Tracking** - All purchases logged with detailed metadata
-- **Status Management** - Track CIUs through Pending → Active → Verified lifecycle
-- **Order History** - Complete purchase history linked to WooCommerce orders
-
-### Partner Dashboard
-- **Front-end Dashboard** - Accessible via `[partner_dashboard]` shortcode
-- **Profile Management** - Partners can edit their logo and bank details
-- **CIU Purchase Form** - Real-time cost calculation and checkout
-- **Status Overview** - Visual display of CIU counts by status
-- **Collection Breakdown** - View CIUs allocated to different collections
-- **Financial Summary** - Total funds contributed and last purchase date
-
 ### Admin Tools
-- **CIU Allocation Interface** - Move CIUs between statuses (individual or bulk)
-- **Partner Sorting** - Drag-and-drop partner reordering
-- **Transaction Management** - View and edit all CIU transactions
-- **Collection Management** - Add collections and allocate CIUs
-- **Configurable Settings** - CIU price, currency, email notifications
-
-### Email Notifications
-- **Admin Notifications** - Alert admins of new CIU purchases
-- **Partner Confirmations** - Send purchase confirmations to partners
-- **Customizable Templates** - HTML email templates with order details
+- **Partner Profile Management** - Add, edit, and manage partner profiles
+- **Settings Panel** - Configure plugin settings
+- **Partner Role** - Custom user role for partners
 
 ### Security Features
 - **Nonce Verification** - All forms protected with WordPress nonces
@@ -47,7 +25,6 @@ A comprehensive WordPress + WooCommerce plugin for partner management and CIU (C
 ## Requirements
 
 - WordPress 6.0 or higher
-- WooCommerce 8.0 or higher
 - PHP 7.4 or higher
 - MySQL 5.6 or higher
 
@@ -68,10 +45,6 @@ A comprehensive WordPress + WooCommerce plugin for partner management and CIU (C
    - Go to WordPress admin → Plugins
    - Find "Partner CIU Manager" and click "Activate"
 
-4. **Verify WooCommerce**
-   - Ensure WooCommerce is installed and activated
-   - The plugin will display a warning if WooCommerce is not active
-
 ### Method 2: WP-CLI Installation
 
 ```bash
@@ -82,12 +55,7 @@ wp plugin install /path/to/partner-ciu-manager.zip --activate
 
 ### 1. Configure Settings
 
-Go to **Partners → Settings** and configure:
-
-- **CIU Price**: Default price per CIU (e.g., 250 for £250)
-- **Currency**: Currency code (GBP, USD, EUR, etc.)
-- **Admin Email**: Email address for admin notifications
-- **Enable Notifications**: Toggle email notifications on/off
+Go to **Partners → Settings** and configure basic plugin settings.
 
 ### 2. Create Partner Profiles
 
@@ -109,15 +77,7 @@ Go to **Partners → Settings** and configure:
 4. Click "Add New User"
 5. Associate this user with a partner profile (edit partner profile and select the user)
 
-### 4. Create Dashboard Page
-
-1. Go to **Pages → Add New**
-2. Create a page titled "Partner Dashboard"
-3. Add the shortcode: `[partner_dashboard]`
-4. Publish the page
-5. Note the page URL for partner access
-
-### 5. Update Permalinks
+### 4. Update Permalinks
 
 After activation, flush rewrite rules:
 - Go to **Settings → Permalinks**
@@ -125,114 +85,26 @@ After activation, flush rewrite rules:
 
 ## Usage
 
-### For Partners
-
-#### Accessing the Dashboard
-1. Log in with partner credentials
-2. Navigate to the dashboard page (URL from setup step 4)
-3. View CIU status, purchase history, and profile
-
-#### Purchasing CIUs
-1. Enter desired CIU quantity in the purchase form
-2. Review the auto-calculated total cost
-3. Click "Purchase CIUs"
-4. Complete checkout via WooCommerce
-5. CIUs automatically added to "Pending" status after payment
-
-#### Managing Profile
-1. Upload or update partner logo
-2. Edit bank details
-3. Click "Update Profile" to save changes
-
 ### For Administrators
 
 #### Managing Partner Profiles
 - **View Partners**: Go to Partners in admin menu
 - **Edit Profile**: Click on partner name to edit
-- **Add Collections**: Use the Collection Breakdown section
-- **Manual CIU Entry**: Edit CIU counts directly in partner profile
-
-#### Allocating CIUs
-
-##### Individual Allocation
-1. Go to **Partners → CIU Allocation**
-2. Find the partner in the table
-3. Click "Allocate CIUs"
-4. Select From Status and To Status
-5. Enter quantity to move
-6. Click "Allocate"
-
-##### Bulk Allocation
-1. Go to **Partners → CIU Allocation**
-2. Scroll to "Bulk Allocation" section
-3. Select From Status and To Status
-4. Click "Bulk Allocate"
-5. All partners' CIUs will be moved
-
-#### Sorting Partners
-1. Go to **Partners → Partner Sorting**
-2. Drag and drop partners to reorder
-3. Hero partners automatically appear first
-4. Click "Save Order" to apply changes
-
-#### Viewing Transactions
-1. Go to **Partners → Transactions**
-2. View all CIU purchases with details
-3. Click on transaction to edit status
-4. Filter by partner, status, or date
-
-## Shortcodes
-
-### [partner_dashboard]
-
-Displays the complete partner dashboard with:
-- Profile section (logo, bank details)
-- CIU purchase form
-- Status overview
-- Collection breakdown
-- Financial summary
-
-**Usage:**
-```
-[partner_dashboard]
-```
-
-**Note:** Dashboard only visible to logged-in partners.
+- **Add New Partner**: Click "Add New Partner"
+- **Delete Partner**: Move to trash from partner list
 
 ## User Roles
 
 ### Partner Role
 Custom role created by the plugin with these capabilities:
-- Access partner dashboard
-- View own profile
-- Edit own profile
-- Purchase CIUs
-- View purchase history
+- Access own profile
+- View own information
 
 ### Administrator Role
 Full access to all plugin features:
 - Manage all partner profiles
-- Allocate CIUs
-- View all transactions
-- Sort partners
 - Configure settings
-
-## Hooks and Filters
-
-### Actions
-
-#### partner_ciu_purchase_completed
-Triggered when a CIU purchase is completed.
-
-```php
-add_action('partner_ciu_purchase_completed', function($partner_id, $order_id, $ciu_quantity, $purchase_amount) {
-    // Custom code here
-}, 10, 4);
-```
-
-### Filters
-
-#### Partner sorting can be extended with custom filters (coming soon)
+- Manage partner users
 
 ## File Structure
 
@@ -242,33 +114,12 @@ partner-ciu-manager/
 ├── README.md                         # Documentation
 ├── includes/                         # Core classes
 │   ├── class-partner-post-type.php
-│   ├── class-ciu-transaction-post-type.php
 │   ├── class-partner-role.php
-│   ├── class-settings.php
-│   ├── class-partner-dashboard.php
-│   ├── class-woocommerce-integration.php
-│   ├── class-email-notifications.php
-│   ├── class-admin-panel.php
-│   └── class-partner-sorting.php
+│   └── class-settings.php
 ├── admin/                            # Admin interface
-│   ├── css/
-│   │   └── admin.css
-│   ├── js/
-│   │   └── admin.js
-│   └── partials/
-│       ├── ciu-allocation.php
-│       └── partner-sorting.php
-├── public/                           # Frontend interface
-│   ├── css/
-│   │   └── public.css
-│   ├── js/
-│   │   └── public.js
-│   └── partials/
-│       └── partner-dashboard.php
-└── templates/                        # Email templates
-    └── emails/
-        ├── admin-purchase-notification.php
-        └── partner-purchase-confirmation.php
+│   └── css/
+│       └── admin.css
+└── assets/                           # Additional assets
 ```
 
 ## Database Schema
@@ -284,52 +135,16 @@ partner-ciu-manager/
   - `_sort_code` - Sort code
   - `_is_hero_partner` - Hero status (1/0)
   - `_hero_highlight_text` - Hero highlight text
-  - `_pending_cius` - Pending CIU count
-  - `_active_cius` - Active CIU count
-  - `_verified_cius` - Verified CIU count
-  - `_total_funds` - Total funds contributed
-  - `_last_purchase_date` - Last purchase date
-  - `_collection_breakdown` - JSON array of collections
-
-#### ciu_transaction
-- **Post Meta Fields:**
-  - `_partner_id` - Partner profile ID
-  - `_order_id` - WooCommerce order ID
-  - `_ciu_quantity` - CIU quantity
-  - `_purchase_amount` - Purchase amount
-  - `_purchase_date` - Purchase date
-  - `_ciu_status` - Status (pending/active/verified)
 
 ### Options
 - `partner_ciu_settings` - Plugin settings array
-- `partner_ciu_product_id` - Hidden CIU product ID
-- `partner_sort_order` - Partner display order
 
 ## Troubleshooting
 
-### Dashboard not displaying
-1. Verify user has "Partner" role
-2. Check user is associated with a partner profile
-3. Ensure shortcode is correct: `[partner_dashboard]`
-4. Check for JavaScript errors in browser console
-
-### WooCommerce integration not working
-1. Verify WooCommerce is active
-2. Check hidden CIU product exists (Settings → Products)
-3. Clear WooCommerce transients
-4. Test checkout with a different product
-
-### Email notifications not sending
-1. Check email notifications are enabled (Settings)
-2. Verify admin email is correct
-3. Test WordPress email functionality with other plugins
-4. Check spam folder
-
-### Partner sorting not saving
-1. Clear browser cache
-2. Check for JavaScript errors
-3. Verify admin has proper capabilities
-4. Disable conflicting plugins
+### Partner profile not saving
+1. Check user has proper permissions
+2. Verify nonce is valid
+3. Check for JavaScript errors in browser console
 
 ## Development
 
@@ -337,10 +152,9 @@ partner-ciu-manager/
 
 The plugin is built with extensibility in mind. Key extension points:
 
-1. **Custom Email Templates**: Override email templates in theme
-2. **Action Hooks**: Use `partner_ciu_purchase_completed` for custom logic
-3. **CSS Customization**: Override styles in theme CSS
-4. **Database Queries**: Use helper methods in post type classes
+1. **Custom Fields**: Add custom meta fields to partner profiles
+2. **CSS Customization**: Override styles in theme CSS
+3. **Database Queries**: Use helper methods in post type classes
 
 ### Coding Standards
 
@@ -359,7 +173,7 @@ If you discover a security vulnerability, please email security@example.com. All
 
 ### Security Features
 
-- Nonce verification on all AJAX requests
+- Nonce verification on all forms
 - Capability checks for all admin functions
 - Input sanitization and validation
 - Prepared SQL statements (via WordPress API)
@@ -368,16 +182,18 @@ If you discover a security vulnerability, please email security@example.com. All
 
 ## Changelog
 
+### Version 2.0.0 (2025-12-05)
+- Simplified plugin to focus on partner profile management
+- Removed WooCommerce integration
+- Removed CIU transaction tracking
+- Removed CIU allocation system
+- Removed partner sorting
+- Removed email notifications
+- Kept core partner profile management
+- Kept settings panel
+
 ### Version 1.0.0 (2025-12-01)
-- Initial release
-- Partner profile management
-- CIU purchasing system
-- WooCommerce integration
-- Partner dashboard
-- Admin allocation tools
-- Partner sorting
-- Email notifications
-- Complete documentation
+- Initial release with full WooCommerce integration
 
 ## License
 
@@ -405,48 +221,26 @@ Contributions are welcome! Please:
 4. Push to the branch
 5. Create a Pull Request
 
-## Roadmap
-
-Future features planned:
-- [ ] Collection-specific reports
-- [ ] Advanced filtering for transactions
-- [ ] Export functionality (CSV, PDF)
-- [ ] Multi-currency support
-- [ ] Partner performance analytics
-- [ ] Automated CIU allocation rules
-- [ ] REST API endpoints
-- [ ] Webhook integrations
-
 ## FAQ
 
 **Q: Can partners see other partners' information?**
-A: No, partners can only view and edit their own profile and dashboard.
+A: No, partners can only view their own profile.
 
-**Q: Can I change the CIU price?**
-A: Yes, go to Partners → Settings and update the CIU Price field.
-
-**Q: How do I add a new status level?**
-A: The plugin currently supports Pending, Active, and Verified. Custom statuses require code modification.
-
-**Q: Can partners purchase CIUs offline?**
-A: Yes, admins can manually create transactions via the admin panel.
+**Q: Can I add custom fields to partner profiles?**
+A: Yes, you can extend the plugin by adding custom meta fields.
 
 **Q: Is the plugin translation-ready?**
 A: Yes, the plugin uses WordPress translation functions and includes a text domain.
-
-**Q: Can I customize the email templates?**
-A: Yes, copy templates from `templates/emails/` to your theme and modify.
 
 ## Additional Notes
 
 - Always backup your database before major updates
 - Test on a staging site before deploying to production
-- Keep WordPress, WooCommerce, and this plugin updated
+- Keep WordPress and this plugin updated
 - Review logs regularly for any errors
-- Monitor email deliverability
 
 ---
 
-**Version:** 1.0.0
-**Last Updated:** December 1, 2025
+**Version:** 2.0.0
+**Last Updated:** December 5, 2025
 **Maintained by:** Cycomore Development Team
