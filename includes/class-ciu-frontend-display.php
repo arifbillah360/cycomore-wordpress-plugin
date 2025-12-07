@@ -293,10 +293,9 @@ class CIU_Frontend_Display {
                     <span class="back-arrow">←</span>
                     <?php esc_html_e('Back to Partners', 'partner-ciu-manager'); ?>
                 </a>
-                <h2 class="partner-detail-title"><?php echo esc_html($partner->post_title); ?></h2>
             </div>
 
-            <?php if (empty($allocations)): ?>
+            <?php if (empty($allocations) && empty($partner_id)): ?>
                 <p class="ciu-notice"><?php esc_html_e('No CIU allocation data available for this partner.', 'partner-ciu-manager'); ?></p>
             <?php else: ?>
                 <?php include PARTNER_CIU_PLUGIN_DIR . 'templates/frontend-ciu-allocation.php'; ?>

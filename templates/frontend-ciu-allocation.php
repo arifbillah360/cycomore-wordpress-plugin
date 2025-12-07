@@ -1,6 +1,6 @@
 <?php
 /**
- * Frontend CIU Allocation Display Template
+ * Frontend CIU Allocation Display Template - Corporate Black & White Design
  *
  * @package Partner_CIU_Manager
  */
@@ -12,141 +12,189 @@ if (!defined('ABSPATH')) {
 
 // Variables available:
 // $partner - WP_Post object
+// $partner_id - Partner ID
 // $allocations - Array of CIU allocations by category
 // $summary - Array of summary totals
 // $atts - Shortcode attributes
+
+// Get currency from settings
+$settings = get_option('partner_ciu_settings', array());
+$currency = isset($settings['currency']) ? $settings['currency'] : 'GBP';
+$currency_symbol = $currency === 'GBP' ? '£' : ($currency === 'USD' ? '$' : $currency);
+
+// Get partner stats from meta
+$pending_cius = get_post_meta($partner_id, '_pending_cius', true) ?: 0;
+$active_cius = get_post_meta($partner_id, '_active_cius', true) ?: 0;
+$verified_cius = get_post_meta($partner_id, '_verified_cius', true) ?: 0;
+$total_cius = $pending_cius + $active_cius + $verified_cius;
+$total_funds = get_post_meta($partner_id, '_total_funds', true) ?: 0;
 ?>
 
-<div class="ciu-allocation-frontend-wrapper">
+<div class="ciu-dashboard-wrapper">
 
-    <?php if ($atts['show_summary'] === 'yes' && !empty($summary)): ?>
-        <!-- CIU Summary Section -->
-        <div class="ciu-summary-section-frontend">
-            <h3 class="ciu-section-title"><?php esc_html_e('CIU Summary', 'partner-ciu-manager'); ?></h3>
-            <div class="ciu-summary-grid-frontend">
-                <div class="ciu-summary-item total">
-                    <div class="summary-icon">📊</div>
-                    <div class="summary-content">
-                        <span class="summary-label"><?php esc_html_e('Total CIUs', 'partner-ciu-manager'); ?></span>
-                        <span class="summary-value"><?php echo esc_html(number_format($summary['total_cius'])); ?></span>
-                    </div>
-                </div>
+    <!-- Partner Logo Section -->
+    <div class="dashboard-logo-section">
+        <?php if (has_post_thumbnail($partner_id)): ?>
+            <div class="partner-logo-large">
+                <?php echo get_the_post_thumbnail($partner_id, 'medium', array(
+                    'alt' => esc_attr($partner->post_title),
+                    'class' => 'partner-logo-img'
+                )); ?>
+            </div>
+        <?php else: ?>
+            <div class="partner-logo-placeholder-large">
+                <span class="logo-initial-large"><?php echo esc_html(substr($partner->post_title, 0, 1)); ?></span>
+            </div>
+        <?php endif; ?>
+        <h1 class="partner-name-large"><?php echo esc_html($partner->post_title); ?></h1>
+    </div>
 
-                <div class="ciu-summary-item pending">
-                    <div class="summary-icon">⏳</div>
-                    <div class="summary-content">
-                        <span class="summary-label"><?php esc_html_e('Pending', 'partner-ciu-manager'); ?></span>
-                        <span class="summary-value"><?php echo esc_html(number_format($summary['total_pending'])); ?></span>
-                    </div>
-                </div>
+    <!-- Stats Section -->
+    <div class="dashboard-stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value"><?php echo esc_html(number_format($total_cius)); ?></div>
+                <div class="stat-label">Total CIU's</div>
+            </div>
 
-                <div class="ciu-summary-item active">
-                    <div class="summary-icon">✅</div>
-                    <div class="summary-content">
-                        <span class="summary-label"><?php esc_html_e('Active', 'partner-ciu-manager'); ?></span>
-                        <span class="summary-value"><?php echo esc_html(number_format($summary['total_active'])); ?></span>
-                    </div>
-                </div>
+            <div class="stat-card">
+                <div class="stat-value"><?php echo esc_html(number_format($pending_cius)); ?></div>
+                <div class="stat-label">Pending</div>
+            </div>
 
-                <div class="ciu-summary-item verified">
-                    <div class="summary-icon">🏆</div>
-                    <div class="summary-content">
-                        <span class="summary-label"><?php esc_html_e('Verified/Retired', 'partner-ciu-manager'); ?></span>
-                        <span class="summary-value"><?php echo esc_html(number_format($summary['total_verified'])); ?></span>
-                    </div>
-                </div>
+            <div class="stat-card">
+                <div class="stat-value"><?php echo esc_html(number_format($active_cius)); ?></div>
+                <div class="stat-label">Active</div>
+            </div>
 
-                <?php
-                // Get currency from settings
-                $settings = get_option('partner_ciu_settings', array());
-                $currency = isset($settings['currency']) ? $settings['currency'] : 'GBP';
-                $currency_symbol = $currency === 'GBP' ? '£' : ($currency === 'USD' ? '$' : $currency);
-                ?>
-                <div class="ciu-summary-item funds">
-                    <div class="summary-icon">💰</div>
-                    <div class="summary-content">
-                        <span class="summary-label"><?php esc_html_e('Total Funds', 'partner-ciu-manager'); ?></span>
-                        <span class="summary-value"><?php echo esc_html($currency_symbol . number_format($summary['total_funds'], 2)); ?></span>
-                    </div>
-                </div>
+            <div class="stat-card">
+                <div class="stat-value"><?php echo esc_html(number_format($verified_cius)); ?></div>
+                <div class="stat-label">Verified/Retired</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-value"><?php echo esc_html($currency_symbol . number_format($total_funds, 2)); ?></div>
+                <div class="stat-label">Funds Contributed</div>
             </div>
         </div>
-    <?php endif; ?>
+    </div>
 
-    <?php if ($atts['show_categories'] === 'yes'): ?>
-        <!-- Categories Section -->
-        <div class="ciu-categories-section-frontend">
-            <h3 class="ciu-section-title"><?php esc_html_e('CIU Allocation by Category', 'partner-ciu-manager'); ?></h3>
+    <?php if ($atts['show_categories'] === 'yes' && !empty($allocations)): ?>
+        <!-- Category Tabs Section -->
+        <div class="dashboard-categories-section">
+            <h2 class="section-title">Conservation Impact Categories</h2>
 
-            <?php foreach ($allocations as $category_slug => $category_data): ?>
-                <?php if (empty($category_data['collections'])): continue; endif; ?>
+            <!-- Category Tabs -->
+            <div class="category-tabs">
+                <?php
+                $first_tab = true;
+                foreach ($allocations as $category_slug => $category_data):
+                    if (empty($category_data['collections'])): continue; endif;
+                ?>
+                    <button type="button"
+                            class="category-tab <?php echo $first_tab ? 'active' : ''; ?>"
+                            data-category="<?php echo esc_attr($category_slug); ?>"
+                            role="tab"
+                            aria-selected="<?php echo $first_tab ? 'true' : 'false'; ?>"
+                            aria-controls="panel-<?php echo esc_attr($category_slug); ?>">
+                        <span class="tab-icon"><?php echo esc_html($category_data['category_icon']); ?></span>
+                        <span class="tab-name"><?php echo esc_html($category_data['category_name']); ?></span>
+                        <span class="tab-badge"><?php echo esc_html(number_format($category_data['total_cius'])); ?></span>
+                    </button>
+                <?php
+                    $first_tab = false;
+                endforeach;
+                ?>
+            </div>
 
-                <div class="ciu-category-card" data-category="<?php echo esc_attr($category_slug); ?>">
-                    <div class="ciu-category-header">
-                        <div class="category-title-section">
-                            <?php echo CIU_Frontend_Display::get_category_icon($category_data['category_icon']); ?>
-                            <h4 class="category-title"><?php echo esc_html($category_data['category_name']); ?></h4>
-                            <span class="category-total-badge"><?php echo esc_html(number_format($category_data['total_cius'])); ?> <?php esc_html_e('CIUs', 'partner-ciu-manager'); ?></span>
+            <!-- Category Tab Panels -->
+            <div class="category-panels">
+                <?php
+                $first_panel = true;
+                foreach ($allocations as $category_slug => $category_data):
+                    if (empty($category_data['collections'])): continue; endif;
+                ?>
+                    <div id="panel-<?php echo esc_attr($category_slug); ?>"
+                         class="category-panel <?php echo $first_panel ? 'active' : ''; ?>"
+                         role="tabpanel"
+                         aria-labelledby="tab-<?php echo esc_attr($category_slug); ?>">
+
+                        <div class="panel-header">
+                            <h3 class="panel-title">
+                                <?php echo esc_html($category_data['category_icon']); ?>
+                                <?php echo esc_html($category_data['category_name']); ?>
+                            </h3>
+                            <div class="panel-total">
+                                Total: <strong><?php echo esc_html(number_format($category_data['total_cius'])); ?> CIUs</strong>
+                            </div>
                         </div>
-                        <button type="button" class="category-toggle-btn" aria-expanded="false">
-                            <span class="toggle-icon">▼</span>
-                        </button>
-                    </div>
 
-                    <div class="ciu-category-content" style="display: none;">
-                        <div class="collections-list">
-                            <?php foreach ($category_data['collections'] as $collection_id => $collection): ?>
-                                <div class="collection-card">
-                                    <div class="collection-header-section">
-                                        <div class="collection-number">#<?php echo esc_html($collection['collection_number']); ?></div>
-                                        <h5 class="collection-title"><?php echo esc_html($collection['collection_title']); ?></h5>
-                                        <?php echo CIU_Frontend_Display::get_status_badge($collection['status']); ?>
-                                    </div>
-
-                                    <div class="collection-details">
-                                        <div class="collection-detail-item">
-                                            <span class="detail-label"><?php esc_html_e('CIU Amount:', 'partner-ciu-manager'); ?></span>
-                                            <span class="detail-value ciu-amount"><?php echo esc_html(number_format($collection['ciu_amount'])); ?></span>
-                                        </div>
-
-                                        <?php if (!empty($collection['collection_datetime'])): ?>
-                                            <div class="collection-detail-item">
-                                                <span class="detail-label"><?php esc_html_e('Date & Time:', 'partner-ciu-manager'); ?></span>
-                                                <span class="detail-value datetime">
-                                                    <span class="datetime-icon">📅</span>
-                                                    <?php echo CIU_Frontend_Display::format_datetime($collection['collection_datetime']); ?>
+                        <!-- Collections List -->
+                        <div class="collections-table-wrapper">
+                            <table class="collections-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Collection Title</th>
+                                        <th>CIU Amount</th>
+                                        <th>Status</th>
+                                        <th>Date & Time</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($category_data['collections'] as $collection_id => $collection): ?>
+                                        <tr class="collection-row">
+                                            <td class="collection-number">
+                                                <?php echo esc_html($collection['collection_number']); ?>
+                                            </td>
+                                            <td class="collection-title-cell">
+                                                <strong><?php echo esc_html($collection['collection_title']); ?></strong>
+                                            </td>
+                                            <td class="collection-amount">
+                                                <strong><?php echo esc_html(number_format($collection['ciu_amount'])); ?></strong>
+                                            </td>
+                                            <td class="collection-status">
+                                                <span class="status-badge status-<?php echo esc_attr($collection['status']); ?>">
+                                                    <?php
+                                                    $status_labels = array(
+                                                        'pending' => 'Pending',
+                                                        'active' => 'Active',
+                                                        'verified' => 'Verified/Retired',
+                                                    );
+                                                    echo esc_html(isset($status_labels[$collection['status']]) ? $status_labels[$collection['status']] : $collection['status']);
+                                                    ?>
                                                 </span>
-                                            </div>
-                                        <?php endif; ?>
-
-                                        <?php if (!empty($collection['description'])): ?>
-                                            <div class="collection-detail-item description">
-                                                <span class="detail-label"><?php esc_html_e('Description:', 'partner-ciu-manager'); ?></span>
-                                                <p class="detail-value"><?php echo wp_kses_post(wpautop($collection['description'])); ?></p>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-
-                                    <div class="collection-meta">
-                                        <span class="meta-item">
-                                            <span class="meta-icon">📌</span>
-                                            <?php esc_html_e('Added:', 'partner-ciu-manager'); ?>
-                                            <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($collection['date_added']))); ?>
-                                        </span>
-                                        <?php if (!empty($collection['last_modified'])): ?>
-                                            <span class="meta-item">
-                                                <span class="meta-icon">✏️</span>
-                                                <?php esc_html_e('Modified:', 'partner-ciu-manager'); ?>
-                                                <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($collection['last_modified']))); ?>
-                                            </span>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
+                                            </td>
+                                            <td class="collection-datetime">
+                                                <?php
+                                                if (!empty($collection['collection_datetime'])) {
+                                                    echo esc_html(CIU_Frontend_Display::format_datetime($collection['collection_datetime']));
+                                                } else {
+                                                    echo '—';
+                                                }
+                                                ?>
+                                            </td>
+                                            <td class="collection-description">
+                                                <?php
+                                                if (!empty($collection['description'])) {
+                                                    echo esc_html(wp_trim_words($collection['description'], 15, '...'));
+                                                } else {
+                                                    echo '—';
+                                                }
+                                                ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php
+                    $first_panel = false;
+                endforeach;
+                ?>
+            </div>
         </div>
     <?php endif; ?>
 

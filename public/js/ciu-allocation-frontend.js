@@ -14,6 +14,7 @@
         init: function() {
             this.bindEvents();
             this.initAccessibility();
+            this.initCategoryTabs();
         },
 
         /**
@@ -167,3 +168,68 @@
     window.ciuFrontend = ciuFrontend;
 
 })(jQuery);
+
+        /**
+         * Initialize category tabs
+         */
+        initCategoryTabs: function() {
+            var self = this;
+            
+            // Tab click handler
+            $(document).on('click', '.category-tab', function(e) {
+                e.preventDefault();
+                
+                var $tab = $(this);
+                var categorySlug = $tab.data('category');
+                
+                // Don't do anything if already active
+                if ($tab.hasClass('active')) {
+                    return;
+                }
+                
+                // Remove active class from all tabs
+                $('.category-tab').removeClass('active').attr('aria-selected', 'false');
+                
+                // Add active class to clicked tab
+                $tab.addClass('active').attr('aria-selected', 'true');
+                
+                // Hide all panels
+                $('.category-panel').removeClass('active').hide();
+                
+                // Show selected panel with animation
+                $('#panel-' + categorySlug).addClass('active').fadeIn(300);
+            });
+            
+            // Keyboard navigation for tabs
+            $(document).on('keydown', '.category-tab', function(e) {
+                var $tabs = $('.category-tab');
+                var currentIndex = $tabs.index(this);
+                var nextIndex;
+                
+                // Arrow left/up - previous tab
+                if (e.keyCode === 37 || e.keyCode === 38) {
+                    e.preventDefault();
+                    nextIndex = currentIndex > 0 ? currentIndex - 1 : $tabs.length - 1;
+                    $tabs.eq(nextIndex).focus().click();
+                }
+                
+                // Arrow right/down - next tab
+                if (e.keyCode === 39 || e.keyCode === 40) {
+                    e.preventDefault();
+                    nextIndex = currentIndex < $tabs.length - 1 ? currentIndex + 1 : 0;
+                    $tabs.eq(nextIndex).focus().click();
+                }
+                
+                // Home - first tab
+                if (e.keyCode === 36) {
+                    e.preventDefault();
+                    $tabs.first().focus().click();
+                }
+                
+                // End - last tab
+                if (e.keyCode === 35) {
+                    e.preventDefault();
+                    $tabs.last().focus().click();
+                }
+            });
+        },
