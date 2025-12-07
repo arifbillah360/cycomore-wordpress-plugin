@@ -1,6 +1,6 @@
 <?php
 /**
- * Frontend CIU Allocation Display Template - Corporate Black & White Design
+ * Frontend CIU Allocation Display Template - Modern Minimal Design
  *
  * @package Partner_CIU_Manager
  */
@@ -30,171 +30,166 @@ $total_cius = $pending_cius + $active_cius + $verified_cius;
 $total_funds = get_post_meta($partner_id, '_total_funds', true) ?: 0;
 ?>
 
-<div class="ciu-dashboard-wrapper">
+<div class="ciu-minimal-dashboard">
 
     <!-- Partner Logo Section -->
-    <div class="dashboard-logo-section">
+    <div class="minimal-logo-section">
         <?php if (has_post_thumbnail($partner_id)): ?>
-            <div class="partner-logo-large">
+            <div class="partner-logo-minimal">
                 <?php echo get_the_post_thumbnail($partner_id, 'medium', array(
                     'alt' => esc_attr($partner->post_title),
-                    'class' => 'partner-logo-img'
+                    'class' => 'partner-logo-image'
                 )); ?>
             </div>
         <?php else: ?>
-            <div class="partner-logo-placeholder-large">
-                <span class="logo-initial-large"><?php echo esc_html(substr($partner->post_title, 0, 1)); ?></span>
+            <div class="partner-logo-placeholder-minimal">
+                <span class="logo-letter"><?php echo esc_html(strtoupper(substr($partner->post_title, 0, 1))); ?></span>
             </div>
         <?php endif; ?>
-        <h1 class="partner-name-large"><?php echo esc_html($partner->post_title); ?></h1>
+        <h1 class="partner-title-minimal"><?php echo esc_html($partner->post_title); ?></h1>
     </div>
 
     <!-- Stats Section -->
-    <div class="dashboard-stats-section">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value"><?php echo esc_html(number_format($total_cius)); ?></div>
-                <div class="stat-label">Total CIU's</div>
+    <div class="minimal-stats-section">
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-number"><?php echo esc_html(number_format($total_cius)); ?></div>
+                <div class="stat-label">Total CIUs</div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-value"><?php echo esc_html(number_format($pending_cius)); ?></div>
+            <div class="stat-box">
+                <div class="stat-number"><?php echo esc_html(number_format($pending_cius)); ?></div>
                 <div class="stat-label">Pending</div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-value"><?php echo esc_html(number_format($active_cius)); ?></div>
+            <div class="stat-box">
+                <div class="stat-number"><?php echo esc_html(number_format($active_cius)); ?></div>
                 <div class="stat-label">Active</div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-value"><?php echo esc_html(number_format($verified_cius)); ?></div>
-                <div class="stat-label">Verified/Retired</div>
+            <div class="stat-box">
+                <div class="stat-number"><?php echo esc_html(number_format($verified_cius)); ?></div>
+                <div class="stat-label">Verified</div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-value"><?php echo esc_html($currency_symbol . number_format($total_funds, 2)); ?></div>
+            <div class="stat-box">
+                <div class="stat-number"><?php echo esc_html($currency_symbol . number_format($total_funds, 0)); ?></div>
                 <div class="stat-label">Funds Contributed</div>
             </div>
         </div>
     </div>
 
     <?php if ($atts['show_categories'] === 'yes' && !empty($allocations)): ?>
-        <!-- Category Tabs Section -->
-        <div class="dashboard-categories-section">
-            <h2 class="section-title">Conservation Impact Categories</h2>
+        <!-- Tabs Section -->
+        <div class="minimal-tabs-section">
 
-            <!-- Category Tabs -->
-            <div class="category-tabs">
+            <!-- Category Tabs Navigation -->
+            <div class="tabs-navigation" role="tablist">
                 <?php
-                $first_tab = true;
+                $tab_index = 0;
                 foreach ($allocations as $category_slug => $category_data):
                     if (empty($category_data['collections'])): continue; endif;
+                    $is_first = ($tab_index === 0);
                 ?>
                     <button type="button"
-                            class="category-tab <?php echo $first_tab ? 'active' : ''; ?>"
+                            class="tab-button <?php echo $is_first ? 'active' : ''; ?>"
                             data-category="<?php echo esc_attr($category_slug); ?>"
                             role="tab"
-                            aria-selected="<?php echo $first_tab ? 'true' : 'false'; ?>"
-                            aria-controls="panel-<?php echo esc_attr($category_slug); ?>">
+                            aria-selected="<?php echo $is_first ? 'true' : 'false'; ?>"
+                            aria-controls="tab-panel-<?php echo esc_attr($category_slug); ?>"
+                            id="tab-<?php echo esc_attr($category_slug); ?>">
                         <span class="tab-icon"><?php echo esc_html($category_data['category_icon']); ?></span>
-                        <span class="tab-name"><?php echo esc_html($category_data['category_name']); ?></span>
-                        <span class="tab-badge"><?php echo esc_html(number_format($category_data['total_cius'])); ?></span>
+                        <span class="tab-label"><?php echo esc_html($category_data['category_name']); ?></span>
+                        <span class="tab-count"><?php echo esc_html(number_format($category_data['total_cius'])); ?></span>
                     </button>
                 <?php
-                    $first_tab = false;
+                    $tab_index++;
                 endforeach;
                 ?>
             </div>
 
             <!-- Category Tab Panels -->
-            <div class="category-panels">
+            <div class="tabs-content">
                 <?php
-                $first_panel = true;
+                $panel_index = 0;
                 foreach ($allocations as $category_slug => $category_data):
                     if (empty($category_data['collections'])): continue; endif;
+                    $is_first = ($panel_index === 0);
                 ?>
-                    <div id="panel-<?php echo esc_attr($category_slug); ?>"
-                         class="category-panel <?php echo $first_panel ? 'active' : ''; ?>"
+                    <div id="tab-panel-<?php echo esc_attr($category_slug); ?>"
+                         class="tab-panel <?php echo $is_first ? 'active' : ''; ?>"
                          role="tabpanel"
                          aria-labelledby="tab-<?php echo esc_attr($category_slug); ?>">
 
-                        <div class="panel-header">
-                            <h3 class="panel-title">
-                                <?php echo esc_html($category_data['category_icon']); ?>
-                                <?php echo esc_html($category_data['category_name']); ?>
-                            </h3>
-                            <div class="panel-total">
-                                Total: <strong><?php echo esc_html(number_format($category_data['total_cius'])); ?> CIUs</strong>
+                        <!-- Panel Header -->
+                        <div class="panel-header-minimal">
+                            <div class="panel-title-group">
+                                <span class="panel-icon"><?php echo esc_html($category_data['category_icon']); ?></span>
+                                <h2 class="panel-title"><?php echo esc_html($category_data['category_name']); ?></h2>
+                            </div>
+                            <div class="panel-meta">
+                                <span class="panel-total"><?php echo esc_html(number_format($category_data['total_cius'])); ?> CIUs</span>
                             </div>
                         </div>
 
-                        <!-- Collections List -->
-                        <div class="collections-table-wrapper">
-                            <table class="collections-table">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Collection Title</th>
-                                        <th>CIU Amount</th>
-                                        <th>Status</th>
-                                        <th>Date & Time</th>
-                                        <th>Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($category_data['collections'] as $collection_id => $collection): ?>
-                                        <tr class="collection-row">
-                                            <td class="collection-number">
-                                                <?php echo esc_html($collection['collection_number']); ?>
-                                            </td>
-                                            <td class="collection-title-cell">
-                                                <strong><?php echo esc_html($collection['collection_title']); ?></strong>
-                                            </td>
-                                            <td class="collection-amount">
-                                                <strong><?php echo esc_html(number_format($collection['ciu_amount'])); ?></strong>
-                                            </td>
-                                            <td class="collection-status">
-                                                <span class="status-badge status-<?php echo esc_attr($collection['status']); ?>">
-                                                    <?php
-                                                    $status_labels = array(
-                                                        'pending' => 'Pending',
-                                                        'active' => 'Active',
-                                                        'verified' => 'Verified/Retired',
-                                                    );
-                                                    echo esc_html(isset($status_labels[$collection['status']]) ? $status_labels[$collection['status']] : $collection['status']);
-                                                    ?>
-                                                </span>
-                                            </td>
-                                            <td class="collection-datetime">
-                                                <?php
-                                                if (!empty($collection['collection_datetime'])) {
-                                                    echo esc_html(CIU_Frontend_Display::format_datetime($collection['collection_datetime']));
-                                                } else {
-                                                    echo '—';
-                                                }
-                                                ?>
-                                            </td>
-                                            <td class="collection-description">
-                                                <?php
-                                                if (!empty($collection['description'])) {
-                                                    echo esc_html(wp_trim_words($collection['description'], 15, '...'));
-                                                } else {
-                                                    echo '—';
-                                                }
-                                                ?>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
+                        <!-- Collections Grid -->
+                        <div class="collections-grid">
+                            <?php foreach ($category_data['collections'] as $collection_id => $collection): ?>
+                                <div class="collection-card-minimal">
+
+                                    <!-- Card Header -->
+                                    <div class="collection-header-minimal">
+                                        <div class="collection-number-badge">#<?php echo esc_html($collection['collection_number']); ?></div>
+                                        <span class="status-pill status-<?php echo esc_attr($collection['status']); ?>">
+                                            <?php
+                                            $status_labels = array(
+                                                'pending' => 'Pending',
+                                                'active' => 'Active',
+                                                'verified' => 'Verified',
+                                            );
+                                            echo esc_html(isset($status_labels[$collection['status']]) ? $status_labels[$collection['status']] : ucfirst($collection['status']));
+                                            ?>
+                                        </span>
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="collection-body">
+                                        <h3 class="collection-title-minimal"><?php echo esc_html($collection['collection_title']); ?></h3>
+
+                                        <?php if (!empty($collection['description'])): ?>
+                                            <p class="collection-description-minimal">
+                                                <?php echo esc_html(wp_trim_words($collection['description'], 20, '...')); ?>
+                                            </p>
+                                        <?php endif; ?>
+
+                                        <div class="collection-meta-grid">
+                                            <div class="meta-item">
+                                                <span class="meta-label">CIU Amount</span>
+                                                <span class="meta-value highlight"><?php echo esc_html(number_format($collection['ciu_amount'])); ?></span>
+                                            </div>
+
+                                            <?php if (!empty($collection['collection_datetime'])): ?>
+                                                <div class="meta-item">
+                                                    <span class="meta-label">Date & Time</span>
+                                                    <span class="meta-value">
+                                                        <?php echo esc_html(CIU_Frontend_Display::format_datetime($collection['collection_datetime'])); ?>
+                                                    </span>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            <?php endforeach; ?>
                         </div>
+
                     </div>
                 <?php
-                    $first_panel = false;
+                    $panel_index++;
                 endforeach;
                 ?>
             </div>
+
         </div>
     <?php endif; ?>
 
