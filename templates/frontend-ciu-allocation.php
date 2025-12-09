@@ -27,7 +27,35 @@ $pending_cius = get_post_meta($partner_id, '_pending_cius', true) ?: 0;
 $active_cius = get_post_meta($partner_id, '_active_cius', true) ?: 0;
 $verified_cius = get_post_meta($partner_id, '_verified_cius', true) ?: 0;
 $total_cius = $pending_cius + $active_cius + $verified_cius;
-$total_funds = get_post_meta($partner_id, '_total_funds', true) ?: 0;
+
+// Get total funds from multiple sources (for compatibility)
+$total_funds = 0;
+
+// First try: Check summary array
+if (!empty($summary['total_funds'])) {
+    $total_funds = $summary['total_funds'];
+}
+
+// Second try: Direct meta field
+if ($total_funds == 0) {
+    $total_funds = get_post_meta($partner_id, '_total_funds', true);
+}
+
+// Third try: Calculate from collections if meta is empty
+if (empty($total_funds) && !empty($allocations)) {
+    foreach ($allocations as $category) {
+        if (!empty($category['collections'])) {
+            foreach ($category['collections'] as $collection) {
+                if (!empty($collection['ciu_amount'])) {
+                    $total_funds += intval($collection['ciu_amount']);
+                }
+            }
+        }
+    }
+}
+
+// Ensure it's a number
+$total_funds = floatval($total_funds);
 ?>
 
 <div class="ciu-minimal-dashboard">
@@ -73,6 +101,7 @@ $total_funds = get_post_meta($partner_id, '_total_funds', true) ?: 0;
             </div>
 
             <div class="stat-box">
+                <!-- Debug: Funds value = <?php echo $total_funds; ?> from partner_id = <?php echo $partner_id; ?> -->
                 <div class="stat-number"><?php echo esc_html($currency_symbol . number_format($total_funds, 0)); ?></div>
                 <div class="stat-label">Funds Contributed</div>
             </div>
@@ -177,6 +206,20 @@ $total_funds = get_post_meta($partner_id, '_total_funds', true) ?: 0;
                                                 </div>
                                             <?php endif; ?>
                                         </div>
+
+                                        <?php if (!empty($collection['description'])): ?>
+                                            <button type="button"
+                                                    class="view-collection-details-btn"
+                                                    data-collection-id="<?php echo esc_attr($collection_id); ?>"
+                                                    data-collection-title="<?php echo esc_attr($collection['collection_title']); ?>"
+                                                    data-collection-number="<?php echo esc_attr($collection['collection_number']); ?>"
+                                                    data-ciu-amount="<?php echo esc_attr($collection['ciu_amount']); ?>"
+                                                    data-status="<?php echo esc_attr($collection['status']); ?>"
+                                                    data-datetime="<?php echo esc_attr(!empty($collection['collection_datetime']) ? CIU_Frontend_Display::format_datetime($collection['collection_datetime']) : ''); ?>"
+                                                    data-description="<?php echo esc_attr($collection['description']); ?>">
+                                                View Full Details →
+                                            </button>
+                                        <?php endif; ?>
                                     </div>
 
                                 </div>
@@ -192,5 +235,40 @@ $total_funds = get_post_meta($partner_id, '_total_funds', true) ?: 0;
 
         </div>
     <?php endif; ?>
+
+    <!-- Collection Details Modal -->
+    <div id="collection-details-modal" class="collection-modal" style="display: none;">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-collection-title"></h3>
+                <button type="button" class="modal-close" aria-label="Close modal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-meta">
+                    <div class="modal-meta-item">
+                        <span class="modal-meta-label">Collection #</span>
+                        <span class="modal-meta-value" id="modal-collection-number"></span>
+                    </div>
+                    <div class="modal-meta-item">
+                        <span class="modal-meta-label">Status</span>
+                        <span class="modal-status-badge" id="modal-status"></span>
+                    </div>
+                    <div class="modal-meta-item">
+                        <span class="modal-meta-label">CIU Amount</span>
+                        <span class="modal-meta-value modal-ciu-amount" id="modal-ciu-amount"></span>
+                    </div>
+                    <div class="modal-meta-item">
+                        <span class="modal-meta-label">Date & Time</span>
+                        <span class="modal-meta-value" id="modal-datetime"></span>
+                    </div>
+                </div>
+                <div class="modal-description-section">
+                    <h4 class="modal-section-title">Description</h4>
+                    <div class="modal-description-content" id="modal-description"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>

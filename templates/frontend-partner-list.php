@@ -45,6 +45,14 @@ if (!defined('ABSPATH')) {
             $total_cius = isset($summary['total_cius']) ? $summary['total_cius'] : 0;
             $total_active = isset($summary['total_active']) ? $summary['total_active'] : 0;
 
+            // Get funds contributed
+            $total_funds = get_post_meta($partner_id, '_total_funds', true) ?: 0;
+
+            // Get currency from settings
+            $settings = get_option('partner_ciu_settings', array());
+            $currency = isset($settings['currency']) ? $settings['currency'] : 'GBP';
+            $currency_symbol = $currency === 'GBP' ? '£' : ($currency === 'USD' ? '$' : $currency);
+
             // Count categories with data
             $active_categories = 0;
             if (!empty($allocations)) {
@@ -104,6 +112,14 @@ if (!defined('ABSPATH')) {
                             <div class="stat-content">
                                 <span class="stat-value"><?php echo esc_html($active_categories); ?></span>
                                 <span class="stat-label"><?php esc_html_e('Categories', 'partner-ciu-manager'); ?></span>
+                            </div>
+                        </div>
+
+                        <div class="stat-item funds-contributed">
+                            <span class="stat-icon">💰</span>
+                            <div class="stat-content">
+                                <span class="stat-value"><?php echo esc_html($currency_symbol . number_format($total_funds, 0)); ?></span>
+                                <span class="stat-label"><?php esc_html_e('Funds', 'partner-ciu-manager'); ?></span>
                             </div>
                         </div>
                     </div>
