@@ -127,7 +127,6 @@ $total_funds = floatval($total_funds);
                             aria-selected="<?php echo $is_first ? 'true' : 'false'; ?>"
                             aria-controls="tab-panel-<?php echo esc_attr($category_slug); ?>"
                             id="tab-<?php echo esc_attr($category_slug); ?>">
-                        <span class="tab-icon"><?php echo esc_html($category_data['category_icon']); ?></span>
                         <span class="tab-label"><?php echo esc_html($category_data['category_name']); ?></span>
                         <span class="tab-count"><?php echo esc_html(number_format($category_data['total_cius'])); ?></span>
                     </button>
@@ -153,7 +152,6 @@ $total_funds = floatval($total_funds);
                         <!-- Panel Header -->
                         <div class="panel-header-minimal">
                             <div class="panel-title-group">
-                                <span class="panel-icon"><?php echo esc_html($category_data['category_icon']); ?></span>
                                 <h2 class="panel-title"><?php echo esc_html($category_data['category_name']); ?></h2>
                             </div>
                             <div class="panel-meta">
