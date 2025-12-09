@@ -184,9 +184,14 @@ $total_funds = floatval($total_funds);
                                         <h3 class="collection-title-minimal"><?php echo esc_html($collection['collection_title']); ?></h3>
 
                                         <?php if (!empty($collection['description'])): ?>
-                                            <p class="collection-description-minimal">
-                                                <?php echo esc_html(wp_trim_words($collection['description'], 20, '...')); ?>
-                                            </p>
+                                            <div class="collection-description-minimal">
+                                                <?php
+                                                // Truncate description to 20 words
+                                                $truncated_description = wp_trim_words($collection['description'], 20, '...');
+                                                // Convert newlines to <br> tags and allow safe HTML
+                                                echo wp_kses_post(nl2br($truncated_description));
+                                                ?>
+                                            </div>
                                         <?php endif; ?>
 
                                         <div class="collection-meta-grid">
