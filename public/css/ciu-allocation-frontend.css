@@ -1068,9 +1068,10 @@
     border-bottom: 2px solid #000000;
 }
 
-.tab-icon {
+/* Icons removed from front-end display */
+/* .tab-icon {
     font-size: 20px;
-}
+} */
 
 .tab-name {
     font-weight: 600;
@@ -1550,10 +1551,11 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.tab-icon {
+/* Icons removed from front-end display */
+/* .tab-icon {
     font-size: 18px;
     line-height: 1;
-}
+} */
 
 .tab-label {
     font-weight: 600;
@@ -1617,10 +1619,11 @@
     gap: 12px;
 }
 
-.panel-icon {
+/* Icons removed from front-end display */
+/* .panel-icon {
     font-size: 28px;
     line-height: 1;
-}
+} */
 
 .panel-title {
     font-size: 28px;

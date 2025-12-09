@@ -50,9 +50,9 @@ class CIU_Frontend_Display {
      * Enqueue frontend scripts and styles
      */
     public function enqueue_scripts() {
-        // Only enqueue if shortcode is present
-        global $post;
-        if (is_a($post, 'WP_Post') && (has_shortcode($post->post_content, 'ciu_allocation_display') || has_shortcode($post->post_content, 'ciu_partners'))) {
+        // Always enqueue on frontend (WordPress will handle caching)
+        // The conditional check was causing issues where scripts wouldn't load
+        if (!is_admin()) {
             wp_enqueue_style(
                 'ciu-allocation-frontend',
                 PARTNER_CIU_PLUGIN_URL . 'public/css/ciu-allocation-frontend.css',
@@ -68,10 +68,11 @@ class CIU_Frontend_Display {
                 true
             );
 
-            // Localize script with AJAX URL
+            // Localize script with AJAX URL and debug flag
             wp_localize_script('ciu-allocation-frontend', 'ciuFrontendData', array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('ciu-frontend-nonce'),
+                'debug' => true, // Enable debugging
             ));
         }
     }
