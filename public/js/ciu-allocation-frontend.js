@@ -238,30 +238,80 @@
         initCollectionModal: function() {
             var self = this;
 
-            // Debug log
-            console.log('Collection modal initializing...');
+            console.log('=== COLLECTION MODAL INITIALIZATION START ===');
+            console.log('jQuery version:', $.fn.jquery);
+            console.log('Current time:', new Date().toLocaleTimeString());
+
+            // Check if modal exists in DOM
+            var $modal = $('#collection-details-modal');
+            console.log('Modal element exists:', $modal.length > 0);
+            console.log('Modal element count:', $modal.length);
+
+            if ($modal.length === 0) {
+                console.error('❌ CRITICAL ERROR: Modal element #collection-details-modal not found in DOM!');
+                console.log('Available modals:', $('.collection-modal').length);
+            } else {
+                console.log('✓ Modal element found successfully');
+                console.log('Modal display style:', $modal.css('display'));
+                console.log('Modal visibility:', $modal.css('visibility'));
+                console.log('Modal z-index:', $modal.css('z-index'));
+            }
+
+            // Check if buttons exist
+            var $buttons = $('.view-collection-details-btn');
+            console.log('View Details buttons found:', $buttons.length);
+
+            if ($buttons.length === 0) {
+                console.warn('⚠️ WARNING: No .view-collection-details-btn buttons found in DOM (yet)');
+                console.log('This is normal if collections load after page load');
+            } else {
+                console.log('✓ Found', $buttons.length, 'View Details buttons');
+
+                // Log first button's data attributes for debugging
+                if ($buttons.length > 0) {
+                    var $firstBtn = $buttons.first();
+                    console.log('First button sample data:');
+                    console.log('  - Title:', $firstBtn.attr('data-collection-title'));
+                    console.log('  - Number:', $firstBtn.attr('data-collection-number'));
+                    console.log('  - Description length:', ($firstBtn.attr('data-description') || '').length, 'characters');
+                }
+            }
 
             // Open modal when "View Details" button is clicked
+            // Using event delegation to handle dynamically loaded content
             $(document).on('click', '.view-collection-details-btn', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
 
-                console.log('View Details button clicked!');
+                console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+                console.log('🔘 VIEW DETAILS BUTTON CLICKED!');
+                console.log('Time:', new Date().toLocaleTimeString());
+                console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
                 var $btn = $(this);
+                console.log('Button element:', $btn[0]);
+                console.log('Button HTML:', $btn[0].outerHTML.substring(0, 200) + '...');
 
-                // Get all data attributes
+                // Get all data attributes using both methods
                 var collectionData = {
-                    title: $btn.attr('data-collection-title') || $btn.data('collection-title'),
-                    number: $btn.attr('data-collection-number') || $btn.data('collection-number'),
-                    ciuAmount: $btn.attr('data-ciu-amount') || $btn.data('ciu-amount'),
-                    status: $btn.attr('data-status') || $btn.data('status'),
-                    datetime: $btn.attr('data-datetime') || $btn.data('datetime'),
-                    description: $btn.attr('data-description') || $btn.data('description')
+                    title: $btn.attr('data-collection-title') || $btn.data('collection-title') || 'NO TITLE',
+                    number: $btn.attr('data-collection-number') || $btn.data('collection-number') || 'NO NUMBER',
+                    ciuAmount: $btn.attr('data-ciu-amount') || $btn.data('ciu-amount') || '0',
+                    status: $btn.attr('data-status') || $btn.data('status') || 'unknown',
+                    datetime: $btn.attr('data-datetime') || $btn.data('datetime') || '',
+                    description: $btn.attr('data-description') || $btn.data('description') || 'NO DESCRIPTION'
                 };
 
-                console.log('Collection data:', collectionData);
+                console.log('Collection Data Retrieved:');
+                console.log('  - Title:', collectionData.title);
+                console.log('  - Number:', collectionData.number);
+                console.log('  - CIU Amount:', collectionData.ciuAmount);
+                console.log('  - Status:', collectionData.status);
+                console.log('  - DateTime:', collectionData.datetime);
+                console.log('  - Description length:', collectionData.description.length, 'characters');
+                console.log('  - Description preview:', collectionData.description.substring(0, 100) + '...');
 
+                console.log('Calling openCollectionModal()...');
                 self.openCollectionModal(collectionData);
             });
 
@@ -269,7 +319,7 @@
             $(document).on('click', '.modal-close', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('Close button clicked');
+                console.log('✕ Close button clicked');
                 self.closeCollectionModal();
             });
 
@@ -277,46 +327,97 @@
             $(document).on('click', '.modal-overlay', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('Overlay clicked');
+                console.log('✕ Overlay clicked');
                 self.closeCollectionModal();
             });
 
             // Close modal with ESC key
             $(document).on('keydown', function(e) {
                 if (e.keyCode === 27 && $('#collection-details-modal').is(':visible')) {
-                    console.log('ESC key pressed');
+                    console.log('✕ ESC key pressed');
                     self.closeCollectionModal();
                 }
             });
 
-            console.log('Collection modal initialized successfully');
+            console.log('✓ Event listeners attached successfully');
+            console.log('=== COLLECTION MODAL INITIALIZATION COMPLETE ===');
+            console.log(' ');
         },
 
         /**
          * Open collection details modal
          */
         openCollectionModal: function(data) {
-            console.log('Opening modal with data:', data);
+            console.log('┌─────────────────────────────────────────┐');
+            console.log('│   OPENING COLLECTION MODAL              │');
+            console.log('└─────────────────────────────────────────┘');
+            console.log('Received data:', data);
 
             // Check if modal exists
-            if ($('#collection-details-modal').length === 0) {
-                console.error('Modal element not found!');
+            var $modal = $('#collection-details-modal');
+            console.log('Modal lookup: #collection-details-modal');
+            console.log('Modal found:', $modal.length > 0);
+
+            if ($modal.length === 0) {
+                console.error('❌ FATAL ERROR: Modal element #collection-details-modal NOT FOUND!');
+                console.error('Cannot open modal. Please check:');
+                console.error('1. Template file includes modal HTML');
+                console.error('2. Modal is not removed by JavaScript');
+                console.error('3. DOM is fully loaded');
+
+                // Try to find any modal elements
+                var $anyModals = $('.collection-modal');
+                console.log('Alternative search - .collection-modal:', $anyModals.length);
+
+                alert('ERROR: Modal not found! Check browser console for details.');
                 return;
             }
 
-            // Populate modal with data
-            $('#modal-collection-title').text(data.title || 'N/A');
-            $('#modal-collection-number').text(data.number || 'N/A');
+            console.log('✓ Modal element found, proceeding...');
 
-            // Format CIU amount
+            // Populate modal fields
+            console.log('Populating modal fields...');
+
+            var $title = $('#modal-collection-title');
+            var $number = $('#modal-collection-number');
+            var $amount = $('#modal-ciu-amount');
+            var $datetime = $('#modal-datetime');
+            var $description = $('#modal-description');
+            var $status = $('#modal-status');
+
+            console.log('Modal field elements found:');
+            console.log('  - Title element:', $title.length > 0);
+            console.log('  - Number element:', $number.length > 0);
+            console.log('  - Amount element:', $amount.length > 0);
+            console.log('  - DateTime element:', $datetime.length > 0);
+            console.log('  - Description element:', $description.length > 0);
+            console.log('  - Status element:', $status.length > 0);
+
+            // Set title
+            $title.text(data.title || 'N/A');
+            console.log('Set title:', data.title);
+
+            // Set collection number
+            $number.text(data.number || 'N/A');
+            console.log('Set number:', data.number);
+
+            // Format and set CIU amount
             var ciuAmount = data.ciuAmount || 0;
             if (typeof ciuAmount === 'string') {
                 ciuAmount = parseFloat(ciuAmount.replace(/[^0-9.-]+/g, '')) || 0;
             }
-            $('#modal-ciu-amount').text(Number(ciuAmount).toLocaleString());
+            var formattedAmount = Number(ciuAmount).toLocaleString();
+            $amount.text(formattedAmount);
+            console.log('Set CIU amount:', formattedAmount);
 
-            $('#modal-datetime').text(data.datetime || '—');
-            $('#modal-description').html(data.description ? data.description.replace(/\n/g, '<br>') : 'No description available');
+            // Set datetime
+            $datetime.text(data.datetime || '—');
+            console.log('Set datetime:', data.datetime || '—');
+
+            // Set description (convert newlines to <br> tags)
+            var descriptionHtml = data.description ? data.description.replace(/\n/g, '<br>') : 'No description available';
+            $description.html(descriptionHtml);
+            console.log('Set description:', descriptionHtml.length, 'characters (HTML)');
 
             // Set status badge
             var statusLabels = {
@@ -325,14 +426,23 @@
                 'verified': 'Verified'
             };
             var statusLabel = statusLabels[data.status] || (data.status ? data.status.charAt(0).toUpperCase() + data.status.slice(1) : 'Unknown');
-            $('#modal-status')
+            $status
                 .removeClass('status-pending status-active status-verified')
                 .addClass('status-' + (data.status || 'pending'))
                 .text(statusLabel);
+            console.log('Set status:', statusLabel, '(class: status-' + data.status + ')');
+
+            console.log('All fields populated successfully');
 
             // Show modal with animation
-            $('#collection-details-modal').fadeIn(300, function() {
-                console.log('Modal displayed');
+            console.log('Showing modal...');
+            console.log('Current display:', $modal.css('display'));
+            console.log('Current visibility:', $modal.css('visibility'));
+
+            $modal.fadeIn(300, function() {
+                console.log('✓ Modal fadeIn animation complete');
+                console.log('New display:', $modal.css('display'));
+                console.log('Is visible:', $modal.is(':visible'));
             });
 
             // Apply animation to container
@@ -340,33 +450,67 @@
                 'animation': 'slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 'animation-fill-mode': 'forwards'
             });
+            console.log('✓ Container animation applied');
 
             // Prevent body scroll
             $('body').addClass('modal-open');
+            console.log('✓ Body scroll prevented (class: modal-open)');
 
-            console.log('Modal opened successfully');
+            console.log('┌─────────────────────────────────────────┐');
+            console.log('│   MODAL OPENED SUCCESSFULLY! ✓          │');
+            console.log('└─────────────────────────────────────────┘');
+            console.log(' ');
         },
 
         /**
          * Close collection details modal
          */
         closeCollectionModal: function() {
-            console.log('Closing modal...');
+            console.log('┌─────────────────────────────────────────┐');
+            console.log('│   CLOSING COLLECTION MODAL              │');
+            console.log('└─────────────────────────────────────────┘');
 
-            $('#collection-details-modal').fadeOut(300, function() {
-                console.log('Modal closed');
+            var $modal = $('#collection-details-modal');
+            console.log('Modal found:', $modal.length > 0);
+            console.log('Currently visible:', $modal.is(':visible'));
+
+            $modal.fadeOut(300, function() {
+                console.log('✓ Modal fadeOut animation complete');
+                console.log('New display:', $modal.css('display'));
+                console.log('Is visible:', $modal.is(':visible'));
             });
 
             $('body').removeClass('modal-open');
+            console.log('✓ Body scroll restored (removed class: modal-open)');
+
+            console.log('┌─────────────────────────────────────────┐');
+            console.log('│   MODAL CLOSED SUCCESSFULLY! ✓          │');
+            console.log('└─────────────────────────────────────────┘');
+            console.log(' ');
         }
     };
 
     // Initialize on document ready
     $(document).ready(function() {
+        console.log('═══════════════════════════════════════════════════════════');
+        console.log('  CIU ALLOCATION FRONTEND JAVASCRIPT LOADED');
+        console.log('═══════════════════════════════════════════════════════════');
+        console.log('Document ready at:', new Date().toLocaleTimeString());
+        console.log('jQuery version:', $.fn.jquery);
+        console.log('Window width:', $(window).width());
+        console.log('Window height:', $(window).height());
+        console.log('───────────────────────────────────────────────────────────');
+
+        console.log('Initializing ciuFrontend...');
         ciuFrontend.init();
+        console.log('✓ ciuFrontend.init() completed');
+
+        console.log('═══════════════════════════════════════════════════════════');
+        console.log(' ');
     });
 
     // Make available globally for custom scripts
     window.ciuFrontend = ciuFrontend;
+    console.log('✓ ciuFrontend object assigned to window.ciuFrontend');
 
 })(jQuery);

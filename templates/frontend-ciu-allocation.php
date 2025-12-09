@@ -208,6 +208,7 @@ $total_funds = floatval($total_funds);
                                         </div>
 
                                         <?php if (!empty($collection['description'])): ?>
+                                            <!-- View Details Button - Opens modal with full collection info -->
                                             <button type="button"
                                                     class="view-collection-details-btn"
                                                     data-collection-id="<?php echo esc_attr($collection_id); ?>"
@@ -216,9 +217,13 @@ $total_funds = floatval($total_funds);
                                                     data-ciu-amount="<?php echo esc_attr($collection['ciu_amount']); ?>"
                                                     data-status="<?php echo esc_attr($collection['status']); ?>"
                                                     data-datetime="<?php echo esc_attr(!empty($collection['collection_datetime']) ? CIU_Frontend_Display::format_datetime($collection['collection_datetime']) : ''); ?>"
-                                                    data-description="<?php echo esc_attr($collection['description']); ?>">
+                                                    data-description="<?php echo esc_attr($collection['description']); ?>"
+                                                    data-description-length="<?php echo esc_attr(strlen($collection['description'])); ?>"
+                                                    data-debug="enabled"
+                                                    aria-label="View full details for <?php echo esc_attr($collection['collection_title']); ?>">
                                                 View Full Details →
                                             </button>
+                                            <!-- Description length: <?php echo strlen($collection['description']); ?> characters -->
                                         <?php endif; ?>
                                     </div>
 
@@ -236,39 +241,60 @@ $total_funds = floatval($total_funds);
         </div>
     <?php endif; ?>
 
-    <!-- Collection Details Modal -->
-    <div id="collection-details-modal" class="collection-modal" style="display: none;">
-        <div class="modal-overlay"></div>
-        <div class="modal-container">
+    <!-- ============================================ -->
+    <!-- COLLECTION DETAILS MODAL                     -->
+    <!-- Modal ID: collection-details-modal           -->
+    <!-- JavaScript: ciu-allocation-frontend.js       -->
+    <!-- ============================================ -->
+    <div id="collection-details-modal" class="collection-modal" style="display: none;" data-modal-version="2.0" data-debug="true">
+        <!-- Modal Overlay (Click to close) -->
+        <div class="modal-overlay" data-element="overlay"></div>
+
+        <!-- Modal Container (Main content area) -->
+        <div class="modal-container" data-element="container">
+
+            <!-- Modal Header -->
             <div class="modal-header">
-                <h3 class="modal-title" id="modal-collection-title"></h3>
-                <button type="button" class="modal-close" aria-label="Close modal">×</button>
+                <h3 class="modal-title" id="modal-collection-title" data-field="title">Loading...</h3>
+                <button type="button" class="modal-close" aria-label="Close modal" data-action="close">×</button>
             </div>
+
+            <!-- Modal Body -->
             <div class="modal-body">
+
+                <!-- Collection Metadata -->
                 <div class="modal-meta">
                     <div class="modal-meta-item">
                         <span class="modal-meta-label">Collection #</span>
-                        <span class="modal-meta-value" id="modal-collection-number"></span>
+                        <span class="modal-meta-value" id="modal-collection-number" data-field="number">—</span>
                     </div>
                     <div class="modal-meta-item">
                         <span class="modal-meta-label">Status</span>
-                        <span class="modal-status-badge" id="modal-status"></span>
+                        <span class="modal-status-badge" id="modal-status" data-field="status">—</span>
                     </div>
                     <div class="modal-meta-item">
                         <span class="modal-meta-label">CIU Amount</span>
-                        <span class="modal-meta-value modal-ciu-amount" id="modal-ciu-amount"></span>
+                        <span class="modal-meta-value modal-ciu-amount" id="modal-ciu-amount" data-field="amount">—</span>
                     </div>
                     <div class="modal-meta-item">
                         <span class="modal-meta-label">Date & Time</span>
-                        <span class="modal-meta-value" id="modal-datetime"></span>
+                        <span class="modal-meta-value" id="modal-datetime" data-field="datetime">—</span>
                     </div>
                 </div>
+
+                <!-- Full Description Section -->
                 <div class="modal-description-section">
                     <h4 class="modal-section-title">Description</h4>
-                    <div class="modal-description-content" id="modal-description"></div>
+                    <div class="modal-description-content" id="modal-description" data-field="description">
+                        Loading description...
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
+    <!-- ============================================ -->
+    <!-- END COLLECTION DETAILS MODAL                 -->
+    <!-- ============================================ -->
 
 </div>
