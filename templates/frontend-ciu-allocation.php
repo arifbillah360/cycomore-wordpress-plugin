@@ -177,6 +177,20 @@ $total_funds = get_post_meta($partner_id, '_total_funds', true) ?: 0;
                                                 </div>
                                             <?php endif; ?>
                                         </div>
+
+                                        <?php if (!empty($collection['description'])): ?>
+                                            <button type="button"
+                                                    class="view-collection-details-btn"
+                                                    data-collection-id="<?php echo esc_attr($collection_id); ?>"
+                                                    data-collection-title="<?php echo esc_attr($collection['collection_title']); ?>"
+                                                    data-collection-number="<?php echo esc_attr($collection['collection_number']); ?>"
+                                                    data-ciu-amount="<?php echo esc_attr($collection['ciu_amount']); ?>"
+                                                    data-status="<?php echo esc_attr($collection['status']); ?>"
+                                                    data-datetime="<?php echo esc_attr(!empty($collection['collection_datetime']) ? CIU_Frontend_Display::format_datetime($collection['collection_datetime']) : ''); ?>"
+                                                    data-description="<?php echo esc_attr($collection['description']); ?>">
+                                                View Full Details →
+                                            </button>
+                                        <?php endif; ?>
                                     </div>
 
                                 </div>
@@ -192,5 +206,40 @@ $total_funds = get_post_meta($partner_id, '_total_funds', true) ?: 0;
 
         </div>
     <?php endif; ?>
+
+    <!-- Collection Details Modal -->
+    <div id="collection-details-modal" class="collection-modal" style="display: none;">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-collection-title"></h3>
+                <button type="button" class="modal-close" aria-label="Close modal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-meta">
+                    <div class="modal-meta-item">
+                        <span class="modal-meta-label">Collection #</span>
+                        <span class="modal-meta-value" id="modal-collection-number"></span>
+                    </div>
+                    <div class="modal-meta-item">
+                        <span class="modal-meta-label">Status</span>
+                        <span class="modal-status-badge" id="modal-status"></span>
+                    </div>
+                    <div class="modal-meta-item">
+                        <span class="modal-meta-label">CIU Amount</span>
+                        <span class="modal-meta-value modal-ciu-amount" id="modal-ciu-amount"></span>
+                    </div>
+                    <div class="modal-meta-item">
+                        <span class="modal-meta-label">Date & Time</span>
+                        <span class="modal-meta-value" id="modal-datetime"></span>
+                    </div>
+                </div>
+                <div class="modal-description-section">
+                    <h4 class="modal-section-title">Description</h4>
+                    <div class="modal-description-content" id="modal-description"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>

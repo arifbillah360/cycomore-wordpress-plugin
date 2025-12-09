@@ -15,6 +15,7 @@
             this.bindEvents();
             this.initAccessibility();
             this.initCategoryTabs();
+            this.initCollectionModal();
         },
 
         /**
@@ -229,6 +230,88 @@
                     $tabs.last().focus().click();
                 }
             });
+        },
+
+        /**
+         * Initialize collection details modal
+         */
+        initCollectionModal: function() {
+            var self = this;
+
+            // Open modal when "View Details" button is clicked
+            $(document).on('click', '.view-collection-details-btn', function(e) {
+                e.preventDefault();
+
+                var $btn = $(this);
+                var collectionData = {
+                    title: $btn.data('collection-title'),
+                    number: $btn.data('collection-number'),
+                    ciuAmount: $btn.data('ciu-amount'),
+                    status: $btn.data('status'),
+                    datetime: $btn.data('datetime'),
+                    description: $btn.data('description')
+                };
+
+                self.openCollectionModal(collectionData);
+            });
+
+            // Close modal when close button is clicked
+            $(document).on('click', '.modal-close', function(e) {
+                e.preventDefault();
+                self.closeCollectionModal();
+            });
+
+            // Close modal when overlay is clicked
+            $(document).on('click', '.modal-overlay', function(e) {
+                e.preventDefault();
+                self.closeCollectionModal();
+            });
+
+            // Close modal with ESC key
+            $(document).on('keydown', function(e) {
+                if (e.keyCode === 27) { // ESC key
+                    self.closeCollectionModal();
+                }
+            });
+        },
+
+        /**
+         * Open collection details modal
+         */
+        openCollectionModal: function(data) {
+            // Populate modal with data
+            $('#modal-collection-title').text(data.title);
+            $('#modal-collection-number').text(data.number);
+            $('#modal-ciu-amount').text(Number(data.ciuAmount).toLocaleString());
+            $('#modal-datetime').text(data.datetime || '—');
+            $('#modal-description').text(data.description);
+
+            // Set status badge
+            var statusLabels = {
+                'pending': 'Pending',
+                'active': 'Active',
+                'verified': 'Verified'
+            };
+            var statusLabel = statusLabels[data.status] || data.status;
+            $('#modal-status')
+                .removeClass('status-pending status-active status-verified')
+                .addClass('status-' + data.status)
+                .text(statusLabel);
+
+            // Show modal with animation
+            $('#collection-details-modal').fadeIn(300);
+            $('.modal-container').css('animation', 'slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1)');
+
+            // Prevent body scroll
+            $('body').addClass('modal-open');
+        },
+
+        /**
+         * Close collection details modal
+         */
+        closeCollectionModal: function() {
+            $('#collection-details-modal').fadeOut(300);
+            $('body').removeClass('modal-open');
         }
     };
 
