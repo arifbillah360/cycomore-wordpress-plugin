@@ -27,7 +27,35 @@ $pending_cius = get_post_meta($partner_id, '_pending_cius', true) ?: 0;
 $active_cius = get_post_meta($partner_id, '_active_cius', true) ?: 0;
 $verified_cius = get_post_meta($partner_id, '_verified_cius', true) ?: 0;
 $total_cius = $pending_cius + $active_cius + $verified_cius;
-$total_funds = get_post_meta($partner_id, '_total_funds', true) ?: 0;
+
+// Get total funds from multiple sources (for compatibility)
+$total_funds = 0;
+
+// First try: Check summary array
+if (!empty($summary['total_funds'])) {
+    $total_funds = $summary['total_funds'];
+}
+
+// Second try: Direct meta field
+if ($total_funds == 0) {
+    $total_funds = get_post_meta($partner_id, '_total_funds', true);
+}
+
+// Third try: Calculate from collections if meta is empty
+if (empty($total_funds) && !empty($allocations)) {
+    foreach ($allocations as $category) {
+        if (!empty($category['collections'])) {
+            foreach ($category['collections'] as $collection) {
+                if (!empty($collection['ciu_amount'])) {
+                    $total_funds += intval($collection['ciu_amount']);
+                }
+            }
+        }
+    }
+}
+
+// Ensure it's a number
+$total_funds = floatval($total_funds);
 ?>
 
 <div class="ciu-minimal-dashboard">
@@ -73,6 +101,7 @@ $total_funds = get_post_meta($partner_id, '_total_funds', true) ?: 0;
             </div>
 
             <div class="stat-box">
+                <!-- Debug: Funds value = <?php echo $total_funds; ?> from partner_id = <?php echo $partner_id; ?> -->
                 <div class="stat-number"><?php echo esc_html($currency_symbol . number_format($total_funds, 0)); ?></div>
                 <div class="stat-label">Funds Contributed</div>
             </div>

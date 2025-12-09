@@ -238,19 +238,29 @@
         initCollectionModal: function() {
             var self = this;
 
+            // Debug log
+            console.log('Collection modal initializing...');
+
             // Open modal when "View Details" button is clicked
             $(document).on('click', '.view-collection-details-btn', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
+
+                console.log('View Details button clicked!');
 
                 var $btn = $(this);
+
+                // Get all data attributes
                 var collectionData = {
-                    title: $btn.data('collection-title'),
-                    number: $btn.data('collection-number'),
-                    ciuAmount: $btn.data('ciu-amount'),
-                    status: $btn.data('status'),
-                    datetime: $btn.data('datetime'),
-                    description: $btn.data('description')
+                    title: $btn.attr('data-collection-title') || $btn.data('collection-title'),
+                    number: $btn.attr('data-collection-number') || $btn.data('collection-number'),
+                    ciuAmount: $btn.attr('data-ciu-amount') || $btn.data('ciu-amount'),
+                    status: $btn.attr('data-status') || $btn.data('status'),
+                    datetime: $btn.attr('data-datetime') || $btn.data('datetime'),
+                    description: $btn.attr('data-description') || $btn.data('description')
                 };
+
+                console.log('Collection data:', collectionData);
 
                 self.openCollectionModal(collectionData);
             });
@@ -258,33 +268,55 @@
             // Close modal when close button is clicked
             $(document).on('click', '.modal-close', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
+                console.log('Close button clicked');
                 self.closeCollectionModal();
             });
 
             // Close modal when overlay is clicked
             $(document).on('click', '.modal-overlay', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
+                console.log('Overlay clicked');
                 self.closeCollectionModal();
             });
 
             // Close modal with ESC key
             $(document).on('keydown', function(e) {
-                if (e.keyCode === 27) { // ESC key
+                if (e.keyCode === 27 && $('#collection-details-modal').is(':visible')) {
+                    console.log('ESC key pressed');
                     self.closeCollectionModal();
                 }
             });
+
+            console.log('Collection modal initialized successfully');
         },
 
         /**
          * Open collection details modal
          */
         openCollectionModal: function(data) {
+            console.log('Opening modal with data:', data);
+
+            // Check if modal exists
+            if ($('#collection-details-modal').length === 0) {
+                console.error('Modal element not found!');
+                return;
+            }
+
             // Populate modal with data
-            $('#modal-collection-title').text(data.title);
-            $('#modal-collection-number').text(data.number);
-            $('#modal-ciu-amount').text(Number(data.ciuAmount).toLocaleString());
+            $('#modal-collection-title').text(data.title || 'N/A');
+            $('#modal-collection-number').text(data.number || 'N/A');
+
+            // Format CIU amount
+            var ciuAmount = data.ciuAmount || 0;
+            if (typeof ciuAmount === 'string') {
+                ciuAmount = parseFloat(ciuAmount.replace(/[^0-9.-]+/g, '')) || 0;
+            }
+            $('#modal-ciu-amount').text(Number(ciuAmount).toLocaleString());
+
             $('#modal-datetime').text(data.datetime || '—');
-            $('#modal-description').text(data.description);
+            $('#modal-description').html(data.description ? data.description.replace(/\n/g, '<br>') : 'No description available');
 
             // Set status badge
             var statusLabels = {
@@ -292,25 +324,39 @@
                 'active': 'Active',
                 'verified': 'Verified'
             };
-            var statusLabel = statusLabels[data.status] || data.status;
+            var statusLabel = statusLabels[data.status] || (data.status ? data.status.charAt(0).toUpperCase() + data.status.slice(1) : 'Unknown');
             $('#modal-status')
                 .removeClass('status-pending status-active status-verified')
-                .addClass('status-' + data.status)
+                .addClass('status-' + (data.status || 'pending'))
                 .text(statusLabel);
 
             // Show modal with animation
-            $('#collection-details-modal').fadeIn(300);
-            $('.modal-container').css('animation', 'slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1)');
+            $('#collection-details-modal').fadeIn(300, function() {
+                console.log('Modal displayed');
+            });
+
+            // Apply animation to container
+            $('.modal-container').css({
+                'animation': 'slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                'animation-fill-mode': 'forwards'
+            });
 
             // Prevent body scroll
             $('body').addClass('modal-open');
+
+            console.log('Modal opened successfully');
         },
 
         /**
          * Close collection details modal
          */
         closeCollectionModal: function() {
-            $('#collection-details-modal').fadeOut(300);
+            console.log('Closing modal...');
+
+            $('#collection-details-modal').fadeOut(300, function() {
+                console.log('Modal closed');
+            });
+
             $('body').removeClass('modal-open');
         }
     };
