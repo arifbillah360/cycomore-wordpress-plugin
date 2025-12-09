@@ -187,14 +187,19 @@ $total_funds = floatval($total_funds);
                                             <div class="collection-description-minimal">
                                                 <?php
                                                 // PRESERVE LINE BREAKS during truncation
-                                                // Step 1: Convert newlines to <br> tags FIRST
-                                                $description_with_br = nl2br($collection['description']);
+                                                // wp_trim_words() strips ALL HTML tags, so we use placeholder method
 
-                                                // Step 2: Truncate to 20 words (preserves <br> tags as text)
-                                                $truncated_description = wp_trim_words($description_with_br, 20, '...');
+                                                // Step 1: Replace newlines with unique placeholder
+                                                $description_with_placeholder = str_replace("\n", '|||LINEBREAK|||', $collection['description']);
 
-                                                // Step 3: Allow safe HTML including <br> tags
-                                                echo wp_kses_post($truncated_description);
+                                                // Step 2: Truncate to 20 words (placeholder preserved as text)
+                                                $truncated = wp_trim_words($description_with_placeholder, 20, '...');
+
+                                                // Step 3: Replace placeholder with <br> tags
+                                                $description_with_breaks = str_replace('|||LINEBREAK|||', '<br>', $truncated);
+
+                                                // Step 4: Output with safe HTML (allows <br> tags)
+                                                echo wp_kses_post($description_with_breaks);
                                                 ?>
                                             </div>
                                         <?php endif; ?>
