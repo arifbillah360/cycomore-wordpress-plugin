@@ -1475,12 +1475,13 @@
 }
 
 .stat-number {
-    font-size: 40px;
+    font-size: 28px;
     font-weight: 700;
     color: #0f172a;
     margin-bottom: 8px;
     line-height: 1;
     letter-spacing: -0.02em;
+    text-decoration: none;
 }
 
 .stat-label {
@@ -1840,7 +1841,7 @@
     }
 
     .stat-number {
-        font-size: 32px;
+        font-size: 26px;
     }
 
     .tabs-navigation {
@@ -1888,7 +1889,7 @@
     }
 
     .stat-number {
-        font-size: 28px;
+        font-size: 24px;
     }
 
     .panel-title {
