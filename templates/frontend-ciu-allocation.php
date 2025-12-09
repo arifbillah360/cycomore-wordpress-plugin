@@ -186,10 +186,15 @@ $total_funds = floatval($total_funds);
                                         <?php if (!empty($collection['description'])): ?>
                                             <div class="collection-description-minimal">
                                                 <?php
-                                                // Truncate description to 20 words
-                                                $truncated_description = wp_trim_words($collection['description'], 20, '...');
-                                                // Convert newlines to <br> tags and allow safe HTML
-                                                echo wp_kses_post(nl2br($truncated_description));
+                                                // PRESERVE LINE BREAKS during truncation
+                                                // Step 1: Convert newlines to <br> tags FIRST
+                                                $description_with_br = nl2br($collection['description']);
+
+                                                // Step 2: Truncate to 20 words (preserves <br> tags as text)
+                                                $truncated_description = wp_trim_words($description_with_br, 20, '...');
+
+                                                // Step 3: Allow safe HTML including <br> tags
+                                                echo wp_kses_post($truncated_description);
                                                 ?>
                                             </div>
                                         <?php endif; ?>
