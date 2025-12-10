@@ -99,13 +99,7 @@ if (!defined('ABSPATH')) {
                             </div>
                         </div>
 
-                        <div class="stat-item active-cius">
-                            <!-- Icon removed from frontend display -->
-                            <div class="stat-content">
-                                <span class="stat-value"><?php echo esc_html(number_format($total_active)); ?></span>
-                                <span class="stat-label"><?php esc_html_e('Active', 'partner-ciu-manager'); ?></span>
-                            </div>
-                        </div>
+                        <!-- Active CIUs stat removed from frontend display (backend data preserved) -->
 
                         <div class="stat-item categories">
                             <!-- Icon removed from frontend display -->
@@ -115,13 +109,7 @@ if (!defined('ABSPATH')) {
                             </div>
                         </div>
 
-                        <div class="stat-item funds-contributed">
-                            <!-- Icon removed from frontend display -->
-                            <div class="stat-content">
-                                <span class="stat-value"><?php echo esc_html($currency_symbol . number_format($total_funds, 0)); ?></span>
-                                <span class="stat-label"><?php esc_html_e('Funds', 'partner-ciu-manager'); ?></span>
-                            </div>
-                        </div>
+                        <!-- Funds stat removed from frontend display (backend data preserved) -->
                     </div>
 
                     <div class="partner-card-footer">
