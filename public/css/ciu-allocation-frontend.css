@@ -696,9 +696,10 @@
 .partner-card-stats {
     padding: 1.5rem 2rem;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* Changed from 3 to 2 columns (only 2 stats displayed) */
     gap: 1rem;
     background: #ffffff;
+    justify-content: center; /* Center the grid items horizontally */
 }
 
 .stat-item {
