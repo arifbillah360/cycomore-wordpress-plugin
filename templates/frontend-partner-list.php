@@ -92,7 +92,7 @@ if (!defined('ABSPATH')) {
 
                     <div class="partner-card-stats">
                         <div class="stat-item total-cius">
-                            <span class="stat-icon">📊</span>
+                            <!-- Icon removed from frontend display -->
                             <div class="stat-content">
                                 <span class="stat-value"><?php echo esc_html(number_format($total_cius)); ?></span>
                                 <span class="stat-label"><?php esc_html_e('Total CIUs', 'partner-ciu-manager'); ?></span>
@@ -100,7 +100,7 @@ if (!defined('ABSPATH')) {
                         </div>
 
                         <div class="stat-item active-cius">
-                            <span class="stat-icon">✅</span>
+                            <!-- Icon removed from frontend display -->
                             <div class="stat-content">
                                 <span class="stat-value"><?php echo esc_html(number_format($total_active)); ?></span>
                                 <span class="stat-label"><?php esc_html_e('Active', 'partner-ciu-manager'); ?></span>
@@ -108,7 +108,7 @@ if (!defined('ABSPATH')) {
                         </div>
 
                         <div class="stat-item categories">
-                            <span class="stat-icon">🏷️</span>
+                            <!-- Icon removed from frontend display -->
                             <div class="stat-content">
                                 <span class="stat-value"><?php echo esc_html($active_categories); ?></span>
                                 <span class="stat-label"><?php esc_html_e('Categories', 'partner-ciu-manager'); ?></span>
@@ -116,7 +116,7 @@ if (!defined('ABSPATH')) {
                         </div>
 
                         <div class="stat-item funds-contributed">
-                            <span class="stat-icon">💰</span>
+                            <!-- Icon removed from frontend display -->
                             <div class="stat-content">
                                 <span class="stat-value"><?php echo esc_html($currency_symbol . number_format($total_funds, 0)); ?></span>
                                 <span class="stat-label"><?php esc_html_e('Funds', 'partner-ciu-manager'); ?></span>
