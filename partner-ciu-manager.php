@@ -1,17 +1,22 @@
 <?php
 /**
  * Plugin Name: Partner CIU Manager
- * Plugin URI: https://github.com/arifbillah360/cycomore-wordpress-plugin
- * Description: Simple WordPress system for partner profile management with basic partner information and settings.
- * Version: 2.0.0
- * Author: Cycomore
- * Author URI: https://cycomore.com
+ * Plugin URI: https://softorio.com
+ * Description: Comprehensive partner management and CIU allocation system for environmental impact tracking
+ * Version: 3.0.0
+ * Author: Arif Billah
+ * Author URI: https://arifbillah.com
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: partner-ciu-manager
  * Domain Path: /languages
  * Requires at least: 6.0
  * Requires PHP: 7.4
+ *
+ * @package PartnerCIUManager
+ * @version 3.0.0
+ * @author Arif Billah
+ * @link https://arifbillah.com
  */
 
 // Exit if accessed directly
@@ -20,7 +25,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('PARTNER_CIU_VERSION', '2.0.0');
+define('PARTNER_CIU_VERSION', '3.0.0');
 define('PARTNER_CIU_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('PARTNER_CIU_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('PARTNER_CIU_PLUGIN_BASENAME', plugin_basename(__FILE__));

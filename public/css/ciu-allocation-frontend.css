@@ -696,9 +696,10 @@
 .partner-card-stats {
     padding: 1.5rem 2rem;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* Changed from 3 to 2 columns (only 2 stats displayed) */
     gap: 1rem;
     background: #ffffff;
+    justify-content: center; /* Center the grid items horizontally */
 }
 
 .stat-item {
@@ -714,7 +715,7 @@
 
 .stat-icon {
     font-size: 1.5rem;
-    display: block;
+    display: none; /* Icons hidden from frontend display */
     margin-bottom: 0.5rem;
 }
 
@@ -725,7 +726,7 @@
 }
 
 .stat-value {
-    font-size: 1.5rem;
+    font-size: 1.125rem; /* Reduced from 1.5rem (24px) to 1.125rem (18px) */
     font-weight: 700;
     color: #2d3748;
 }
@@ -883,7 +884,7 @@
     }
 
     .stat-value {
-        font-size: 1.25rem;
+        font-size: 1rem; /* Reduced from 1.25rem (20px) to 1rem (16px) for mobile */
     }
 
     .stat-label {
@@ -1475,12 +1476,13 @@
 }
 
 .stat-number {
-    font-size: 40px;
+    font-size: 28px;
     font-weight: 700;
     color: #0f172a;
     margin-bottom: 8px;
     line-height: 1;
     letter-spacing: -0.02em;
+    text-decoration: none;
 }
 
 .stat-label {
@@ -1840,7 +1842,7 @@
     }
 
     .stat-number {
-        font-size: 32px;
+        font-size: 26px;
     }
 
     .tabs-navigation {
@@ -1888,7 +1890,7 @@
     }
 
     .stat-number {
-        font-size: 28px;
+        font-size: 24px;
     }
 
     .panel-title {

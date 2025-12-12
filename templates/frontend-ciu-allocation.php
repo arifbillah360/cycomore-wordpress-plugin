@@ -186,10 +186,20 @@ $total_funds = floatval($total_funds);
                                         <?php if (!empty($collection['description'])): ?>
                                             <div class="collection-description-minimal">
                                                 <?php
-                                                // Truncate description to 20 words
-                                                $truncated_description = wp_trim_words($collection['description'], 20, '...');
-                                                // Convert newlines to <br> tags and allow safe HTML
-                                                echo wp_kses_post(nl2br($truncated_description));
+                                                // PRESERVE LINE BREAKS during truncation
+                                                // wp_trim_words() strips ALL HTML tags, so we use placeholder method
+
+                                                // Step 1: Replace newlines with unique placeholder
+                                                $description_with_placeholder = str_replace("\n", '|||LINEBREAK|||', $collection['description']);
+
+                                                // Step 2: Truncate to 20 words (placeholder preserved as text)
+                                                $truncated = wp_trim_words($description_with_placeholder, 20, '...');
+
+                                                // Step 3: Replace placeholder with <br> tags
+                                                $description_with_breaks = str_replace('|||LINEBREAK|||', '<br>', $truncated);
+
+                                                // Step 4: Output with safe HTML (allows <br> tags)
+                                                echo wp_kses_post($description_with_breaks);
                                                 ?>
                                             </div>
                                         <?php endif; ?>
