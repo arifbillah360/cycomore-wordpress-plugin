@@ -1,6 +1,6 @@
 # Partner CIU Manager
 
-A simple WordPress plugin for managing partner profiles with basic partner information and settings.
+Comprehensive partner management and CIU allocation system for environmental impact tracking.
 
 ## Features
 
@@ -182,6 +182,15 @@ If you discover a security vulnerability, please email security@example.com. All
 
 ## Changelog
 
+### Version 3.0.0 (2025-12-13)
+- **UI/UX Improvements**: Modern minimal design for partner pages
+- **Frontend Enhancements**: Improved partner list and single partner displays
+- **Collection Cards**: Fixed line break preservation in descriptions
+- **Stats Display**: Optimized font sizes and removed unnecessary icons
+- **Partner Cards**: Streamlined display with centered stats
+- **Code Optimization**: Improved JavaScript debugging and modal functionality
+- **Performance**: Better responsive design and mobile optimization
+
 ### Version 2.0.0 (2025-12-05)
 - Simplified plugin to focus on partner profile management
 - Removed WooCommerce integration
@@ -209,8 +218,9 @@ For support, please:
 
 ## Credits
 
-Developed by Cycomore
-https://cycomore.com
+Developed by **Arif Billah**
+Portfolio: https://arifbillah.com
+Company: Softorio - https://softorio.com
 
 ## Contributing
 
@@ -241,6 +251,8 @@ A: Yes, the plugin uses WordPress translation functions and includes a text doma
 
 ---
 
-**Version:** 2.0.0
-**Last Updated:** December 5, 2025
-**Maintained by:** Cycomore Development Team
+**Version:** 3.0.0
+**Last Updated:** December 13, 2025
+**Developed by:** Arif Billah
+**Website:** https://arifbillah.com
+**Company:** Softorio - https://softorio.com
