@@ -107,10 +107,11 @@
     transition: var(--transition);
 }
 
-.hero-stat-item:hover {
+/* HOVER EFFECT DISABLED - Cards remain static */
+/* .hero-stat-item:hover {
     background: rgba(255,255,255,0.25);
     transform: translateY(-5px);
-}
+} */
 
 .hero-stat-item i {
     font-size: 48px;
@@ -163,10 +164,11 @@
     transition: var(--transition);
 }
 
-.flow-item:hover {
+/* HOVER EFFECT DISABLED - Flow items remain static */
+/* .flow-item:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
-}
+} */
 
 .flow-item.pending {
     border-top: 5px solid var(--color-pending);
@@ -278,9 +280,10 @@
     grid-column: 1 / -1;
 }
 
-.chart-box:hover {
+/* HOVER EFFECT DISABLED - Chart boxes remain static */
+/* .chart-box:hover {
     box-shadow: var(--shadow-lg);
-}
+} */
 
 .chart-title {
     font-size: 18px;
@@ -360,10 +363,11 @@
     overflow: hidden;
 }
 
-.partner-card:hover {
+/* HOVER EFFECT DISABLED - Partner cards remain static */
+/* .partner-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
-}
+} */
 
 .partner-card.hero-partner {
     border: 2px solid var(--color-accent);
@@ -516,10 +520,11 @@
     transition: var(--transition);
 }
 
-.collection-card:hover {
+/* HOVER EFFECT DISABLED - Collection cards remain static */
+/* .collection-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
-}
+} */
 
 .collection-header {
     display: flex;
@@ -623,10 +628,11 @@
     transition: var(--transition);
 }
 
-.stat-box:hover {
+/* HOVER EFFECT DISABLED - Stat boxes remain static */
+/* .stat-box:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
-}
+} */
 
 .stat-box i {
     font-size: 48px;
@@ -698,9 +704,11 @@
     color: var(--color-white);
 }
 
+/* Share button hover - reduced animation */
 .share-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    /* transform: translateY(-2px); */
+    /* box-shadow: var(--shadow-md); */
+    opacity: 0.9;
 }
 
 /* Buttons */
@@ -719,11 +727,12 @@
     transition: var(--transition);
 }
 
+/* Button hover - keep color change, remove animation */
 .btn:hover {
     background: #1976D2;
     border-color: #1976D2;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    /* transform: translateY(-2px); */
+    /* box-shadow: var(--shadow-md); */
 }
 
 .btn-outline {
@@ -846,6 +855,44 @@
         min-width: 100%;
     }
 }
+
+/* ========================================
+   DISABLE ALL CARD HOVER EFFECTS
+   ======================================== */
+
+/* Disable transitions on all stat and card elements */
+.hero-stat-item,
+.flow-item,
+.chart-box,
+.partner-card,
+.collection-card,
+.stat-box {
+    transition: none !important;
+}
+
+/* Explicitly disable all hover effects on cards */
+.hero-stat-item:hover,
+.flow-item:hover,
+.chart-box:hover,
+.partner-card:hover,
+.collection-card:hover,
+.stat-box:hover {
+    transform: none !important;
+    box-shadow: inherit !important;
+    border-color: inherit !important;
+    background: inherit !important;
+    cursor: default !important;
+}
+
+/* Keep subtle static shadows on cards */
+.partner-card,
+.collection-card,
+.stat-box,
+.chart-box {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+}
+
+/* ======================================== */
 
 /* Print Styles */
 @media print {
