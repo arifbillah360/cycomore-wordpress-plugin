@@ -1919,8 +1919,8 @@
     }
 }
 
-/* Dark Mode Support (Optional) */
-@media (prefers-color-scheme: dark) {
+/* Dark Mode Support (Optional) - DISABLED FOR LIGHT MODE ENFORCEMENT */
+/* @media (prefers-color-scheme: dark) {
     .ciu-minimal-dashboard {
         background: #0f172a;
         color: #f1f5f9;
@@ -1969,7 +1969,7 @@
     .meta-value {
         color: #cbd5e1;
     }
-}
+} */
 
 /* ========== PRINT STYLES ========== */
 @media print {
