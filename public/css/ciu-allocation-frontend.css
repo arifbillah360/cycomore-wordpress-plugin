@@ -2276,3 +2276,305 @@
 body.modal-open {
     overflow: hidden;
 }
+
+/* ========================================
+   FORCE LIGHT MODE - PREVENT DARK MODE OVERRIDE
+   ======================================== */
+
+/* Force light color scheme on all elements */
+:root,
+html,
+body {
+    color-scheme: light only !important;
+    background-color: #ffffff !important;
+    color: #1a202c !important;
+}
+
+/* Override dark mode media query - Force light mode styles */
+@media (prefers-color-scheme: dark) {
+
+    /* Root elements stay light */
+    :root,
+    html,
+    body {
+        color-scheme: light only !important;
+        background-color: #ffffff !important;
+        color: #1a202c !important;
+    }
+
+    /* Partner Dashboard stays light */
+    .ciu-minimal-dashboard {
+        background: #f8fafc !important;
+        color: #0f172a !important;
+    }
+
+    /* Headings and titles stay dark text */
+    .partner-title-minimal,
+    .stat-number,
+    .panel-title,
+    .collection-title-minimal,
+    .modal-title,
+    h1, h2, h3, h4, h5, h6 {
+        color: #0f172a !important;
+    }
+
+    /* Stats labels stay muted dark */
+    .stat-label {
+        color: #64748b !important;
+    }
+
+    /* Card backgrounds stay white */
+    .stat-box,
+    .collection-card-minimal,
+    .partner-card,
+    .modal-container {
+        background: #ffffff !important;
+        border-color: #e2e8f0 !important;
+    }
+
+    /* Tab navigation stays light */
+    .tabs-navigation {
+        background: #ffffff !important;
+        border-color: #e2e8f0 !important;
+    }
+
+    /* Tab buttons stay muted dark text */
+    .tab-button {
+        color: #64748b !important;
+        background: #f8fafc !important;
+    }
+
+    /* Active tab button stays dark */
+    .tab-button.active {
+        color: #0f172a !important;
+        background: #ffffff !important;
+        border-color: #0f172a !important;
+    }
+
+    /* Tab panels stay white */
+    .tab-panel {
+        background: #ffffff !important;
+    }
+
+    /* Panel headers stay light */
+    .panel-header-minimal {
+        background: #f8fafc !important;
+        border-color: #e2e8f0 !important;
+    }
+
+    /* Status badges stay light */
+    .status-pill {
+        background: #f1f5f9 !important;
+        color: #0f172a !important;
+    }
+
+    .status-pill.status-pending {
+        background: #fef3c7 !important;
+        color: #92400e !important;
+    }
+
+    .status-pill.status-active {
+        background: #dbeafe !important;
+        color: #1e40af !important;
+    }
+
+    .status-pill.status-verified {
+        background: #d1fae5 !important;
+        color: #065f46 !important;
+    }
+
+    /* Collection descriptions stay dark text */
+    .collection-description-minimal {
+        color: #475569 !important;
+    }
+
+    /* Meta labels and values stay correct colors */
+    .meta-label,
+    .modal-meta-label {
+        color: #64748b !important;
+    }
+
+    .meta-value,
+    .modal-meta-value {
+        color: #0f172a !important;
+    }
+
+    .meta-value.highlight {
+        color: #000000 !important;
+    }
+
+    /* Buttons stay styled correctly */
+    .view-collection-details-btn {
+        background: #0f172a !important;
+        color: #ffffff !important;
+    }
+
+    .view-collection-details-btn:hover {
+        background: #1e293b !important;
+    }
+
+    /* Modal overlay stays semi-transparent dark */
+    .modal-overlay {
+        background: rgba(15, 23, 42, 0.75) !important;
+    }
+
+    /* Modal scrollbar stays light */
+    .modal-container::-webkit-scrollbar-track {
+        background: #f1f5f9 !important;
+    }
+
+    .modal-container::-webkit-scrollbar-thumb {
+        background: #cbd5e1 !important;
+    }
+
+    .modal-container::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8 !important;
+    }
+
+    /* Partner list header stays light */
+    .ciu-partners-header {
+        background: #ffffff !important;
+    }
+
+    .partners-list-title,
+    .partners-list-description {
+        color: #0f172a !important;
+    }
+
+    /* Search box stays white */
+    .partner-search-input {
+        background: #ffffff !important;
+        border-color: #e2e8f0 !important;
+        color: #0f172a !important;
+    }
+
+    .partner-search-input::placeholder {
+        color: #94a3b8 !important;
+    }
+
+    /* Partner grid stays light */
+    .ciu-partners-grid {
+        background: #f8fafc !important;
+    }
+
+    /* Partner cards stay white */
+    .partner-card {
+        background: #ffffff !important;
+        border-color: #e2e8f0 !important;
+    }
+
+    .partner-card-header {
+        background: #ffffff !important;
+    }
+
+    .partner-card-title {
+        color: #0f172a !important;
+    }
+
+    .partner-card-stats {
+        background: #ffffff !important;
+        border-color: #e2e8f0 !important;
+    }
+
+    .stat-item {
+        background: #ffffff !important;
+    }
+
+    .stat-value {
+        color: #0f172a !important;
+    }
+
+    .stat-label {
+        color: #64748b !important;
+    }
+
+    .partner-card-footer {
+        background: #f8fafc !important;
+        border-color: #e2e8f0 !important;
+    }
+
+    .view-details-link {
+        color: #0f172a !important;
+    }
+
+    /* Hero badge stays light gold */
+    .hero-badge {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
+        color: #78350f !important;
+    }
+
+    /* Logo placeholder stays light */
+    .partner-logo-placeholder,
+    .partner-logo-placeholder-minimal {
+        background: #f1f5f9 !important;
+        color: #64748b !important;
+    }
+
+    /* Collection number badge stays white */
+    .collection-number-badge {
+        background: #ffffff !important;
+        color: #0f172a !important;
+        border-color: #e2e8f0 !important;
+    }
+
+    /* Prevent image inversion */
+    img {
+        filter: none !important;
+    }
+
+    /* Force all text to be dark on light background */
+    * {
+        color-scheme: light only !important;
+    }
+
+    /* Ensure all backgrounds stay light */
+    div,
+    section,
+    article,
+    aside,
+    main,
+    header,
+    footer,
+    nav {
+        background-color: inherit !important;
+    }
+}
+
+/* Additional enforcement for Safari and iOS */
+@supports (-webkit-appearance: none) {
+    :root {
+        color-scheme: light only !important;
+    }
+
+    html,
+    body {
+        color-scheme: light only !important;
+        background-color: #ffffff !important;
+    }
+}
+
+/* Force light mode on all supported browsers */
+html {
+    color-scheme: light only !important;
+}
+
+body {
+    color-scheme: light only !important;
+}
+
+/* Meta theme-color enforcement (for mobile browsers) */
+meta[name="theme-color"] {
+    content: "#ffffff" !important;
+}
+
+/* Prevent auto dark mode on inputs and forms */
+input,
+textarea,
+select,
+button {
+    color-scheme: light only !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+}
+
+/* END FORCE LIGHT MODE */

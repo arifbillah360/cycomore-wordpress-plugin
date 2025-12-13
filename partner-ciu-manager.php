@@ -90,6 +90,9 @@ class Partner_CIU_Manager {
 
         // Enqueue scripts and styles
         add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts'));
+
+        // Force light mode meta tags on frontend
+        add_action('wp_head', array($this, 'add_light_mode_meta_tags'), 1);
     }
 
     /**
@@ -180,6 +183,22 @@ class Partner_CIU_Manager {
             );
             update_option('partner_ciu_settings', $default_settings);
         }
+    }
+
+    /**
+     * Add light mode meta tags to force light color scheme
+     * Prevents dark mode from affecting the website frontend
+     */
+    public function add_light_mode_meta_tags() {
+        // Only output on frontend, not in admin
+        if (is_admin()) {
+            return;
+        }
+
+        echo '<!-- Force Light Mode Meta Tags - Partner CIU Manager -->' . "\n";
+        echo '<meta name="color-scheme" content="light only">' . "\n";
+        echo '<meta name="theme-color" content="#ffffff">' . "\n";
+        echo '<style>:root { color-scheme: light only !important; }</style>' . "\n";
     }
 }
 
