@@ -56,6 +56,79 @@ if (empty($total_funds) && !empty($allocations)) {
 
 // Ensure it's a number
 $total_funds = floatval($total_funds);
+
+// Define ALL 8 environmental categories (always show these)
+$all_categories = array(
+    'oceans' => array(
+        'category_name' => 'Oceans',
+        'category_icon' => '🌊',
+        'total_cius' => 0,
+        'collections' => array()
+    ),
+    'fast_fashion' => array(
+        'category_name' => 'Fast Fashion',
+        'category_icon' => '👕',
+        'total_cius' => 0,
+        'collections' => array()
+    ),
+    'forests' => array(
+        'category_name' => 'Forests',
+        'category_icon' => '🌳',
+        'total_cius' => 0,
+        'collections' => array()
+    ),
+    'endangered_species' => array(
+        'category_name' => 'Endangered Species',
+        'category_icon' => '🐅',
+        'total_cius' => 0,
+        'collections' => array()
+    ),
+    'sustainable_tourism' => array(
+        'category_name' => 'Sustainable Tourism',
+        'category_icon' => '🏖️',
+        'total_cius' => 0,
+        'collections' => array()
+    ),
+    'rivers' => array(
+        'category_name' => 'Rivers',
+        'category_icon' => '🚰',
+        'total_cius' => 0,
+        'collections' => array()
+    ),
+    'eco_waste' => array(
+        'category_name' => 'Eco Waste',
+        'category_icon' => '♻️',
+        'total_cius' => 0,
+        'collections' => array()
+    ),
+    'soil_erosion' => array(
+        'category_name' => 'Soil Erosion',
+        'category_icon' => '🌱',
+        'total_cius' => 0,
+        'collections' => array()
+    )
+);
+
+// Merge actual allocations with all categories
+if (!empty($allocations)) {
+    foreach ($allocations as $category_slug => $category_data) {
+        if (isset($all_categories[$category_slug])) {
+            // Preserve category name and icon, but update with actual data
+            $all_categories[$category_slug]['total_cius'] = isset($category_data['total_cius']) ? $category_data['total_cius'] : 0;
+            $all_categories[$category_slug]['collections'] = isset($category_data['collections']) ? $category_data['collections'] : array();
+            // Keep predefined name and icon, or use from data if available
+            if (isset($category_data['category_name'])) {
+                $all_categories[$category_slug]['category_name'] = $category_data['category_name'];
+            }
+            if (isset($category_data['category_icon'])) {
+                $all_categories[$category_slug]['category_icon'] = $category_data['category_icon'];
+            }
+        }
+    }
+}
+
+// Use all_categories instead of allocations for display
+$allocations = $all_categories;
 ?>
 
 <div class="ciu-minimal-dashboard">
@@ -112,16 +185,18 @@ $total_funds = floatval($total_funds);
         <!-- Tabs Section -->
         <div class="minimal-tabs-section">
 
-            <!-- Category Tabs Navigation -->
+            <!-- Category Tabs Navigation - Shows ALL 8 categories -->
             <div class="tabs-navigation" role="tablist">
                 <?php
                 $tab_index = 0;
                 foreach ($allocations as $category_slug => $category_data):
-                    if (empty($category_data['collections'])): continue; endif;
+                    // REMOVED: if (empty($category_data['collections'])): continue; endif;
+                    // NOW: Show ALL categories, even with 0 CIUs
                     $is_first = ($tab_index === 0);
+                    $is_empty = empty($category_data['collections']);
                 ?>
                     <button type="button"
-                            class="tab-button <?php echo $is_first ? 'active' : ''; ?>"
+                            class="tab-button <?php echo $is_first ? 'active' : ''; ?> <?php echo $is_empty ? 'empty-category' : ''; ?>"
                             data-category="<?php echo esc_attr($category_slug); ?>"
                             role="tab"
                             aria-selected="<?php echo $is_first ? 'true' : 'false'; ?>"
@@ -136,13 +211,15 @@ $total_funds = floatval($total_funds);
                 ?>
             </div>
 
-            <!-- Category Tab Panels -->
+            <!-- Category Tab Panels - Shows ALL 8 categories -->
             <div class="tabs-content">
                 <?php
                 $panel_index = 0;
                 foreach ($allocations as $category_slug => $category_data):
-                    if (empty($category_data['collections'])): continue; endif;
+                    // REMOVED: if (empty($category_data['collections'])): continue; endif;
+                    // NOW: Show ALL categories, even with 0 CIUs
                     $is_first = ($panel_index === 0);
+                    $has_collections = !empty($category_data['collections']);
                 ?>
                     <div id="tab-panel-<?php echo esc_attr($category_slug); ?>"
                          class="tab-panel <?php echo $is_first ? 'active' : ''; ?>"
@@ -159,9 +236,10 @@ $total_funds = floatval($total_funds);
                             </div>
                         </div>
 
-                        <!-- Collections Grid -->
-                        <div class="collections-grid">
-                            <?php foreach ($category_data['collections'] as $collection_id => $collection): ?>
+                        <?php if ($has_collections): ?>
+                            <!-- Collections Grid -->
+                            <div class="collections-grid">
+                                <?php foreach ($category_data['collections'] as $collection_id => $collection): ?>
                                 <div class="collection-card-minimal">
 
                                     <!-- Card Header -->
@@ -243,6 +321,13 @@ $total_funds = floatval($total_funds);
                                 </div>
                             <?php endforeach; ?>
                         </div>
+                        <?php else: ?>
+                            <!-- Empty Category Message -->
+                            <div class="empty-category-message">
+                                <p class="empty-message-text">No CIUs allocated to this category yet.</p>
+                                <p class="empty-message-subtext">This category will display collections once CIUs are allocated.</p>
+                            </div>
+                        <?php endif; ?>
 
                     </div>
                 <?php
