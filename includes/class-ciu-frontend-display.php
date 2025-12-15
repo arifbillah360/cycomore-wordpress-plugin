@@ -68,6 +68,15 @@ class CIU_Frontend_Display {
                 true
             );
 
+            // Enqueue category scroll script for horizontal scrolling arrows
+            wp_enqueue_script(
+                'category-scroll',
+                PARTNER_CIU_PLUGIN_URL . 'public/js/category-scroll.js',
+                array('jquery'),
+                PARTNER_CIU_VERSION,
+                true
+            );
+
             // Localize script with AJAX URL and debug flag
             wp_localize_script('ciu-allocation-frontend', 'ciuFrontendData', array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),

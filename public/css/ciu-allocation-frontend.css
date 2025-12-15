@@ -1498,34 +1498,123 @@
     margin-bottom: 80px;
 }
 
-/* Tabs Navigation */
+/* Categories Scroll Wrapper with Arrows */
+.categories-scroll-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+/* Scroll Arrows */
+.scroll-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background-color: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.scroll-arrow:hover {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.scroll-arrow:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+/* Left arrow positioning */
+.scroll-arrow-left {
+    left: 0;
+}
+
+/* Right arrow positioning */
+.scroll-arrow-right {
+    right: 0;
+}
+
+/* Arrow icon (CSS-based) */
+.scroll-arrow::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid #334155;
+    border-right: 2px solid #334155;
+}
+
+.scroll-arrow-left::before {
+    transform: rotate(-135deg);
+    margin-left: 3px;
+}
+
+.scroll-arrow-right::before {
+    transform: rotate(45deg);
+    margin-right: 3px;
+}
+
+/* Disabled arrow state */
+.scroll-arrow.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Gradient fade effect at edges */
+.categories-scroll-wrapper::before,
+.categories-scroll-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50px;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.categories-scroll-wrapper::before {
+    left: 40px;
+    background: linear-gradient(to right, rgba(248,250,252,1), rgba(248,250,252,0));
+}
+
+.categories-scroll-wrapper::after {
+    right: 40px;
+    background: linear-gradient(to left, rgba(248,250,252,1), rgba(248,250,252,0));
+}
+
+/* Tabs Navigation - Updated for horizontal scroll */
 .tabs-navigation {
     display: flex;
     gap: 8px;
-    margin-bottom: 40px;
-    padding: 6px;
+    padding: 6px 50px; /* Space for arrows */
     background: #f8fafc;
     border-radius: 12px;
     overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    /* Hide scrollbar */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
 }
 
 .tabs-navigation::-webkit-scrollbar {
-    height: 4px;
-}
-
-.tabs-navigation::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.tabs-navigation::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 2px;
+    display: none; /* Chrome/Safari */
 }
 
 .tab-button {
-    flex: 1;
-    min-width: 140px;
+    flex-shrink: 0; /* Prevent shrinking */
+    min-width: 250px !important; /* Required minimum width */
     background: transparent;
     border: none;
     padding: 14px 20px;
@@ -1839,6 +1928,11 @@
     .collections-grid {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     }
+
+    /* Tablet: Slightly smaller tab buttons */
+    .tab-button {
+        min-width: 200px !important;
+    }
 }
 
 /* Mobile */
@@ -1882,14 +1976,26 @@
         font-size: 26px;
     }
 
+    /* Hide scroll arrows on mobile - use touch scroll */
+    .scroll-arrow {
+        display: none;
+    }
+
+    /* Remove arrow padding on mobile */
     .tabs-navigation {
-        flex-direction: column;
+        padding: 6px;
         gap: 4px;
     }
 
     .tab-button {
+        min-width: 180px !important;
         justify-content: flex-start;
-        min-width: 100%;
+    }
+
+    /* Disable gradient fade on mobile */
+    .categories-scroll-wrapper::before,
+    .categories-scroll-wrapper::after {
+        display: none;
     }
 
     .panel-header-minimal {

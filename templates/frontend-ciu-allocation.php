@@ -185,30 +185,51 @@ $allocations = $all_categories;
         <!-- Tabs Section -->
         <div class="minimal-tabs-section">
 
-            <!-- Category Tabs Navigation - Shows ALL 8 categories -->
-            <div class="tabs-navigation" role="tablist">
-                <?php
-                $tab_index = 0;
-                foreach ($allocations as $category_slug => $category_data):
-                    // REMOVED: if (empty($category_data['collections'])): continue; endif;
-                    // NOW: Show ALL categories, even with 0 CIUs
-                    $is_first = ($tab_index === 0);
-                    $is_empty = empty($category_data['collections']);
-                ?>
-                    <button type="button"
-                            class="tab-button <?php echo $is_first ? 'active' : ''; ?> <?php echo $is_empty ? 'empty-category' : ''; ?>"
-                            data-category="<?php echo esc_attr($category_slug); ?>"
-                            role="tab"
-                            aria-selected="<?php echo $is_first ? 'true' : 'false'; ?>"
-                            aria-controls="tab-panel-<?php echo esc_attr($category_slug); ?>"
-                            id="tab-<?php echo esc_attr($category_slug); ?>">
-                        <span class="tab-label"><?php echo esc_html($category_data['category_name']); ?></span>
-                        <span class="tab-count"><?php echo esc_html(number_format($category_data['total_cius'])); ?></span>
-                    </button>
-                <?php
-                    $tab_index++;
-                endforeach;
-                ?>
+            <!-- Category Tabs Navigation - Shows ALL 8 categories with horizontal scroll arrows -->
+            <div class="categories-scroll-wrapper">
+
+                <!-- Left scroll arrow -->
+                <button type="button"
+                        class="scroll-arrow scroll-arrow-left"
+                        id="scrollLeftArrow"
+                        aria-label="Scroll categories left">
+                    <!-- Arrow icon is CSS-based -->
+                </button>
+
+                <!-- Scrollable tabs container -->
+                <div class="tabs-navigation" role="tablist" id="categoriesContainer">
+                    <?php
+                    $tab_index = 0;
+                    foreach ($allocations as $category_slug => $category_data):
+                        // REMOVED: if (empty($category_data['collections'])): continue; endif;
+                        // NOW: Show ALL categories, even with 0 CIUs
+                        $is_first = ($tab_index === 0);
+                        $is_empty = empty($category_data['collections']);
+                    ?>
+                        <button type="button"
+                                class="tab-button <?php echo $is_first ? 'active' : ''; ?> <?php echo $is_empty ? 'empty-category' : ''; ?>"
+                                data-category="<?php echo esc_attr($category_slug); ?>"
+                                role="tab"
+                                aria-selected="<?php echo $is_first ? 'true' : 'false'; ?>"
+                                aria-controls="tab-panel-<?php echo esc_attr($category_slug); ?>"
+                                id="tab-<?php echo esc_attr($category_slug); ?>">
+                            <span class="tab-label"><?php echo esc_html($category_data['category_name']); ?></span>
+                            <span class="tab-count"><?php echo esc_html(number_format($category_data['total_cius'])); ?></span>
+                        </button>
+                    <?php
+                        $tab_index++;
+                    endforeach;
+                    ?>
+                </div>
+
+                <!-- Right scroll arrow -->
+                <button type="button"
+                        class="scroll-arrow scroll-arrow-right"
+                        id="scrollRightArrow"
+                        aria-label="Scroll categories right">
+                    <!-- Arrow icon is CSS-based -->
+                </button>
+
             </div>
 
             <!-- Category Tab Panels - Shows ALL 8 categories -->
