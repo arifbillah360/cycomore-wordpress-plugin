@@ -185,6 +185,12 @@ $allocations = $all_categories;
         <!-- Tabs Section -->
         <div class="minimal-tabs-section">
 
+            <?php
+            /* ============================================================
+               OLD CATEGORY TABS NAVIGATION - COMMENTED OUT
+               This section has been replaced with minimal text-based design
+               ============================================================
+
             <!-- Category Tabs Navigation - Shows ALL 8 categories with horizontal scroll arrows -->
             <div class="categories-scroll-wrapper">
 
@@ -227,6 +233,53 @@ $allocations = $all_categories;
                         aria-label="Scroll categories right">&gt;</button>
 
             </div>
+
+            ============================================================ */ ?>
+
+            <!-- NEW MINIMAL CATEGORY NAVIGATION -->
+            <div class="minimal-category-nav">
+
+                <!-- Left Arrow -->
+                <button type="button" class="nav-arrow nav-arrow-left" id="navLeft" aria-label="Scroll left">
+                    <span>&#8249;</span>
+                </button>
+
+                <!-- Category List Container -->
+                <div class="category-list-scroll" id="categoryListScroll">
+                    <div class="category-list" role="tablist">
+                        <?php
+                        $is_first = true;
+                        foreach ($allocations as $category_slug => $category_data):
+                            // Get CIU count
+                            $category_ciu_count = isset($category_data['total_cius']) ? intval($category_data['total_cius']) : 0;
+
+                            // First is active
+                            $active_class = $is_first ? 'active' : '';
+                            $is_first = false;
+                        ?>
+
+                        <a href="#<?php echo esc_attr($category_slug); ?>"
+                           class="category-link <?php echo $active_class; ?>"
+                           data-category="<?php echo esc_attr($category_slug); ?>"
+                           role="tab"
+                           aria-selected="<?php echo $active_class ? 'true' : 'false'; ?>"
+                           aria-controls="tab-panel-<?php echo esc_attr($category_slug); ?>">
+                            <span class="cat-icon"><?php echo $category_data['category_icon']; ?></span>
+                            <span class="cat-name"><?php echo esc_html($category_data['category_name']); ?></span>
+                            <span class="cat-count"><?php echo number_format($category_ciu_count); ?></span>
+                        </a>
+
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- Right Arrow -->
+                <button type="button" class="nav-arrow nav-arrow-right" id="navRight" aria-label="Scroll right">
+                    <span>&#8250;</span>
+                </button>
+
+            </div>
+            <!-- END NEW MINIMAL CATEGORY NAVIGATION -->
 
             <!-- Category Tab Panels - Shows ALL 8 categories -->
             <div class="tabs-content">

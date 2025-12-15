@@ -1671,6 +1671,188 @@
     opacity: 1;
 }
 
+/* ========================================
+   MINIMAL CATEGORY NAVIGATION
+   Text-based horizontal scroll with arrows
+   ======================================== */
+
+/* Main navigation wrapper */
+.minimal-category-nav {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 50px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+/* Scrollable container */
+.category-list-scroll {
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.category-list-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+/* Category list (horizontal flex) */
+.category-list {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 40px;
+    padding: 10px 0;
+    align-items: center;
+}
+
+/* Individual category link */
+.category-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    text-decoration: none !important;
+    color: #666666;
+    font-size: 15px;
+    font-weight: 400;
+    transition: none !important;
+    cursor: pointer;
+    padding: 5px 0;
+    border-bottom: 2px solid transparent;
+}
+
+/* Remove default link styles */
+.category-link:hover,
+.category-link:focus,
+.category-link:visited {
+    text-decoration: none !important;
+    color: #666666;
+    outline: none;
+}
+
+/* Category icon */
+.category-link .cat-icon {
+    font-size: 20px;
+    display: inline-block;
+}
+
+/* Category name */
+.category-link .cat-name {
+    font-size: 15px;
+    font-weight: 400;
+    color: inherit;
+}
+
+/* Category count */
+.category-link .cat-count {
+    font-size: 13px;
+    color: #999999;
+    margin-left: 4px;
+}
+
+/* Active category */
+.category-link.active {
+    color: #000000 !important;
+    font-weight: 600;
+    border-bottom: 2px solid #000000;
+}
+
+.category-link.active .cat-name {
+    color: #000000;
+}
+
+.category-link.active .cat-count {
+    color: #666666;
+}
+
+/* Arrow buttons */
+.nav-arrow {
+    width: 36px;
+    height: 36px;
+    background: transparent !important;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: none !important;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-arrow span {
+    font-size: 24px;
+    line-height: 1;
+    color: #333333;
+    font-weight: 300;
+}
+
+/* Remove hover effects from arrows */
+.nav-arrow:hover,
+.nav-arrow:focus {
+    background: transparent !important;
+    border-color: #e0e0e0 !important;
+    outline: none;
+}
+
+/* Left arrow */
+.nav-arrow-left {
+    margin-right: 15px;
+}
+
+/* Right arrow */
+.nav-arrow-right {
+    margin-left: 15px;
+}
+
+/* Disabled arrow */
+.nav-arrow:disabled,
+.nav-arrow.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Mobile responsive */
+@media screen and (max-width: 768px) {
+    .minimal-category-nav {
+        padding: 0 15px;
+    }
+
+    .nav-arrow {
+        display: none;
+    }
+
+    .category-list {
+        gap: 30px;
+    }
+
+    .category-link {
+        font-size: 14px;
+    }
+
+    .category-link .cat-icon {
+        font-size: 18px;
+    }
+}
+
+/* Tablet */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .category-list {
+        gap: 35px;
+    }
+}
+
+/* END MINIMAL CATEGORY NAVIGATION */
+
 /* Empty Category Message */
 .empty-category-message {
     padding: 80px 40px;

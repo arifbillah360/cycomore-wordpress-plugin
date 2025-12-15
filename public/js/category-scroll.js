@@ -1,22 +1,30 @@
 /**
- * Category Pills Horizontal Scrolling
- * Handles left/right arrow clicks and visibility
+ * Minimal Category Navigation - Horizontal Scrolling
+ * Handles left/right arrow clicks and visibility for text-based navigation
  *
  * @package Partner_CIU_Manager
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 (function($) {
     'use strict';
 
     /**
-     * Initialize category scroll functionality
+     * Initialize minimal category navigation
      */
     function initCategoryScroll() {
 
-        const container = document.getElementById('categoriesContainer');
-        const leftArrow = document.getElementById('scrollLeftArrow');
-        const rightArrow = document.getElementById('scrollRightArrow');
+        // Try new minimal navigation first
+        let container = document.getElementById('categoryListScroll');
+        let leftArrow = document.getElementById('navLeft');
+        let rightArrow = document.getElementById('navRight');
+
+        // Fallback to old IDs if new ones not found
+        if (!container || !leftArrow || !rightArrow) {
+            container = document.getElementById('categoriesContainer');
+            leftArrow = document.getElementById('scrollLeftArrow');
+            rightArrow = document.getElementById('scrollRightArrow');
+        }
 
         // Exit if elements not found
         if (!container || !leftArrow || !rightArrow) {
@@ -24,7 +32,7 @@
         }
 
         // Scroll amount (pixels to scroll per click)
-        const scrollAmount = 300;
+        const scrollAmount = 250;
 
         /**
          * Update arrow visibility based on scroll position
@@ -127,16 +135,52 @@
 
 
         /**
+         * Category link click handler (for minimal navigation)
+         */
+        const categoryLinks = document.querySelectorAll('.category-link');
+        categoryLinks.forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Remove active from all links
+                categoryLinks.forEach(function(l) {
+                    l.classList.remove('active');
+                    l.setAttribute('aria-selected', 'false');
+                });
+
+                // Add active to clicked link
+                this.classList.add('active');
+                this.setAttribute('aria-selected', 'true');
+
+                // Get category slug
+                const categorySlug = this.getAttribute('data-category');
+                console.log('Category selected:', categorySlug);
+
+                // Here you can add logic to show/hide category content
+                // For example, show the corresponding tab panel
+                const panels = document.querySelectorAll('.tab-panel');
+                panels.forEach(function(panel) {
+                    panel.classList.remove('active');
+                });
+
+                const targetPanel = document.getElementById('tab-panel-' + categorySlug);
+                if (targetPanel) {
+                    targetPanel.classList.add('active');
+                }
+            });
+        });
+
+        /**
          * Optional: Mouse drag to scroll
-         * Allows users to click and drag the category pills
+         * Allows users to click and drag the category navigation
          */
         let isDown = false;
         let startX;
         let scrollLeftStart;
 
         container.addEventListener('mousedown', function(e) {
-            // Only enable drag on non-button elements
-            if (e.target.closest('.tab-button')) return;
+            // Only enable drag on non-interactive elements
+            if (e.target.closest('.tab-button') || e.target.closest('.category-link')) return;
 
             isDown = true;
             container.style.cursor = 'grabbing';
