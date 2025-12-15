@@ -1737,10 +1737,13 @@
     outline: none;
 }
 
-/* Category icon */
+/* Category icon - HIDDEN on frontend */
 .category-link .cat-icon {
-    font-size: 20px;
-    display: inline-block;
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    font-size: 0 !important;
 }
 
 /* Category name */
