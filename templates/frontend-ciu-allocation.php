@@ -188,13 +188,11 @@ $allocations = $all_categories;
             <!-- Category Tabs Navigation - Shows ALL 8 categories with horizontal scroll arrows -->
             <div class="categories-scroll-wrapper">
 
-                <!-- Left scroll arrow -->
+                <!-- Left scroll arrow (simple text) -->
                 <button type="button"
                         class="scroll-arrow scroll-arrow-left"
                         id="scrollLeftArrow"
-                        aria-label="Scroll categories left">
-                    <!-- Arrow icon is CSS-based -->
-                </button>
+                        aria-label="Scroll categories left">&lt;</button>
 
                 <!-- Scrollable tabs container -->
                 <div class="tabs-navigation" role="tablist" id="categoriesContainer">
@@ -222,13 +220,11 @@ $allocations = $all_categories;
                     ?>
                 </div>
 
-                <!-- Right scroll arrow -->
+                <!-- Right scroll arrow (simple text) -->
                 <button type="button"
                         class="scroll-arrow scroll-arrow-right"
                         id="scrollRightArrow"
-                        aria-label="Scroll categories right">
-                    <!-- Arrow icon is CSS-based -->
-                </button>
+                        aria-label="Scroll categories right">&gt;</button>
 
             </div>
 

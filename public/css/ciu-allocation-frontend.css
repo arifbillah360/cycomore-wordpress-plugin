@@ -1498,40 +1498,47 @@
     margin-bottom: 80px;
 }
 
-/* Categories Scroll Wrapper with Arrows */
+/* Categories Scroll Wrapper with Simple Text Arrows */
 .categories-scroll-wrapper {
     position: relative;
     width: 100%;
     margin-bottom: 40px;
+    padding: 0 50px; /* Space for arrows */
 }
 
-/* Scroll Arrows */
+/* Simple Arrow Buttons (< and >) */
 .scroll-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     width: 40px;
     height: 40px;
-    background-color: #ffffff;
-    border: 2px solid #e2e8f0;
-    border-radius: 50%;
+    background-color: #ffffff !important;
+    border: 1px solid #dcdcde !important;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 10;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-size: 20px;
+    font-weight: bold;
+    color: #333333;
+    transition: none !important;
+    user-select: none;
 }
 
+/* Remove all hover effects from arrows */
 .scroll-arrow:hover {
-    background-color: #f8fafc;
-    border-color: #cbd5e1;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background-color: #ffffff !important;
+    border-color: #dcdcde !important;
+    color: #333333 !important;
+    transform: translateY(-50%) !important;
+    box-shadow: none !important;
 }
 
 .scroll-arrow:active {
-    transform: translateY(-50%) scale(0.95);
+    transform: translateY(-50%) !important;
 }
 
 /* Left arrow positioning */
@@ -1544,25 +1551,6 @@
     right: 0;
 }
 
-/* Arrow icon (CSS-based) */
-.scroll-arrow::before {
-    content: '';
-    width: 10px;
-    height: 10px;
-    border-top: 2px solid #334155;
-    border-right: 2px solid #334155;
-}
-
-.scroll-arrow-left::before {
-    transform: rotate(-135deg);
-    margin-left: 3px;
-}
-
-.scroll-arrow-right::before {
-    transform: rotate(45deg);
-    margin-right: 3px;
-}
-
 /* Disabled arrow state */
 .scroll-arrow.disabled {
     opacity: 0.3;
@@ -1570,35 +1558,13 @@
     pointer-events: none;
 }
 
-/* Gradient fade effect at edges */
-.categories-scroll-wrapper::before,
-.categories-scroll-wrapper::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 50px;
-    z-index: 5;
-    pointer-events: none;
-}
-
-.categories-scroll-wrapper::before {
-    left: 40px;
-    background: linear-gradient(to right, rgba(248,250,252,1), rgba(248,250,252,0));
-}
-
-.categories-scroll-wrapper::after {
-    right: 40px;
-    background: linear-gradient(to left, rgba(248,250,252,1), rgba(248,250,252,0));
-}
-
 /* Tabs Navigation - Updated for horizontal scroll */
 .tabs-navigation {
     display: flex;
-    gap: 8px;
-    padding: 6px 50px; /* Space for arrows */
-    background: #f8fafc;
-    border-radius: 12px;
+    gap: 12px;
+    padding: 10px 0;
+    background: #ffffff !important;
+    border-radius: 0;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-behavior: smooth;
@@ -1614,16 +1580,18 @@
 
 .tab-button {
     flex-shrink: 0; /* Prevent shrinking */
-    min-width: 250px !important; /* Required minimum width */
-    background: transparent;
-    border: none;
-    padding: 14px 20px;
-    font-size: 15px;
+    min-width: 150px !important; /* Required minimum width */
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border: 1px solid #dcdcde !important;
+    border-bottom: 3px solid transparent !important;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-size: 14px;
     font-weight: 500;
-    color: #64748b;
+    color: #333333 !important;
     cursor: pointer;
-    border-radius: 8px;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: none !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1631,15 +1599,36 @@
     white-space: nowrap;
 }
 
+/* Remove ALL hover effects from tab buttons */
 .tab-button:hover {
-    background: #ffffff;
-    color: #334155;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #333333 !important;
+    transform: none !important;
+    box-shadow: none !important;
+    border: 1px solid #dcdcde !important;
+    border-bottom: 3px solid transparent !important;
 }
 
+/* Active tab - BLACK BOTTOM BORDER */
 .tab-button.active {
-    background: #ffffff;
-    color: #000000;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #333333 !important;
+    border: 1px solid #dcdcde !important;
+    border-bottom: 3px solid #000000 !important;
+    box-shadow: none !important;
+}
+
+/* Active tab hover - no effect */
+.tab-button.active:hover {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #333333 !important;
+    border: 1px solid #dcdcde !important;
+    border-bottom: 3px solid #000000 !important;
+    transform: none !important;
+    box-shadow: none !important;
 }
 
 /* Icons removed from front-end display */
@@ -1931,7 +1920,7 @@
 
     /* Tablet: Slightly smaller tab buttons */
     .tab-button {
-        min-width: 200px !important;
+        min-width: 120px !important;
     }
 }
 
@@ -1978,24 +1967,24 @@
 
     /* Hide scroll arrows on mobile - use touch scroll */
     .scroll-arrow {
-        display: none;
+        display: none !important;
     }
 
     /* Remove arrow padding on mobile */
+    .categories-scroll-wrapper {
+        padding: 0 !important;
+    }
+
     .tabs-navigation {
-        padding: 6px;
-        gap: 4px;
+        padding: 10px 0 !important;
+        gap: 8px;
     }
 
     .tab-button {
-        min-width: 180px !important;
-        justify-content: flex-start;
-    }
-
-    /* Disable gradient fade on mobile */
-    .categories-scroll-wrapper::before,
-    .categories-scroll-wrapper::after {
-        display: none;
+        min-width: 100px !important;
+        justify-content: center;
+        font-size: 13px;
+        padding: 10px 12px;
     }
 
     .panel-header-minimal {
