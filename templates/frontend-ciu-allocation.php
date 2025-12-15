@@ -360,7 +360,7 @@ $allocations = $all_categories;
 
                                             <?php if (!empty($collection['collection_datetime'])): ?>
                                                 <div class="meta-item">
-                                                    <span class="meta-label">Date & Time</span>
+                                                    <span class="meta-label">Last Modification</span>
                                                     <span class="meta-value">
                                                         <?php echo esc_html(CIU_Frontend_Display::format_datetime($collection['collection_datetime'])); ?>
                                                     </span>
@@ -445,7 +445,7 @@ $allocations = $all_categories;
                         <span class="modal-meta-value modal-ciu-amount" id="modal-ciu-amount" data-field="amount">—</span>
                     </div>
                     <div class="modal-meta-item">
-                        <span class="modal-meta-label">Date & Time</span>
+                        <span class="modal-meta-label">Last Modification</span>
                         <span class="modal-meta-value" id="modal-datetime" data-field="datetime">—</span>
                     </div>
                 </div>
